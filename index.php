@@ -8,4 +8,18 @@ $conn = DBConnection::getConnection();
 require_once __DIR__ . '/controller/user.php';
 $userAPI = UserAPI::getApi();
 
-$userAPI->get(['id' => '1']);
+$method = $_SERVER['REQUEST_METHOD'];
+switch ($method) {
+    case 'GET':
+        $userAPI->get();
+        break;
+    case 'POST':
+        $userAPI->post();
+        break;
+    case 'PUT':
+        break;
+    case 'DELETE':
+        break;
+    default:
+        respond(status: 'fail', message: 'Bad request.', code: 404);
+}
