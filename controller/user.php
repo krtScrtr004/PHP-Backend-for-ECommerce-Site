@@ -88,6 +88,70 @@ class UserAPI
         }
     }
 
+    public function put(array $args = []): void
+    {
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
+                throw new LogicException('Bad request.');
+
+            $validateId = $this->validate(fieldName: 'id', data: $args['id'] ?? '', callback: [$this, 'validateId']);
+            if (!$validateId['status'])
+                respond(status: 'error', message: $validateId['message'], code: 400);
+
+            $contents = decodeData(file_get_contents('php://input'));
+
+            $validateUsername = $this->validate(fieldName: 'username', data: $contents['username'], MIN: 2);
+            if (!$validateUsername['status'])
+                respond(status: 'error', message: $validateUsername['message'], code: 400);
+
+            $validateEmail = $this->validate(fieldName: 'email', data: $contents['email'], callback: [$this, 'validateEmail']);
+            if (!$validateEmail['status'])
+                respond(status: 'error', message: $validateEmail['message'], code: 400);
+
+            $validatePassword = $this->validate(fieldName: 'password', data: $contents['password']);
+            if (!$validatePassword['status'])
+                respond(status: 'error', message: $validatePassword['message'], code: 400);
+
+            $params = [
+                ':id' => $args['id'],
+                ':username' => $contents['username'],
+                ':email' => $contents['email'],
+                ':password' => password_hash($contents['password'], PASSWORD_ARGON2ID)
+            ];
+
+            $stmt = 'UPDATE user SET username = :username, email = :email, password = :password WHERE id = :id';
+            $query = $conn->prepare($stmt);
+            $query->execute($params);
+
+            respond(status: 'success', message: 'User updated successfully.', code: 200);
+        } catch (Exception $e) {
+            respond(status: 'exception', message: $e->getMessage(), code: 500);
+        }
+    }
+
+    public function delete(array $args = []): void {
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') 
+                throw new LogicException('Bad request.');
+
+            $validateId = $this->validate(fieldName: 'id', data: $args['id'] ?? '', callback: [$this, 'validateId']);
+            if (!$validateId['status'])
+                respond(status: 'error', message: $validateId['message'], code: 400);
+
+            $params = [':id' => $args['id']];
+
+            $stmt = 'DELETE FROM user WHERE id = :id';
+            $query = $conn->prepare($stmt);
+            $query->execute($params);
+
+            respond(status: 'success', message: 'User deleted successfully.', code: 200);
+        } catch (Exception $e) {
+            respond(status: 'exception', message: $e->getMessage(), code: 500);
+        }
+    }
+
     /* ------------------------------------------------------------------------------------------*/
 
     private function validate(string $fieldName, mixed $data, int $MIN = 8, int $MAX = 255, ?callable $callback = null): array
