@@ -14,36 +14,49 @@ class UserAPI
         return self::$userAPI;
     }
 
-    public function get(array $args = []): array
+    public function get(array $args = []): void
     {
         global $conn;
         try {
             $params = [];
-            $stmt = 'SELECT * FROM users';
+            $stmt = 'SELECT * FROM user';
 
-            if (isset($args['id'])) {
-                $validateId = $this->validate(fieldName: 'id', data: $args['id'], callback: function ($param): array {
-                    if (!is_numeric($param)) {
-                        return [
-                            'status' => false,
-                            'message' => 'Id must be a number.'
-                        ];
+            if (count($args) > 0) {
+                if (isset($args['id'])) {
+                    $validateId = $this->validate(fieldName: 'id', data: $args['id'], callback: function ($param): array {
+                        if (!is_numeric($param)) {
+                            return [
+                                'status' => false,
+                                'message' => 'Id must be a number.'
+                            ];
+                        }
+                        return ['status' => true];
+                    });
+                    // Append WHERE clause to $stmt to filter user ID
+                    if ($validateId['status']) {
+                        $stmt .= ' WHERE id = :id';
+                        $params[':id'] = $args['id'];
+                    } else {
+                        respond(status: 'error', message: $validateId['message'], code: 400);
                     }
-                    return ['status' => true];
-                });
-                if ($validateId['status']) {
-                    $stmt .= ' WHERE id = :id';
-                    
                 }
 
+                $this->sanitize($args);
             }
 
-            return [];
+
+            $query = $conn->prepare($stmt);
+            $query->execute($params);
+            $result = $query->fetchAll();
+
+            // return $query->fetchAll();
+            respond(status: 'success', data: $result, code: 200);
         } catch (Exception $e) {
-            http_response_code(500);
-            die($e->getMessage());
+            respond(status: 'exception', message: $e->getMessage(), code: 500);
         }
     }
+
+    
 
     private function validate(string $fieldName, mixed $data, int $MIN = 8, int $MAX = 255, ?callable $callback = null): array
     {
@@ -62,7 +75,7 @@ class UserAPI
         if (!$data) {
             $validationResult['status'] = false;
             $validationResult['message'] = "$fieldName is not defined";
-        } 
+        }
         // Empty string validation
         else if (empty($data)) {
             $validationResult['status'] = false;
@@ -78,7 +91,7 @@ class UserAPI
                 $validationResult['status'] = false;
                 $validationResult['message'] = "$fieldName should only contain lower and uppercase characters, numbers, and special characters (_, -, !, @, ').";
             }
-        } 
+        }
         // Callback function is defined
         else if ($callback && is_callable($callback)) {
             $callbackReturn = call_user_func($callback, $data);
@@ -87,5 +100,16 @@ class UserAPI
         }
 
         return $validationResult;
+    }
+
+    private function sanitize(&$data): void
+    {
+        if (!$data)
+            throw new ErrorException('No data array to sanitize.');
+
+        if (isset($data['id'])) (int) $data['id'];
+        if (isset($data['username'])) trim($data['username']);
+        if (isset($data['email'])) filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+        if (isset($data['password'])) trim($data['password']);
     }
 }
