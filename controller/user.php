@@ -2,10 +2,14 @@
 
 class UserAPI
 {
-    private static $userAPI;
+    private static $userAPI; // Singleton Pattern
 
-    private function __construct() {}
+    private function __construct() {} 
 
+    /**
+     * Summary of getApi
+     * @return UserAPI
+     */
     public static function getApi()
     {
         if (!isset(self::$userAPI))
@@ -14,6 +18,12 @@ class UserAPI
         return self::$userAPI;
     }
 
+    /**
+     * Summary of get
+     * @param array $args
+     * @throws \LogicException
+     * @return never
+     */
     public function get(array $args = []): void
     {
         global $conn;
@@ -51,6 +61,11 @@ class UserAPI
         }
     }
 
+    /**
+     * Summary of post
+     * @throws \LogicException
+     * @return never
+     */
     public function post(): void
     {
         global $conn;
@@ -89,6 +104,12 @@ class UserAPI
         }
     }
 
+    /**
+     * Summary of put
+     * @param array $args
+     * @throws \LogicException
+     * @return never
+     */
     public function put(array $args = []): void
     {
         global $conn;
@@ -133,6 +154,12 @@ class UserAPI
         }
     }
 
+    /**
+     * Summary of delete
+     * @param array $args
+     * @throws \LogicException
+     * @return never
+     */
     public function delete(array $args = []): void
     {
         global $conn;
@@ -159,6 +186,16 @@ class UserAPI
 
     /* ------------------------------------------------------------------------------------------*/
 
+    /**
+     * Summary of validate
+     * @param string $fieldName
+     * @param mixed $data
+     * @param int $MIN
+     * @param int $MAX
+     * @param mixed $callback
+     * @throws \Exception
+     * @return array
+     */
     private function validate(string $fieldName, mixed $data, int $MIN = 8, int $MAX = 255, ?callable $callback = null): array
     {
         $allowedFieldNames = ["id", "username", "email", "password"];
@@ -204,6 +241,12 @@ class UserAPI
     }
 
     /* --Callback validator functions-- */
+
+    /**
+     * Summary of validateId
+     * @param mixed $param
+     * @return array{message: string, status: bool|array{status: bool}}
+     */
     private function validateId($param): array
     {
         if (!is_numeric($param)) {
@@ -215,6 +258,11 @@ class UserAPI
         return ['status' => true];
     }
 
+    /**
+     * Summary of validateEmail
+     * @param mixed $param
+     * @return array{message: string, status: bool|array{status: bool}}
+     */
     private function validateEmail($param): array
     {
         if (!filter_var($param, FILTER_VALIDATE_EMAIL)) {
@@ -226,6 +274,12 @@ class UserAPI
         return ['status' => true];
     }
 
+    /**
+     * Summary of sanitize
+     * @param mixed $data
+     * @throws \ErrorException
+     * @return void
+     */
     private function sanitize(&$data): void
     {
         if (!$data)
