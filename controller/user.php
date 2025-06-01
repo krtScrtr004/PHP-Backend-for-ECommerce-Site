@@ -18,20 +18,15 @@ class UserAPI
     {
         global $conn;
         try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'GET')
+                throw new LogicException('Bad request.');
+
             $params = [];
             $stmt = 'SELECT * FROM user';
 
             if (count($args) > 0) {
                 if (isset($args['id'])) {
-                    $validateId = $this->validate(fieldName: 'id', data: $args['id'], callback: function ($param): array {
-                        if (!is_numeric($param)) {
-                            return [
-                                'status' => false,
-                                'message' => 'Id must be a number.'
-                            ];
-                        }
-                        return ['status' => true];
-                    });
+                    $validateId = $this->validate(fieldName: 'id', data: $args['id'], callback: [$this, 'validateId']);
                     // Append WHERE clause to $stmt to filter user ID
                     if ($validateId['status']) {
                         $stmt .= ' WHERE id = :id';
@@ -56,7 +51,44 @@ class UserAPI
         }
     }
 
-    
+    public function post(): void
+    {
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+                throw new LogicException('Bad request.');
+
+            $contents = decodeData(file_get_contents('php://input'));
+
+            $validateUsername = $this->validate(fieldName: 'username', data: $contents['username'], MIN: 2);
+            if (!$validateUsername['status'])
+                respond(status: 'fail', message: $validateUsername['message'], code: 400);
+
+            $validateEmail = $this->validate(fieldName: 'email', data: $contents['email'], callback: [$this, 'validateEmail']);
+            if (!$validateEmail['status'])
+                respond(status: 'fail', message: $validateEmail['message'], code: 400);
+
+            $validatePassword = $this->validate(fieldName: 'password', data: $contents['password']);
+            if (!$validatePassword['status'])
+                respond(status: 'fail', message: $validatePassword['message'], code: 400);
+
+            $params = [
+                ':username'  => $contents['username'],
+                ':email'  => $contents['email'],
+                ':password'  => password_hash($contents['password'], PASSWORD_ARGON2ID),
+            ];
+
+            $stmt = 'INSERT INTO user(username, email, password) VALUES(:username, :email, :password)';
+            $query = $conn->prepare($stmt);
+            $query->execute($params);
+
+            respond(status: 'success', message: 'User created successfully.', code: 201);
+        } catch (Exception $e) {
+            respond(status: 'exception', message: $e->getMessage(), code: 500);
+        }
+    }
+
+    /* ------------------------------------------------------------------------------------------*/
 
     private function validate(string $fieldName, mixed $data, int $MIN = 8, int $MAX = 255, ?callable $callback = null): array
     {
@@ -87,7 +119,7 @@ class UserAPI
                 $validationResult['message'] = "$fieldName must be between $MIN and $MAX only.";
             }
             // Allowed character validation
-            else if (preg_match("/[^a-zA-Z0-9_!@'-]/", $data) === 1) {
+            else if (preg_match("/[^a-zA-Z0-9_!@'.-]/", $data) === 1) {
                 $validationResult['status'] = false;
                 $validationResult['message'] = "$fieldName should only contain lower and uppercase characters, numbers, and special characters (_, -, !, @, ').";
             }
@@ -100,6 +132,29 @@ class UserAPI
         }
 
         return $validationResult;
+    }
+
+    /* --Callback validator functions-- */
+    private function validateId($param): array
+    {
+        if (!is_numeric($param)) {
+            return [
+                'status' => false,
+                'message' => 'Id must be a number.'
+            ];
+        }
+        return ['status' => true];
+    }
+
+    private function validateEmail($param): array
+    {
+        if (!filter_var($param, FILTER_VALIDATE_EMAIL)) {
+            return [
+                'status' => false,
+                'message' => 'Invalid email format.'
+            ];
+        }
+        return ['status' => true];
     }
 
     private function sanitize(&$data): void
