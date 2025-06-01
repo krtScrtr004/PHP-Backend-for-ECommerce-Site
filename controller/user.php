@@ -72,6 +72,7 @@ class UserAPI
             if (!$validatePassword['status'])
                 respond(status: 'fail', message: $validatePassword['message'], code: 400);
 
+            $this->sanitize($contents);
             $params = [
                 ':username'  => $contents['username'],
                 ':email'  => $contents['email'],
@@ -113,11 +114,13 @@ class UserAPI
             if (!$validatePassword['status'])
                 respond(status: 'error', message: $validatePassword['message'], code: 400);
 
+            $mergedArrays = [...$args, ...$contents];
+            $this->sanitize($mergedArrays);
             $params = [
-                ':id' => $args['id'],
-                ':username' => $contents['username'],
-                ':email' => $contents['email'],
-                ':password' => password_hash($contents['password'], PASSWORD_ARGON2ID)
+                ':id' => $mergedArrays['id'],
+                ':username' => $mergedArrays['username'],
+                ':email' => $mergedArrays['email'],
+                ':password' => password_hash($mergedArrays['password'], PASSWORD_ARGON2ID)
             ];
 
             $stmt = 'UPDATE user SET username = :username, email = :email, password = :password WHERE id = :id';
@@ -130,16 +133,18 @@ class UserAPI
         }
     }
 
-    public function delete(array $args = []): void {
+    public function delete(array $args = []): void
+    {
         global $conn;
         try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') 
+            if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
                 throw new LogicException('Bad request.');
 
             $validateId = $this->validate(fieldName: 'id', data: $args['id'] ?? '', callback: [$this, 'validateId']);
             if (!$validateId['status'])
                 respond(status: 'error', message: $validateId['message'], code: 400);
 
+            $this->sanitize($args);
             $params = [':id' => $args['id']];
 
             $stmt = 'DELETE FROM user WHERE id = :id';
