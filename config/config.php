@@ -10,7 +10,9 @@ define('RESOURCE_PATH', BASE_PATH . '/resource/');
 define('DATA_PATH', BASE_PATH . '/data/');
 define('UTIL_PATH', BASE_PATH . '/util/');
 
-require_once 'connection.php';
+foreach (glob(CONFIG_PATH . '*.php') as $filename) {
+    require_once $filename;
+}
 $conn = DBConnection::getConnection();
 
 require_once CONTROLLER_PATH . 'router.php';

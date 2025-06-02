@@ -2,7 +2,6 @@
 
 /*
 * UserAPI.php
-* This file is part of the API project.
 *
 * This file contains the UserAPI class which handles user-related API requests.
 * It supports CRUD operations for user data.
