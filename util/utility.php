@@ -19,3 +19,19 @@ function respond(String $status, String $message = '', array $data = [], int $co
     ]);
     exit();
 }
+
+function respondSuccess(String $message = '', array $data = [], int $code = 200): void 
+{
+    respond('success', $message, $data, $code);
+}
+
+function respondFail(String $message = '', array $data = [], int $code = 400): void 
+{
+    respond('fail', $message, $data, $code);
+}
+
+function respondException(String $message = '', array $data = [], int $code = 500): void 
+{
+    respond('exception', $message, $data, $code);
+}
+
