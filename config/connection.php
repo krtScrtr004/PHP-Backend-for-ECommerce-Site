@@ -1,6 +1,19 @@
 <?php
 
+/**
+ * Database Connection Class
+ *
+ * Usage:
+ * $object = new ClassName($parameters);
+ * $object->methodName($arguments);
+ *
+ */
+
 class DBConnection {
+    /**
+     * Summary of info
+     * @var array
+     */
     private static $info = [
         'hostname' => 'localhost',
         'username' => 'root',

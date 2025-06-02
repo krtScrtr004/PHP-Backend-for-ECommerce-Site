@@ -1,10 +1,27 @@
 <?php
 
+/*
+* UserAPI.php
+* This file is part of the API project.
+*
+* This file contains the UserAPI class which handles user-related API requests.
+* It supports CRUD operations for user data.
+
+*
+* Usage:
+* $userAPI = UserAPI::getApi();
+* $userAPI->get(); // Fetch user
+* $userAPI->post(); // Create a new user
+* $userAPI->put(); // Update user
+* $userAPI->delete(); // Delete user
+*
+*/
+
 class UserAPI
 {
     private static $userAPI; // Singleton Pattern
 
-    private function __construct() {} 
+    private function __construct() {}
 
     /**
      * Summary of getApi
@@ -285,9 +302,9 @@ class UserAPI
         if (!$data)
             throw new ErrorException('No data array to sanitize.');
 
-        if (isset($data['id'])) (int) $data['id'];
-        if (isset($data['username'])) trim($data['username']);
-        if (isset($data['email'])) filter_var($data['email'], FILTER_SANITIZE_EMAIL);
-        if (isset($data['password'])) trim($data['password']);
+        if (isset($data['id'])) $data['id'] = (int) $data['id'];
+        if (isset($data['username'])) $data['username'] = trim($data['username']);
+        if (isset($data['email'])) $data['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+        if (isset($data['password'])) $data['password'] = trim($data['password']);
     }
 }

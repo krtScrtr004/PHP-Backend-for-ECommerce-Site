@@ -35,48 +35,31 @@ class Router
     }
 
     /**
-     * Register a route with a specified HTTP method and action.
-     * 
-     * @param string $route The route path.
-     * @param string $method The HTTP method (GET, POST, PUT, DELETE).
-     * @param array|callable $action The action to execute for the route.
-     */
-    private function register(string $route, string $method, array|callable $action)
-    {
-        // Trim slashes
-        $route = trim($route, '/');
-
-        // Assign action to the passed route
-        self::$routes[$method][$route] = $action;
-    }
-
-    /**
      * Execute the action for a matched route.
      * 
      * @param array|callable $action The action to execute.
      * @param array $routeParams The parameters extracted from the route.
      * @return mixed The result of the action executed.
      */
-    private function resolveAction($action, $routeParams)
+    public function resolveAction($action, $routeParams)
     {
-        return call_user_func([new $action[0], $action[1]], $routeParams);
+        return call_user_func([$action[0], $action[1]], $routeParams);
     }
 
-    public function get(string $route, array|callable $action)
+        /**
+     * Register a route with a specified HTTP method and action.
+     * 
+     * @param string $route The route path.
+     * @param string $method The HTTP method (GET, POST, PUT, DELETE).
+     * @param array|callable $action The action to execute for the route.
+     */
+    public function register(string $route, string $method, array|callable $action)
     {
-        $this->register($route, 'GET', $action);
-    }
-    public function post(string $route, array|callable $action)
-    {
-        $this->register($route, 'POST', $action);
-    }
-    public function put(string $route, array|callable $action)
-    {
-        $this->register($route, 'PUT', $action);
-    }
-    public function delete(string $route, array|callable $action)
-    {
-        $this->register($route, 'DELETE', $action);
+        // Trim slashes
+        $route = trim($route, '/');
+
+        // Assign action to the passed route
+        self::$routes[$method][$route] = $action;
     }
 
     /**
