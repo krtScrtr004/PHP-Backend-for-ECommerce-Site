@@ -16,8 +16,9 @@
 *
 */
 
+require_once ABSTRACT_PATH . 'api.php';
 require_once IMPLMENTAION_PATH . 'userValidation.php';
-class UserAPI
+class UserAPI implements API
 {
     private static $userAPI; // Singleton Pattern
     private static $validator;
@@ -101,7 +102,7 @@ class UserAPI
         }
     }
 
-    public function put(array $args = []): void
+    public function put(array $args): void
     {
         global $conn;
         try {
@@ -135,7 +136,7 @@ class UserAPI
         }
     }
 
-    public function delete(array $args = []): void
+    public function delete(array $args): void
     {
         global $conn;
         try {
