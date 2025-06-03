@@ -7,7 +7,7 @@ try {
         throw new ErrorException('No file with the name of routes.json found');
     }
 
-    $routes = decodeData(file_get_contents(DATA_PATH . 'routes.json'));
+    $routes = decodeData(DATA_PATH . 'routes.json');
     foreach ($routes as $method => $paths) {
         foreach ($paths as $path => $action) {
             if (strcasecmp($action[0], 'user') === 0) {
@@ -21,6 +21,6 @@ try {
 
     $router->dispatch();
 } catch (Exception $e) {
-    respond(status: 'exception', message: $e->getMessage(), code: 500);
+    respondException($e->getMessage());
 }
 

@@ -52,13 +52,13 @@ class UserAPI
 
             if (count($args) > 0) {
                 if (isset($args['id'])) {
-                    $validateId = $this->validate(fieldName: 'id', data: $args['id'], callback: [$this, 'validateId']);
+                    $validateId = $this->validateFields($args);
                     // Append WHERE clause to $stmt to filter user ID
                     if ($validateId['status']) {
                         $stmt .= ' WHERE id = :id';
                         $params[':id'] = $args['id'];
                     } else {
-                        respond(status: 'error', message: $validateId['message'], code: 400);
+                        respondFail($validateId['message']);
                     }
                 }
 
@@ -71,9 +71,9 @@ class UserAPI
             $result = $query->fetchAll();
 
             // return $query->fetchAll();
-            respond(status: 'success', data: $result, code: 200);
+            respondSuccess(data: $result);
         } catch (Exception $e) {
-            respond(status: 'exception', message: $e->getMessage(), code: 500);
+            respondException($e->getMessage());
         }
     }
 
@@ -89,34 +89,28 @@ class UserAPI
             if ($_SERVER['REQUEST_METHOD'] !== 'POST')
                 throw new LogicException('Bad request.');
 
-            $contents = decodeData(file_get_contents('php://input'));
+            $contents = decodeData('php://input');
 
-            $validateUsername = $this->validate(fieldName: 'username', data: $contents['username'], MIN: 2);
-            if (!$validateUsername['status'])
-                respond(status: 'fail', message: $validateUsername['message'], code: 400);
-
-            $validateEmail = $this->validate(fieldName: 'email', data: $contents['email'], callback: [$this, 'validateEmail']);
-            if (!$validateEmail['status'])
-                respond(status: 'fail', message: $validateEmail['message'], code: 400);
-
-            $validatePassword = $this->validate(fieldName: 'password', data: $contents['password']);
-            if (!$validatePassword['status'])
-                respond(status: 'fail', message: $validatePassword['message'], code: 400);
+            $validateContents = $this->validateFields($contents);
+            if (!$validateContents['status'])
+                respondFail($validateContents['message']);
 
             $this->sanitize($contents);
             $params = [
-                ':username'  => $contents['username'],
+                ':firstName'  => $contents['firstName'],
+                ':lastName' => $contents['lastName'],
                 ':email'  => $contents['email'],
                 ':password'  => password_hash($contents['password'], PASSWORD_ARGON2ID),
+                ':contact' => $contents['contact']
             ];
 
-            $stmt = 'INSERT INTO user(username, email, password) VALUES(:username, :email, :password)';
+            $stmt = 'INSERT INTO user(first_name, last_name, email, password, contact) VALUES(:firstName, :lastName, :email, :password, :contact)';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            respond(status: 'success', message: 'User created successfully.', code: 201);
+            respondSuccess('User created successfully.', code: 201);
         } catch (Exception $e) {
-            respond(status: 'exception', message: $e->getMessage(), code: 500);
+            respondException($e->getMessage());
         }
     }
 
@@ -133,40 +127,30 @@ class UserAPI
             if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
                 throw new LogicException('Bad request.');
 
-            $validateId = $this->validate(fieldName: 'id', data: $args['id'] ?? '', callback: [$this, 'validateId']);
-            if (!$validateId['status'])
-                respond(status: 'error', message: $validateId['message'], code: 400);
-
-            $contents = decodeData(file_get_contents('php://input'));
-
-            $validateUsername = $this->validate(fieldName: 'username', data: $contents['username'], MIN: 2);
-            if (!$validateUsername['status'])
-                respond(status: 'error', message: $validateUsername['message'], code: 400);
-
-            $validateEmail = $this->validate(fieldName: 'email', data: $contents['email'], callback: [$this, 'validateEmail']);
-            if (!$validateEmail['status'])
-                respond(status: 'error', message: $validateEmail['message'], code: 400);
-
-            $validatePassword = $this->validate(fieldName: 'password', data: $contents['password']);
-            if (!$validatePassword['status'])
-                respond(status: 'error', message: $validatePassword['message'], code: 400);
-
+            $contents = decodeData('php://input');
             $mergedArrays = [...$args, ...$contents];
+
+            $validateContents = $this->validateFields($mergedArrays);
+            if (!$validateContents['status']) 
+                respondFail($validateContents['message']);
+
             $this->sanitize($mergedArrays);
             $params = [
                 ':id' => $mergedArrays['id'],
-                ':username' => $mergedArrays['username'],
+                ':firstName' => $mergedArrays['firstName'],
+                ':lastName' => $mergedArrays['lastName'],
                 ':email' => $mergedArrays['email'],
-                ':password' => password_hash($mergedArrays['password'], PASSWORD_ARGON2ID)
+                ':password' => password_hash($mergedArrays['password'], PASSWORD_ARGON2ID),
+                ':contact' => $mergedArrays['contact']
             ];
 
-            $stmt = 'UPDATE user SET username = :username, email = :email, password = :password WHERE id = :id';
+            $stmt = 'UPDATE user SET first_name = :firstName, last_name = :lastName, email = :email, password = :password, contact = :contact WHERE id = :id';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            respond(status: 'success', message: 'User updated successfully.', code: 200);
+            respondSuccess('User updated successfully.');
         } catch (Exception $e) {
-            respond(status: 'exception', message: $e->getMessage(), code: 500);
+            respondException($e->getMessage());
         }
     }
 
@@ -183,9 +167,9 @@ class UserAPI
             if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
                 throw new LogicException('Bad request.');
 
-            $validateId = $this->validate(fieldName: 'id', data: $args['id'] ?? '', callback: [$this, 'validateId']);
+            $validateId = $this->validateFields($args);
             if (!$validateId['status'])
-                respond(status: 'error', message: $validateId['message'], code: 400);
+                respondFail($validateId['message']);
 
             $this->sanitize($args);
             $params = [':id' => $args['id']];
@@ -194,9 +178,9 @@ class UserAPI
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            respond(status: 'success', message: 'User deleted successfully.', code: 200);
+            respondSuccess('User deleted successfully.');
         } catch (Exception $e) {
-            respond(status: 'exception', message: $e->getMessage(), code: 500);
+            respondException($e->getMessage());
         }
     }
 
@@ -214,11 +198,11 @@ class UserAPI
      */
     private function validate(string $fieldName, mixed $data, int $MIN = 8, int $MAX = 255, ?callable $callback = null): array
     {
-        $allowedFieldNames = ["id", "username", "email", "password"];
+        $allowedFieldNames = ["id", "first name", "last name", "email", "password", "contact"];
         if (!in_array($fieldName, $allowedFieldNames))
             throw new Exception("$fieldName is not a valid field name.");
 
-        $fieldName = ucfirst($fieldName);
+        $fieldName = ucwords($fieldName);
 
         $validationResult = [
             'status' => true,
@@ -234,16 +218,24 @@ class UserAPI
         else if (empty($data)) {
             $validationResult['status'] = false;
             $validationResult['message'] = "$fieldName cannot be empty.";
-        } else if (strcasecmp($fieldName, 'id')) {
+        } else if (strcasecmp($fieldName, 'id') !== 0) {
             // Length requirement validation
             if (strlen($data) < $MIN || strlen($data) > $MAX) {
                 $validationResult['status'] = false;
                 $validationResult['message'] = "$fieldName must be between $MIN and $MAX only.";
             }
-            // Allowed character validation
-            else if (preg_match("/[^a-zA-Z0-9_!@'.-]/", $data) === 1) {
-                $validationResult['status'] = false;
-                $validationResult['message'] = "$fieldName should only contain lower and uppercase characters, numbers, and special characters (_, -, !, @, ').";
+
+            /*
+            * Allow only fields that are not in $exemptedFieldRegex 
+            * Fields that are not allowed can have their own implementation of regex validation using the callback paramter
+            */
+            $exemptedFieldRegex = ["email", "password", "contact"];
+            if (!in_array(strtolower($fieldName), $exemptedFieldRegex)) {
+                // Allowed character validation
+                if (preg_match('/[^a-zA-Z\s]+/', $data) === 1) {
+                    $validationResult['status'] = false;
+                    $validationResult['message'] = "$fieldName must only contain letters and spaces.";
+                }
             }
         }
         // Callback function is defined
@@ -254,6 +246,41 @@ class UserAPI
         }
 
         return $validationResult;
+    }
+
+    // TODO: Test functionality
+    private function validateFields(array $data): array
+    {
+        // Get all fields to validate
+        $presentFields = array_keys($data);
+
+        $dataPath = DATA_PATH . 'validateUserFields.json';
+        if (!file_exists($dataPath)) {
+            throw new ErrorException("$dataPath does not exists.");
+        }
+
+        $validateFields = decodeData($dataPath);
+        foreach ($validateFields as $field) {
+                // Skip field validation for fields that are not present
+                if (!in_array($field['name'], $presentFields))
+                    continue;
+
+                $params = [
+                    'fieldName' => $field['name'],
+                    'data' => $data[$field['data']],
+                ];
+                if ($field['min'])
+                    $params['MIN'] = $field['min'];
+                if ($field['max'])
+                    $params['MAX'] = $field['max'];
+                if ($field['callback'])
+                    $params['callback'] = [$this, $field['callback']];
+
+                $validationResult = $this->validate(...$params);
+                if (!$validationResult['status'])
+                    return $validationResult;
+        }
+        return ['status' => true];
     }
 
     /* --Callback validator functions-- */
@@ -269,6 +296,17 @@ class UserAPI
             return [
                 'status' => false,
                 'message' => 'Id must be a number.'
+            ];
+        }
+        return ['status' => true];
+    }
+
+    private function validatePassword($param): array
+    {
+        if (preg_match("/[^a-zA-Z0-9_!@'.-]/", $param) === 1) {
+            return [
+                'status' => false,
+                'message' => "Password should only contain lower and uppercase characters, numbers, and special characters (_, -, !, @, ')."
             ];
         }
         return ['status' => true];
@@ -290,6 +328,17 @@ class UserAPI
         return ['status' => true];
     }
 
+    private function validateContact($param): array
+    {
+        if (preg_match('/^0-9\[\]\-\_\(\)\+\s\#]+@/', $param) === 1) {
+            return [
+                'status' => false,
+                'message' => 'Contact number should only contain numbers, space, and special characters (\+, \[, \], \(, \), \-, \_, \#).'
+            ];
+        }
+        return ['status' => true];
+    }
+
     /**
      * Summary of sanitize
      * @param mixed $data
@@ -302,8 +351,13 @@ class UserAPI
             throw new ErrorException('No data array to sanitize.');
 
         if (isset($data['id'])) $data['id'] = (int) $data['id'];
-        if (isset($data['username'])) $data['username'] = trim($data['username']);
         if (isset($data['email'])) $data['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
-        if (isset($data['password'])) $data['password'] = trim($data['password']);
+
+        $trimmableField = ['firstName', 'lastName', 'password', 'contact'];
+        foreach ($trimmableField as $trimmable) {
+            if (isset($data[$trimmable])) {
+                $data[$trimmable] = trim($data[$trimmable]);
+            }
+        }
     }
 }

@@ -1,0 +1,49 @@
+{
+  "id": {
+    "name": "id",
+    "data": "id",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "firstName": {
+    "name": "first name",
+    "data": "firstName",
+    "min": 2,
+    "max": null,
+    "callback": null
+  },
+
+  "lastName": {
+    "name": "last name",
+    "data": "lastName",
+    "min": 2,
+    "max": null,
+    "callback": null
+  },
+
+  "email": {
+    "name": "email",
+    "data": "email",
+    "min": null,
+    "max": null,
+    "callback": "validateEmail"
+  },
+
+  "password": {
+    "name": "password",
+    "data": "password",
+    "min": null,
+    "max": null,
+    "callback": "validatePassword"
+  },
+
+  "contact": {
+    "name": "contact",
+    "data": "contact",
+    "min": null,
+    "max": null,
+    "callback": "validateContact"
+  }
+}

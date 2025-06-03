@@ -99,6 +99,6 @@ class Router
                 return  $this->resolveAction($action, $routeParams);
             }
         }
-        respond(status: 'fail', message: '404 not found.', code: 404);
+        respondFail(message: '404 not found.', code: 404);
     }
 }
