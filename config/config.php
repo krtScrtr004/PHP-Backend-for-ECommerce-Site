@@ -7,6 +7,9 @@ define('BASE_PATH', dirname(__DIR__, 1));
 define('CONFIG_PATH', BASE_PATH . '/config/');
 define('CONTROLLER_PATH', BASE_PATH . '/controller/');
 define('RESOURCE_PATH', BASE_PATH . '/resource/');
+define('ABSTRACT_PATH', RESOURCE_PATH . '/abstract/');
+define('API_PATH', RESOURCE_PATH . '/api/');
+define('IMPLMENTAION_PATH', RESOURCE_PATH . '/implementation/');
 define('DATA_PATH', BASE_PATH . '/data/');
 define('UTIL_PATH', BASE_PATH . '/util/');
 
@@ -18,7 +21,7 @@ $conn = DBConnection::getConnection();
 require_once CONTROLLER_PATH . 'router.php';
 $router = Router::getRouter();
 
-require_once RESOURCE_PATH . 'user.php';
+require_once API_PATH . 'user.php';
 $userAPI = UserAPI::getApi();
 
 require_once UTIL_PATH . 'utility.php';
