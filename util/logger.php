@@ -4,7 +4,8 @@ class Logger
 {
     private static $fileName = [
         'access' => LOGGER_PATH . 'access-logs.txt',
-        'error' => LOGGER_PATH . 'error-logs.txt'
+        'error' => LOGGER_PATH . 'error-logs.txt',
+        'exception' => LOGGER_PATH . 'exception-logs.txt'
     ];
     private static $logger;
 
@@ -18,18 +19,8 @@ class Logger
         return self::$logger;
     }
 
-    public function logError(int $errno, string $errstr, string $errfile, int $errline): bool
+    public function logAccess(String $message): void
     {
-        $dateTime = new DateTime();
-        $date = $dateTime->format("Y-m-d : H:i:s A");
-
-        $errorMessage = "[$date] [$errno] -> $errstr @ $errfile : $errline" . PHP_EOL;
-        error_log($errorMessage, 3, self::$fileName['error']);
-
-        return true;
-    }
-
-    public function logAccess(String $message): void {
         $dateTime = new DateTime();
         $date = $dateTime->format("Y-m-d : H:i:s A");
 
@@ -43,6 +34,32 @@ class Logger
         }
 
         fwrite($handle, $accessMessage);
+        fclose($handle);
+    }
+
+    public function logError(int $errno, string $errstr, string $errfile, int $errline): bool
+    {
+        $dateTime = new DateTime();
+        $date = $dateTime->format("Y-m-d : H:i:s A");
+
+        $errorMessage = "[$date] [$errno] -> $errstr @ $errfile : $errline" . PHP_EOL;
+        error_log($errorMessage, 3, self::$fileName['error']);
+
+        return true;
+    }
+
+    public function logException(Throwable $exception): void
+    {
+        $dateTime = new DateTime();
+        $date = $dateTime->format("Y-m-d : H:i:s A");
+
+        $exceptionMessage = "[$date] -> $exception" . PHP_EOL;
+        $handle = fopen(self::$fileName['exception'], 'a');
+        if (!$handle) {
+            throw new ErrorException('Cannot open ' . self::$fileName['exception']);
+        }
+
+        fwrite($handle, $exceptionMessage);
         fclose($handle);
     }
 }
