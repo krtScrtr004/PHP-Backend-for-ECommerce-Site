@@ -1,18 +1,18 @@
 {
     "GET": {
-        "/Rest/api/user/": ["user", "get"],
-        "/Rest/api/user/{id:[0-9]+}": ["user", "get"]
+        "/Rest/public/user/": ["user", "get"],
+        "/Rest/public/user/{id:[0-9]+}": ["user", "get"]
     },
 
     "POST": {
-        "/Rest/api/user/": ["user", "post"]
+        "/Rest/public/user/": ["user", "post"]
     },
 
     "PUT": {
-        "/Rest/api/user/{id:[0-9]+}": ["user", "put"]
+        "/Rest/public/user/{id:[0-9]+}": ["user", "put"]
     },
 
     "DELETE": {
-        "/Rest/api/user/{id:[0-9]+}": ["user", "delete"]
+        "/Rest/public/user/{id:[0-9]+}": ["user", "delete"]
     }
 }

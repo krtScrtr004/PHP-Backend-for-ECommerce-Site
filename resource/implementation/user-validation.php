@@ -1,6 +1,6 @@
 <?php
 
-require_once ABSTRACT_PATH . 'validation.php';
+require_once CONTRACT_PATH . 'validation.php';
 
 class userValidation implements Validation
 {
@@ -66,7 +66,7 @@ class userValidation implements Validation
         // Get all fields to validate
         $presentFields = array_keys($data);
 
-        $dataPath = DATA_PATH . 'validateUserFields.json';
+        $dataPath = DATA_PATH . 'validate-user-fields.json';
         if (!file_exists($dataPath)) {
             throw new ErrorException("$dataPath does not exists.");
         }
