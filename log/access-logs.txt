@@ -1,3 +1,0 @@
-[2025-06-04 : 07:58:12 AM] - <::1> Access /Rest/public/index.php
-[2025-06-04 : 07:58:12 AM] - <::1> Create GET request on User API.
-[2025-06-04 : 07:58:12 AM] - <::1> Finished GET request on User API.
