@@ -45,21 +45,26 @@ class UserAPI implements API
             $params = [];
             $stmt = 'SELECT * FROM user';
 
+            // Append WHERE clause if query strings is / are present
             if (count($args) > 0) {
-                if (isset($args['id'])) {
-                    $validateId = userValidation::validateFields($args);
-                    // Append WHERE clause to $stmt to filter user ID
-                    if ($validateId['status']) {
-                        $stmt .= ' WHERE id = :id';
-                        $params[':id'] = $args['id'];
-                    } else {
-                        respondFail($validateId['message']);
+                $stmt .= ' WHERE ';
+
+                $validateContents = userValidation::validateFields($args);
+                if ($validateContents['status']) {
+                    userValidation::sanitize($args);
+
+                    // Collect conditions in an array
+                    $conditions = [];
+                    foreach ($args as $key => $value) {
+                        $conditions[] = "$key = :$key";
+                        $params[":$key"] = $value;
                     }
+                    // Join conditions with AND in the WHERE clause
+                    $stmt .= implode(' AND ', $conditions);
+                } else {
+                    respondFail($validateContents['message']);
                 }
-
-                userValidation::sanitize($args);
             }
-
 
             $query = $conn->prepare($stmt);
             $query->execute($params);
