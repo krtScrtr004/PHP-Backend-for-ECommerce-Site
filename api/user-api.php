@@ -18,7 +18,7 @@
 
 require_once CONTRACT_PATH . 'api.php';
 require_once IMPLMENTAION_PATH . 'user-validation.php';
-require_once UTIL_PATH . 'logger.php';
+// require_once UTIL_PATH . 'logger.php';
 class UserAPI implements API
 {
     private static $userAPI; // Singleton Pattern
@@ -63,7 +63,7 @@ class UserAPI implements API
                     // Join conditions with AND in the WHERE clause
                     $stmt .= implode(' AND ', $conditions);
                 } else {
-                    respondFail($validateContents['message']);
+                    Respond::respondFail($validateContents['message']);
                 }
             }
 
@@ -72,9 +72,9 @@ class UserAPI implements API
             $result = $query->fetchAll();
 
             Logger::logAccess('Finished GET request on User API.');
-            respondSuccess(data: $result);
+            Respond::respondSuccess(data: $result);
         } catch (Exception $e) {
-            respondException($e->getMessage());
+            Respond::respondException($e->getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ class UserAPI implements API
 
             $validateContents = userValidation::validateFields($contents);
             if (!$validateContents['status'])
-                respondFail($validateContents['message']);
+                Respond::respondFail($validateContents['message']);
 
             userValidation::sanitize($contents);
             $params = [
@@ -107,9 +107,9 @@ class UserAPI implements API
             $query->execute($params);
 
             Logger::logAccess('Finished POST request on User API.');
-            respondSuccess('User created successfully.', code: 201);
+            Respond::respondSuccess('User created successfully.', code: 201);
         } catch (Exception $e) {
-            respondException($e->getMessage());
+            Respond::respondException($e->getMessage());
         }
     }
 
@@ -127,7 +127,7 @@ class UserAPI implements API
 
             $validateContents = userValidation::validateFields($mergedArrays);
             if (!$validateContents['status'])
-                respondFail($validateContents['message']);
+                Respond::respondFail($validateContents['message']);
 
             userValidation::sanitize($mergedArrays);
             $params = [
@@ -144,9 +144,9 @@ class UserAPI implements API
             $query->execute($params);
 
             Logger::logAccess('Finished PUT request on User API.');
-            respondSuccess('User updated successfully.');
+            Respond::respondSuccess('User updated successfully.');
         } catch (Exception $e) {
-            respondException($e->getMessage());
+            Respond::respondException($e->getMessage());
         }
     }
 
@@ -161,7 +161,7 @@ class UserAPI implements API
 
             $validateId = userValidation::validateFields($args);
             if (!$validateId['status'])
-                respondFail($validateId['message']);
+                Respond::respondFail($validateId['message']);
 
             userValidation::sanitize($args);
             $params = [':id' => $args['id']];
@@ -171,9 +171,9 @@ class UserAPI implements API
             $query->execute($params);
 
             Logger::logAccess('Finished DELETE request on User API.');
-            respondSuccess('User deleted successfully.');
+            Respond::respondSuccess('User deleted successfully.');
         } catch (Exception $e) {
-            respondException($e->getMessage());
+            Respond::respondException($e->getMessage());
         }
     }
 }

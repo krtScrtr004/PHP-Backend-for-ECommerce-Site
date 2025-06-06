@@ -33,7 +33,7 @@ class DBConnection {
             ];
             self::$connection = new PDO($dsn, self::$info['username'], self::$info['password'], $options);
         } catch (PDOException $e) {
-            respondException($e->getMessage());
+            Respond::respondException($e->getMessage());
         }
     }
 

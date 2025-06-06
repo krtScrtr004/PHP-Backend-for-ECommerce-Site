@@ -23,6 +23,6 @@ try {
 
     $router->dispatch();
 } catch (Exception $e) {
-    respondException($e->getMessage());
+    Respond::respondException($e->getMessage());
 }
 

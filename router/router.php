@@ -63,7 +63,7 @@ class Router
     }
 
     /**
-     * Resolve the current request to the corresponding route action.
+     * Resolve the current request to the corRespond::responding route action.
      */
     public function dispatch()
     {
@@ -102,6 +102,6 @@ class Router
             }
         }
         Logger::logAccess('Access non-existing page (404).');
-        respondFail(message: '404 not found.', code: 404);
+        Respond::respondFail(message: '404 not found.', code: 404);
     }
 }
