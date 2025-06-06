@@ -1,7 +1,8 @@
 {
     "GET": {
         "/Rest/public/user/": ["user", "get"],
-        "/Rest/public/user/{id:[0-9]+}": ["user", "get"]
+        "/Rest/public/user/{id:[0-9]+}": ["user", "get"],
+        "/Rest/public/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": ["user", "get"]
     },
 
     "POST": {
