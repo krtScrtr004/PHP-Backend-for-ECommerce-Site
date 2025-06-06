@@ -3,7 +3,7 @@
 require_once dirname(__DIR__, 1) . '/config/config.php';
 
 try {
-    $logger->logAccess('Access ' . $_SERVER['PHP_SELF']);
+    Logger::logAccess('Access ' . $_SERVER['PHP_SELF']);
 
     if (!file_exists(DATA_PATH . 'routes.json')) {
         throw new ErrorException('No file with the name of routes.json found');

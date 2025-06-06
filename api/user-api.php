@@ -18,6 +18,7 @@
 
 require_once CONTRACT_PATH . 'api.php';
 require_once IMPLMENTAION_PATH . 'user-validation.php';
+require_once UTIL_PATH . 'logger.php';
 class UserAPI implements API
 {
     private static $userAPI; // Singleton Pattern
@@ -35,12 +36,12 @@ class UserAPI implements API
 
     public function get(array $args = []): void
     {
-        global $conn, $logger;
+        global $conn;
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'GET')
                 throw new LogicException('Bad request.');
 
-            $logger->logAccess('Create GET request on User API.');
+            Logger::logAccess('Create GET request on User API.');
 
             $params = [];
             $stmt = 'SELECT * FROM user';
@@ -70,7 +71,7 @@ class UserAPI implements API
             $query->execute($params);
             $result = $query->fetchAll();
 
-            $logger->logAccess('Finished GET request on User API.');
+            Logger::logAccess('Finished GET request on User API.');
             respondSuccess(data: $result);
         } catch (Exception $e) {
             respondException($e->getMessage());
@@ -79,12 +80,12 @@ class UserAPI implements API
 
     public function post(): void
     {
-        global $conn, $logger;
+        global $conn;
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST')
                 throw new LogicException('Bad request.');
 
-            $logger->logAccess('Create POST request on User API.');
+            Logger::logAccess('Create POST request on User API.');
 
             $contents = decodeData('php://input');
 
@@ -105,7 +106,7 @@ class UserAPI implements API
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            $logger->logAccess('Finished POST request on User API.');
+            Logger::logAccess('Finished POST request on User API.');
             respondSuccess('User created successfully.', code: 201);
         } catch (Exception $e) {
             respondException($e->getMessage());
@@ -114,12 +115,12 @@ class UserAPI implements API
 
     public function put(array $args): void
     {
-        global $conn, $logger;
+        global $conn;
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
                 throw new LogicException('Bad request.');
 
-            $logger->logAccess('Create PUT request on User API.');
+            Logger::logAccess('Create PUT request on User API.');
 
             $contents = decodeData('php://input');
             $mergedArrays = [...$args, ...$contents];
@@ -142,7 +143,7 @@ class UserAPI implements API
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            $logger->logAccess('Finished PUT request on User API.');
+            Logger::logAccess('Finished PUT request on User API.');
             respondSuccess('User updated successfully.');
         } catch (Exception $e) {
             respondException($e->getMessage());
@@ -151,12 +152,12 @@ class UserAPI implements API
 
     public function delete(array $args): void
     {
-        global $conn, $logger;
+        global $conn;
         try {
             if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
                 throw new LogicException('Bad request.');
 
-            $logger->logAccess('Create DELETE request on User API.');
+            Logger::logAccess('Create DELETE request on User API.');
 
             $validateId = userValidation::validateFields($args);
             if (!$validateId['status'])
@@ -169,7 +170,7 @@ class UserAPI implements API
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            $logger->logAccess('Finished DELETE request on User API.');
+            Logger::logAccess('Finished DELETE request on User API.');
             respondSuccess('User deleted successfully.');
         } catch (Exception $e) {
             respondException($e->getMessage());

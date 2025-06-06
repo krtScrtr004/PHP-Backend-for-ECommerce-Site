@@ -67,6 +67,7 @@ class Router
      */
     public function dispatch()
     {
+        global $logger;
         // Get the requested route.
         $requestedRoute = trim($_SERVER['REQUEST_URI'], '/') ?? '/';
 
@@ -74,12 +75,13 @@ class Router
 
         foreach ($routes as $route => $action) {
             // Transform route to regex pattern.
+            // {\w+(:([^}]+))?} -> For ID only
             $routeRegex = preg_replace_callback('/{\w+(:([^}]+))?}/', function ($matches) {
                 return isset($matches[1]) ? '(' . $matches[2] . ')' : '([a-zA-Z0-9_-]+)';
             }, $route);
 
             // Add the start and end delimiters.
-            $routeRegex = '@^' . $routeRegex . '$@';
+            $routeRegex = '~^' . $routeRegex . '$~';
 
             // Check if the requested route matches the current route pattern.
             if (preg_match($routeRegex, $requestedRoute, $matches)) {
@@ -99,6 +101,7 @@ class Router
                 return  $this->resolveAction($action, $routeParams);
             }
         }
+        Logger::logAccess('Access non-existing page (404).');
         respondFail(message: '404 not found.', code: 404);
     }
 }

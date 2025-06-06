@@ -11,15 +11,7 @@ class Logger
 
     private function __construct() {}
 
-    public static function getLogger(): Logger
-    {
-        if (!isset(self::$logger))
-            self::$logger = new Logger();
-
-        return self::$logger;
-    }
-
-    public function logAccess(String $message): void
+    public static function logAccess(String $message): void
     {
         $dateTime = new DateTime();
         $date = $dateTime->format("Y-m-d : H:i:s A");
@@ -37,7 +29,7 @@ class Logger
         fclose($handle);
     }
 
-    public function logError(int $errno, string $errstr, string $errfile, int $errline): bool
+    public static function logError(int $errno, string $errstr, string $errfile, int $errline): bool
     {
         $dateTime = new DateTime();
         $date = $dateTime->format("Y-m-d : H:i:s A");
@@ -48,7 +40,7 @@ class Logger
         return true;
     }
 
-    public function logException(Throwable $exception): void
+    public static function logException(Throwable $exception): void
     {
         $dateTime = new DateTime();
         $date = $dateTime->format("Y-m-d : H:i:s A");
