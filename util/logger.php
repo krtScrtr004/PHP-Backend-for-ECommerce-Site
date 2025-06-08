@@ -14,7 +14,7 @@ class Logger
     public static function logAccess(String $message): void
     {
         $dateTime = new DateTime();
-        $date = $dateTime->format("Y-m-d : H:i:s A");
+        $date = $dateTime->format("Y-m-d : h:i:s A");
 
         $ip = $_SERVER['REMOTE_ADDR'];
 
@@ -32,7 +32,7 @@ class Logger
     public static function logError(int $errno, string $errstr, string $errfile, int $errline): bool
     {
         $dateTime = new DateTime();
-        $date = $dateTime->format("Y-m-d : H:i:s A");
+        $date = $dateTime->format("Y-m-d : h:i:s A");
 
         $errorMessage = "[$date] [$errno] -> $errstr @ $errfile : $errline" . PHP_EOL;
         error_log($errorMessage, 3, self::$fileName['error']);
@@ -43,7 +43,7 @@ class Logger
     public static function logException(Throwable $exception): void
     {
         $dateTime = new DateTime();
-        $date = $dateTime->format("Y-m-d : H:i:s A");
+        $date = $dateTime->format("Y-m-d : h:i:s A");
 
         $exceptionMessage = "[$date] -> $exception" . PHP_EOL;
         $handle = fopen(self::$fileName['exception'], 'a');

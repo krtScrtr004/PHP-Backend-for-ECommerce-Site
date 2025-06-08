@@ -2,27 +2,50 @@
 
 declare(strict_types=1);
 
+date_default_timezone_set('Asia/Hong_Kong');
+
 /**
  * Define Path Constants
  */
 define('BASE_PATH', dirname(__DIR__, 1));
+
+define('API_PATH', BASE_PATH . '/API/');
 define('CONFIG_PATH', BASE_PATH . '/config/');
-define('API_PATH', BASE_PATH . '/api/');
-define('ROUTER_PATH', BASE_PATH . '/router/');
-define('RESOURCE_PATH', BASE_PATH . '/resource/');
-define('CONTRACT_PATH', RESOURCE_PATH . '/contract/');
-define('IMPLMENTAION_PATH', RESOURCE_PATH . '/implementation/');
 define('DATA_PATH', BASE_PATH . '/data/');
-define('UTIL_PATH', BASE_PATH . '/util/');
 define('LOGGER_PATH', BASE_PATH . '/log/');
+define('RESOURCE_PATH', BASE_PATH . '/resource/');
+define('ROUTER_PATH', BASE_PATH . '/router/');
+define('UTIL_PATH', BASE_PATH . '/util/');
+
+define('CONTRACT_PATH', RESOURCE_PATH . '/contract/');
+define('IMPLEMENTATION_PATH', RESOURCE_PATH . '/implementation/');
 
 try {
     /**
      * Include Necessary Files
      */
-    foreach (glob(UTIL_PATH . '*.php') as $fileName) {
-        require_once $fileName;
+
+    require_once UTIL_PATH . 'utility.php';
+
+    foreach (glob(CONFIG_PATH . '*.php') as $filename) {
+        require_once $filename;
     }
+
+    spl_autoload_register(function ($class) {
+        $paths = [API_PATH, CONTRACT_PATH, CONFIG_PATH, IMPLEMENTATION_PATH, ROUTER_PATH, UTIL_PATH];
+        foreach ($paths as $path) {
+            // Turn camel case to kebab case
+            $class = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $class));
+
+            $file = $path . '/' . str_replace('\\', '/', $class) . '.php';
+            if (file_exists($file))
+                require_once $file;
+        }
+    });
+
+    $conn = DBConnection::getConnection();
+    $router = Router::getRouter();
+    $userAPI = UserApi::getApi();
 
     /**
      * Error Handling Config
@@ -31,28 +54,6 @@ try {
     ini_set('display_errors', 0);               // Do not display errors on browser
     set_error_handler(['Logger', 'logError']);
     set_exception_handler(['Logger', 'logException']);
-
-    foreach (glob(CONFIG_PATH . '*.php') as $filename) {
-        require_once $filename;
-    }
-    $conn = DBConnection::getConnection();
-
-    require_once ROUTER_PATH . 'router.php';
-    $router = Router::getRouter();
-
-    require_once API_PATH . 'user-api.php';
-    $userAPI = UserAPI::getApi();
-
-    // spl_autoload_register(function ($class) {
-    //     $paths = [ROUTER_PATH, API_PATH];
-    //     foreach ($paths as $path) {
-    //         $file = $path . '/' . str_replace('\\', '/', $class) . '.php';
-    //         if (file_exists($file))
-    //             require_once $file;
-    //     }
-    // });
-    // $router = Router::getRouter();
-    // $userAPI = UserAPI::getApi();
 } catch (Exception $e) {
     throw new ErrorException($e->getMessage());
 }

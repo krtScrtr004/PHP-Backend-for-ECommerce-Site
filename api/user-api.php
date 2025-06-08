@@ -16,13 +16,11 @@
 *
 */
 
-require_once CONTRACT_PATH . 'api.php';
-require_once IMPLMENTAION_PATH . 'user-validation.php';
-// require_once UTIL_PATH . 'logger.php';
 class UserAPI implements API
 {
     private static $userAPI; // Singleton Pattern
     private static $validator;
+    private static $fileName = 'validate-user-fields.json';
 
     private function __construct() {}
 
@@ -30,6 +28,9 @@ class UserAPI implements API
     {
         if (!isset(self::$userAPI))
             self::$userAPI = new self();
+
+        if (!isset(self::$validator))
+            self::$validator = UserValidation::getValidator();
 
         return self::$userAPI;
     }
@@ -50,9 +51,9 @@ class UserAPI implements API
             if (count($args) > 0) {
                 $stmt .= ' WHERE ';
 
-                $validateContents = userValidation::validateFields($args);
+                $validateContents = self::$validator->validateFields($args, self::$fileName);
                 if ($validateContents['status']) {
-                    userValidation::sanitize($args);
+                    self::$validator->sanitize($args);
 
                     // Collect conditions in an array
                     $conditions = [];
@@ -89,11 +90,11 @@ class UserAPI implements API
 
             $contents = decodeData('php://input');
 
-            $validateContents = userValidation::validateFields($contents);
+            $validateContents = self::$validator->validateFields($contents, self::$fileName);
             if (!$validateContents['status'])
                 Respond::respondFail($validateContents['message']);
 
-            userValidation::sanitize($contents);
+            self::$validator->sanitize($contents);
             $params = [
                 ':firstName'  => $contents['firstName'],
                 ':lastName' => $contents['lastName'],
@@ -125,11 +126,11 @@ class UserAPI implements API
             $contents = decodeData('php://input');
             $mergedArrays = [...$args, ...$contents];
 
-            $validateContents = userValidation::validateFields($mergedArrays);
+            $validateContents = self::$validator->validateFields($mergedArrays, self::$fileName);
             if (!$validateContents['status'])
                 Respond::respondFail($validateContents['message']);
 
-            userValidation::sanitize($mergedArrays);
+            self::$validator->sanitize($mergedArrays);
             $params = [
                 ':id' => $mergedArrays['id'],
                 ':firstName' => $mergedArrays['firstName'],
@@ -159,11 +160,11 @@ class UserAPI implements API
 
             Logger::logAccess('Create DELETE request on User API.');
 
-            $validateId = userValidation::validateFields($args);
+            $validateId = self::$validator->validateFields($args, self::$fileName);
             if (!$validateId['status'])
                 Respond::respondFail($validateId['message']);
 
-            userValidation::sanitize($args);
+            self::$validator->sanitize($args);
             $params = [':id' => $args['id']];
 
             $stmt = 'DELETE FROM user WHERE id = :id';
