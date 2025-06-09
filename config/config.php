@@ -58,6 +58,7 @@ try {
 
     $userAPI = UserApi::getApi();
     $addressAPI = AddressAPI::getApi();
+    $productAPI = ProductAPI::getApi();
 } catch (Exception $e) {
     throw new ErrorException($e->getMessage());
 }

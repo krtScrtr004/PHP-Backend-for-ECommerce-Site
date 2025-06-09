@@ -19,6 +19,9 @@ class ProductValidation extends Validation
         if (!isset($data))
             throw new ErrorException('No data array to sanitize.');
 
+        if (isset($data['id']))
+            $data['id'] = (int) $data['id'];
+
         if (isset($data['price']))
             $data['price'] = (int) ((float) $data['price'] * 100);
 

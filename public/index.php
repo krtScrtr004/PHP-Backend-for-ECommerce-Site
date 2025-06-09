@@ -17,7 +17,7 @@ try {
             } else if (strcasecmp($action[0], 'address') === 0) {
                 $action[0] = $addressAPI;
             } else {
-                // TODO: Add the product api obect here
+                $action[0] = $productAPI;
             }
             $router->register($path, $method, $action);
         }

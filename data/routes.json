@@ -9,27 +9,37 @@
     "/Rest/public/address/": 
         ["address", "get"],
     "/Rest/public/address/{userId:[0-9]+}": 
-        ["address", "get"]
+        ["address", "get"],
+    "/Rest/public/product/": 
+        ["product", "get"],
+    "/Rest/public/product/{id:[0-9]+}": 
+        ["product", "get"]
   },
 
   "POST": {
     "/Rest/public/user/": 
         ["user", "post"],
     "/Rest/public/address/": 
-        ["address", "post"]
+        ["address", "post"],
+    "/Rest/public/product/": 
+        ["product", "post"]
   },
 
   "PUT": {
     "/Rest/public/user/{id:[0-9]+}": 
         ["user", "put"],
     "/Rest/public/address/{userId:[0-9]+}": 
-        ["address", "put"]
+        ["address", "put"],
+    "/Rest/public/product/{id:[0-9]+}": 
+        ["product", "put"]
   },
 
   "DELETE": {
     "/Rest/public/user/{id:[0-9]+}": 
         ["user", "delete"],
     "/Rest/public/address/{userId:[0-9]+}": 
-        ["address", "delete"]
+        ["address", "delete"],
+    "/Rest/public/product/{id:[0-9]+}": 
+        ["product", "delete"]
   }
 }
