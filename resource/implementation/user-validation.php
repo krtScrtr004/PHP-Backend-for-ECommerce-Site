@@ -16,7 +16,7 @@ class UserValidation extends Validation
 
     public static function sanitize(array &$data): void
     {
-        if (!$data)
+        if (!isset($data))
             throw new ErrorException('No data array to sanitize.');
 
         if (isset($data['id'])) $data['id'] = (int) $data['id'];

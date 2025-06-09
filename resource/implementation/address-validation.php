@@ -2,7 +2,26 @@
 
 class AddrressValidation extends Validation
 {
-    public static function sanitize(array &$data): void {}
+    private static $addressValidation;
+
+    private function __construct() {}
+    public static function getValidator(): AddrressValidation {
+        if (!isset(self::$addressValidation))
+            self::$addressValidation = new self();
+
+        return self::$addressValidation;
+    }
+    public static function sanitize(array &$data): void 
+    {
+        if (!isset($data))
+            throw new ErrorException('No data array to sanitize.');
+
+            $trimmableFields = ['houseNo', 'street', 'city', 'region', 'postalCode', 'country'];
+            foreach ($trimmableFields as $trimmable) {
+                if (isset($data[$trimmable]))
+                    $data[$trimmable] = trim($data[$trimmable]);
+            } 
+    }
 
     private function validateHouseNo(int|String $param): array
     {
@@ -39,12 +58,12 @@ class AddrressValidation extends Validation
         return ['status' => true];
     }
 
-    private function validateStateRegion(String $param): array
+    private function validateRegion(String $param): array
     {
         if (preg_match('/[^\w\s\-]/', $param)) {
             return [
                 'status' => false,
-                'message' => 'Street can only contain letters, numbers, spaces, and hyphens(-).'
+                'message' => 'Region can only contain letters, numbers, spaces, and hyphens(-).'
             ];
         }
         return ['status' => true];
