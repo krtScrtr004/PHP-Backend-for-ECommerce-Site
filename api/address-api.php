@@ -89,7 +89,7 @@ class AddressAPI implements API
             $stmt = 'INSERT INTO user_address(user_id, house_no, street, city, region, postal_code, country) VALUES(:userId, :houseNo, :street, :city, :region, :postalCode, :country)';
             $query = $conn->prepare($stmt);
             $query->execute($params);
-            
+
             Logger::logAccess('Finished POST request on Address API.');
             Respond::respondSuccess('User address created successfully.', code: 201);
         } catch (Exception $e) {
@@ -97,7 +97,44 @@ class AddressAPI implements API
         }
     }
 
-    public function put(array $args): void {}
+    public function put(array $args): void
+    {
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+                throw new LogicException('Bad Request.');
+
+            Logger::logAccess('Create PUT request on AAddress API.');
+
+
+            $contents = decodeData('php://input');
+            $mergedArrays = [...$args, ...$contents];
+
+            $validateContents = self::$validator->validateFields($mergedArrays, self::$fileName);
+            if (!$validateContents['status'])
+                Respond::respondFail($validateContents['message']);
+
+            self::$validator->sanitize($mergedArrays);
+            $params = [
+                ':userId' => $mergedArrays['userId'],
+                ':houseNo' => $mergedArrays['houseNo'],
+                ':street' => $mergedArrays['street'],
+                ':city' => $mergedArrays['city'],
+                ':region' => $mergedArrays['region'],
+                ':postalCode' => $mergedArrays['postalCode'],
+                ':country' => $mergedArrays['country'],
+            ];
+
+            $stmt = 'UPDATE user_address SET house_no = :houseNo, street = :street, city = :city, region = :region, postal_code = :postalCode, country = :country WEHERE user_id = :userId';
+            $query = $conn->prepare($stmt);
+                        $query->execute($params);
+
+            Logger::logAccess('Finished PUT request on Address API.');
+            Respond::respondSuccess('User address updated successfully.');
+        } catch (Exception $e) {
+            Respond::respondException($e->getMessage());
+        }
+    }
 
     public function delete(array $args): void {}
 }
