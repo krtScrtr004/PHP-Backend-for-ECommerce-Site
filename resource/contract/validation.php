@@ -6,10 +6,6 @@ abstract class Validation
 
     public function validate(string $fieldName, mixed $data, int $MIN = 8, int $MAX = 255, callable|array|null $callback = null): array
     {
-        $allowedFieldNames = ["id", "first name", "last name", "email", "password", "contact"];
-        if (!in_array($fieldName, $allowedFieldNames))
-            throw new Exception("$fieldName is not a valid field name.");
-
         $fieldName = ucwords($fieldName);
 
         $validationResult = [

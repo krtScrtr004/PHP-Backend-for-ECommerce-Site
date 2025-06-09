@@ -60,9 +60,41 @@ class AddressAPI implements API
         }
     }
 
-    public function post(): void 
+    public function post(): void
     {
-        
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+                throw new LogicException('Bad Request.');
+
+            Logger::logAccess('Create POST request on Addrres API.');
+
+            $contents = decodeData('php://input');
+
+            $validateContents = self::$validator->validateFields($contents, self::$fileName);
+            if (!$validateContents['status'])
+                Respond::respondFail($validateContents['message']);
+
+            self::$validator->sanitize($contents);
+            $params = [
+                ':userId' => $contents['userId'],
+                ':houseNo' => $contents['houseNo'],
+                ':street' => $contents['street'],
+                ':city' => $contents['city'],
+                ':region' => $contents['region'],
+                ':postalCode' => $contents['postalCode'],
+                ':country' => $contents['country'],
+            ];
+
+            $stmt = 'INSERT INTO user_address(user_id, house_no, street, city, region, postal_code, country) VALUES(:userId, :houseNo, :street, :city, :region, :postalCode, :country)';
+            $query = $conn->prepare($stmt);
+            $query->execute($params);
+            
+            Logger::logAccess('Finished POST request on Address API.');
+            Respond::respondSuccess('User address created successfully.', code: 201);
+        } catch (Exception $e) {
+            Respond::respondException($e->getMessage());
+        }
     }
 
     public function put(array $args): void {}
