@@ -1,45 +1,45 @@
 {
   "GET": {
-    "/Rest/public/user/": 
+    "/Rest/user/": 
         ["user", "get"],
-    "/Rest/public/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[0-9]+}": 
         ["user", "get"],
-    "/Rest/public/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
+    "/Rest/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
         ["user", "get"],
-    "/Rest/public/address/": 
+    "/Rest/address/": 
         ["address", "get"],
-    "/Rest/public/address/{userId:[0-9]+}": 
+    "/Rest/address/{userId:[0-9]+}": 
         ["address", "get"],
-    "/Rest/public/product/": 
+    "/Rest/product/": 
         ["product", "get"],
-    "/Rest/public/product/{id:[0-9]+}": 
+    "/Rest/product/{id:[0-9]+}": 
         ["product", "get"]
   },
 
   "POST": {
-    "/Rest/public/user/": 
+    "/Rest/user/": 
         ["user", "post"],
-    "/Rest/public/address/": 
+    "/Rest/address/": 
         ["address", "post"],
-    "/Rest/public/product/": 
+    "/Rest/product/": 
         ["product", "post"]
   },
 
   "PUT": {
-    "/Rest/public/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[0-9]+}": 
         ["user", "put"],
-    "/Rest/public/address/{userId:[0-9]+}": 
+    "/Rest/address/{userId:[0-9]+}": 
         ["address", "put"],
-    "/Rest/public/product/{id:[0-9]+}": 
+    "/Rest/product/{id:[0-9]+}": 
         ["product", "put"]
   },
 
   "DELETE": {
-    "/Rest/public/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[0-9]+}": 
         ["user", "delete"],
-    "/Rest/public/address/{userId:[0-9]+}": 
+    "/Rest/address/{userId:[0-9]+}": 
         ["address", "delete"],
-    "/Rest/public/product/{id:[0-9]+}": 
+    "/Rest/product/{id:[0-9]+}": 
         ["product", "delete"]
   }
 }
