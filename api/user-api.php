@@ -24,7 +24,7 @@ class UserAPI implements API
 
     private function __construct() {}
 
-    public static function getApi()
+    public static function getApi(): UserAPI
     {
         if (!isset(self::$userAPI))
             self::$userAPI = new self();

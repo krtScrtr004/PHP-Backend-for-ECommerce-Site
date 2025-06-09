@@ -23,7 +23,7 @@ class AddrressValidation extends Validation
             } 
     }
 
-    private function validateHouseNo(int|String $param): array
+    public function validateHouseNo(int|String $param): array
     {
         if (preg_match('/[^\w#-]/', $param)) {
             return [
@@ -35,7 +35,7 @@ class AddrressValidation extends Validation
         return ['status' => true];
     }
 
-    private function validateStreet(String $param): array
+    public function validateStreet(String $param): array
     {
         if (preg_match('/[^\w\s\'\-]/', $param)) {
             return [
@@ -47,7 +47,7 @@ class AddrressValidation extends Validation
         return ['status' => true];
     }
 
-    private function validateCity(String $param): array
+    public function validateCity(String $param): array
     {
         if (preg_match('/[^a-zA-Z\s\'\-]/', $param)) {
             return [
@@ -58,7 +58,7 @@ class AddrressValidation extends Validation
         return ['status' => true];
     }
 
-    private function validateRegion(String $param): array
+    public function validateRegion(String $param): array
     {
         if (preg_match('/[^\w\s\-]/', $param)) {
             return [
@@ -69,7 +69,7 @@ class AddrressValidation extends Validation
         return ['status' => true];
     }
 
-    private function validateZip(String $param): array
+    public function validateZip(String $param): array
     {
         if (preg_match('/[^(\d{4,})(\-\d+)?]/', $param)) {
             return [
