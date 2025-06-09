@@ -5,22 +5,23 @@ class AddressValidation extends Validation
     private static $addressValidation;
 
     private function __construct() {}
-    public static function getValidator(): AddressValidation {
+    public static function getValidator(): AddressValidation
+    {
         if (!isset(self::$addressValidation))
             self::$addressValidation = new self();
 
         return self::$addressValidation;
     }
-    public static function sanitize(array &$data): void 
+    public static function sanitize(array &$data): void
     {
         if (!isset($data))
             throw new ErrorException('No data array to sanitize.');
 
-            $trimmableFields = ['houseNo', 'street', 'city', 'region', 'postalCode', 'country'];
-            foreach ($trimmableFields as $trimmable) {
-                if (isset($data[$trimmable]))
-                    $data[$trimmable] = trim($data[$trimmable]);
-            } 
+        $trimmableFields = ['houseNo', 'street', 'city', 'region', 'postalCode', 'country'];
+        foreach ($trimmableFields as $trimmable) {
+            if (isset($data[$trimmable]))
+                $data[$trimmable] = trim($data[$trimmable]);
+        }
     }
 
     public function validateHouseNo(int|String $param): array
