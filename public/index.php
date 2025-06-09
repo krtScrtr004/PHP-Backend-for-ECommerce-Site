@@ -14,6 +14,8 @@ try {
         foreach ($paths as $path => $action) {
             if (strcasecmp($action[0], 'user') === 0) {
                 $action[0] = $userAPI;
+            } else if (strcasecmp($action[0], 'address') === 0) {
+                $action[0] = $addressAPI;
             } else {
                 // TODO: Add the product api obect here
             }
@@ -25,4 +27,3 @@ try {
 } catch (Exception $e) {
     Respond::respondException($e->getMessage());
 }
-

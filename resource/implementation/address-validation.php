@@ -1,11 +1,11 @@
 <?php
 
-class AddrressValidation extends Validation
+class AddressValidation extends Validation
 {
     private static $addressValidation;
 
     private function __construct() {}
-    public static function getValidator(): AddrressValidation {
+    public static function getValidator(): AddressValidation {
         if (!isset(self::$addressValidation))
             self::$addressValidation = new self();
 
@@ -69,12 +69,12 @@ class AddrressValidation extends Validation
         return ['status' => true];
     }
 
-    public function validateZip(String $param): array
+    public function validatePostalCode(String $param): array
     {
         if (preg_match('/[^(\d{4,})(\-\d+)?]/', $param)) {
             return [
                 'status' => false,
-                'message' => 'Invalid Postal / ZIP code.'
+                'message' => 'Invalid Postal code format.'
             ];
         }
         return ['status' => true];

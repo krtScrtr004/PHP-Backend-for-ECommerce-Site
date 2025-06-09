@@ -1,19 +1,35 @@
 {
-    "GET": {
-        "/Rest/public/user/": ["user", "get"],
-        "/Rest/public/user/{id:[0-9]+}": ["user", "get"],
-        "/Rest/public/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": ["user", "get"]
-    },
+  "GET": {
+    "/Rest/public/user/": 
+        ["user", "get"],
+    "/Rest/public/user/{id:[0-9]+}": 
+        ["user", "get"],
+    "/Rest/public/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
+        ["user", "get"],
+    "/Rest/public/address/": 
+        ["address", "get"],
+    "/Rest/public/address/{userId:[0-9]+}": 
+        ["address", "get"]
+  },
 
-    "POST": {
-        "/Rest/public/user/": ["user", "post"]
-    },
+  "POST": {
+    "/Rest/public/user/": 
+        ["user", "post"],
+    "/Rest/public/address/": 
+        ["address", "post"]
+  },
 
-    "PUT": {
-        "/Rest/public/user/{id:[0-9]+}": ["user", "put"]
-    },
+  "PUT": {
+    "/Rest/public/user/{id:[0-9]+}": 
+        ["user", "put"],
+    "/Rest/public/address/{userId:[0-9]+}": 
+        ["address", "put"]
+  },
 
-    "DELETE": {
-        "/Rest/public/user/{id:[0-9]+}": ["user", "delete"]
-    }
+  "DELETE": {
+    "/Rest/public/user/{id:[0-9]+}": 
+        ["user", "delete"],
+    "/Rest/public/address/{userId:[0-9]+}": 
+        ["address", "delete"]
+  }
 }

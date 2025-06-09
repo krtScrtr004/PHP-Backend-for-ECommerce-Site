@@ -14,7 +14,7 @@ class AddressAPI implements API
             self::$addressAPI = new self();
 
         if (!isset(self::$validator))
-            self::$validator = AddrressValidation::getValidator();
+            self::$validator = AddressValidation::getValidator();
 
         return self::$addressAPI;
     }
@@ -39,7 +39,8 @@ class AddressAPI implements API
                     // Collect conditions in an array
                     $conditions = [];
                     foreach ($args as $key => $value) {
-                        $conditions[] = "$key = :$key";
+                        $conditionKey = strtolower(camelToSnakeCase($key));
+                        $conditions[] = "$conditionKey = :$key";
                         $params[":$key"] = $value;
                     }
                     // Join conditions with AND in the WHERE clause
@@ -47,14 +48,14 @@ class AddressAPI implements API
                 } else {
                     Respond::respondFail($validateContents['message']);
                 }
-
-                $query = $conn->prepare($stmt);
-                $query->execute($params);
-                $result = $query->fetchAll();
-
-                Logger::logAccess('Finieshed GET request on Address API.');
-                Respond::respondSuccess(data: $result);
             }
+
+            $query = $conn->prepare($stmt);
+            $query->execute($params);
+            $result = $query->fetchAll();
+
+            Logger::logAccess('Finieshed GET request on Address API.');
+            Respond::respondSuccess(data: $result);
         } catch (Exception $e) {
             Respond::respondException($e->getMessage());
         }
@@ -101,7 +102,7 @@ class AddressAPI implements API
     {
         global $conn;
         try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+            if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
                 throw new LogicException('Bad Request.');
 
             Logger::logAccess('Create PUT request on AAddress API.');
@@ -125,7 +126,7 @@ class AddressAPI implements API
                 ':country' => $mergedArrays['country'],
             ];
 
-            $stmt = 'UPDATE user_address SET house_no = :houseNo, street = :street, city = :city, region = :region, postal_code = :postalCode, country = :country WEHERE user_id = :userId';
+            $stmt = 'UPDATE user_address SET house_no = :houseNo, street = :street, city = :city, region = :region, postal_code = :postalCode, country = :country WHERE user_id = :userId';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 

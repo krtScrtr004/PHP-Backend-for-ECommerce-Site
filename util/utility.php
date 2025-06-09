@@ -11,3 +11,13 @@ function decodeData(String $rawData): array
 
     return $contents;
 }
+
+function camelToKebabCase(String $str): String
+{
+    return preg_replace('/([a-z])([A-Z])/', '$1-$2', $str);
+}
+
+function camelToSnakeCase(String $str): String
+{
+    return preg_replace('/([a-z])([A-Z])/', '$1_$2',$str);
+}
