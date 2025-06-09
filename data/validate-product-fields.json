@@ -1,0 +1,25 @@
+{
+    "name": {
+        "name": "product name",
+        "data": "name",
+        "min": 1,
+        "max": 100,
+        "callback": null
+    },
+
+    "description": {
+        "name": "product description",
+        "data": "description",
+        "min": 1,
+        "max": 500,
+        "callback": null
+    },
+
+    "price": {
+        "name": "product price",
+        "data": "price",
+        "min": null,
+        "max": null,
+        "callback": "validateProduct"
+    }
+}
