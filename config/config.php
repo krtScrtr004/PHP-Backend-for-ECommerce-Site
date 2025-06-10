@@ -32,7 +32,7 @@ try {
      * Error Handling Config
      */
     ini_set('error_reporting', E_ALL);          // Report all errors
-    ini_set('display_errors', 0);               // Do not display errors on browser
+    // ini_set('display_errors', 0);               // Do not display errors on browser
     set_error_handler(['Logger', 'logError']);
     set_exception_handler(['Logger', 'logException']);
 
@@ -59,6 +59,8 @@ try {
     $userAPI = UserApi::getApi();
     $addressAPI = AddressAPI::getApi();
     $productAPI = ProductAPI::getApi();
+    $productImageAPI = ProductImageAPI::getApi();
+
 } catch (Exception $e) {
     throw new ErrorException($e->getMessage());
 }

@@ -21,5 +21,13 @@
         "min": null,
         "max": null,
         "callback": "validateProduct"
+    },
+
+    "imageLink": {
+        "name": "image link",
+        "data": "imageLink",
+        "min": null,
+        "max": null,
+        "callback": "validateImageUrl"
     }
 }

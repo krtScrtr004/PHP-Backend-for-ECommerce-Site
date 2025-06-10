@@ -13,7 +13,11 @@
     "/Rest/product/": 
         ["product", "get"],
     "/Rest/product/{id:[0-9]+}": 
-        ["product", "get"]
+        ["product", "get"],
+    "/Rest/product-image/": 
+        ["productImage", "get"],
+     "/Rest/product-image/{id:[0-9]+}": 
+        ["productImage", "get"]
   },
 
   "POST": {
@@ -22,8 +26,10 @@
     "/Rest/address/": 
         ["address", "post"],
     "/Rest/product/": 
-        ["product", "post"]
-  },
+        ["product", "post"],
+    "/Rest/product-image/": 
+        ["productImage", "post"] 
+    },
 
   "PUT": {
     "/Rest/user/{id:[0-9]+}": 
@@ -31,7 +37,9 @@
     "/Rest/address/{userId:[0-9]+}": 
         ["address", "put"],
     "/Rest/product/{id:[0-9]+}": 
-        ["product", "put"]
+        ["product", "put"],
+    "/Rest/product-image/{id:[0-9]+}": 
+        ["productImage", "put"]
   },
 
   "DELETE": {
@@ -40,6 +48,8 @@
     "/Rest/address/{userId:[0-9]+}": 
         ["address", "delete"],
     "/Rest/product/{id:[0-9]+}": 
-        ["product", "delete"]
+        ["productImage", "delete"],
+    "/Rest/product-image/{id:[0-9]+}": 
+        ["productImage", "delete"]
   }
 }

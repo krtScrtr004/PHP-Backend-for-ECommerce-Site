@@ -8,6 +8,13 @@ class ProductAPI implements API
 
     protected function __construct() {}
 
+
+    protected static function setValidator(): void
+    {
+        if (!isset(self::$validator))
+            self::$validator = ProductValidation::getValidator();
+    }
+
     public static function getApi(): ProductAPI
     {
         if (!isset(self::$productAPI))
@@ -17,13 +24,6 @@ class ProductAPI implements API
 
         return self::$productAPI;
     }
-
-    protected static function setValidator(): void
-    {
-        if (!isset(self::$validator))
-            self::$validator = ProductValidation::getValidator();
-    }
-
 
     public function get(array $args = []): void
     {
@@ -61,6 +61,13 @@ class ProductAPI implements API
             $query = $conn->prepare($stmt);
             $query->execute($params);
             $result = $query->fetchAll();
+
+            if (count($result) > 0) {
+                foreach ($result as &$row) {
+                    if (isset($row['price']))
+                        $row['price'] = (float) ($row['price'] / 100);
+                }
+            }
 
             Logger::logAccess('Finished GET request on Product API.');
             Respond::respondSuccess(data: $result);

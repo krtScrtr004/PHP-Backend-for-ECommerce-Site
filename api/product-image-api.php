@@ -50,7 +50,7 @@ class ProductImageAPI extends ProductAPI implements API
             $query = $conn->prepare($stmt);
             $query->execute($params);
             $result = $query->fetchAll();
-
+               
             Logger::logAccess('Finished GET request on Product Image API.');
             Respond::respondSuccess(data: $result);
         } catch (Exception $e) {
@@ -79,7 +79,7 @@ class ProductImageAPI extends ProductAPI implements API
                 ':imageLink' => $contents['imageLink'],
             ];
 
-            $stmt = 'INSERT INTO product_image(product_id, image_url) VALUES(:productId, :name)';
+            $stmt = 'INSERT INTO product_image(product_id, image_link) VALUES(:productId, :name)';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
@@ -109,11 +109,10 @@ class ProductImageAPI extends ProductAPI implements API
             self::$validator->sanitize($mergedArrays);
             $params = [
                 ':id' => $mergedArrays['id'],
-                ':productId' => $mergedArrays['productId'],
                 ':imageLink' => $mergedArrays['imageLink'],
             ];
 
-            $stmt = 'UPDATE product_image SET product_id = :productId, image_link = :imageLink WHERE id = :id';
+            $stmt = 'UPDATE product_image SET image_link = :imageLink WHERE id = :id';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 

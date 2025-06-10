@@ -16,8 +16,10 @@ try {
                 $action[0] = $userAPI;
             } else if (strcasecmp($action[0], 'address') === 0) {
                 $action[0] = $addressAPI;
-            } else {
+            } else if (strcasecmp($action[0], 'product') === 0) {
                 $action[0] = $productAPI;
+            } else if (strcasecmp($action[0], 'productImage') === 0) {
+                $action[0] = $productImageAPI;
             }
             $router->register($path, $method, $action);
         }
