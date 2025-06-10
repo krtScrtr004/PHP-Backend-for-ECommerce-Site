@@ -1,29 +1,18 @@
 <?php
 
-class ProductAPI implements API
+class ProductImageAPI extends ProductAPI implements API
 {
-    private static $productAPI;
-    protected static $validator;
-    protected static $fileName = 'validate-product-fields.json';
+    private static $productImageAPI;
 
-    protected function __construct() {}
-
-    public static function getApi(): ProductAPI
+    public static function getApi(): ProductImageAPI
     {
-        if (!isset(self::$productAPI))
-            self::$productAPI = new self();
+        if (!isset(self::$productImageAPI))
+            self::$productImageAPI = new self();
 
         self::setValidator();
 
-        return self::$productAPI;
+        return self::$productImageAPI;
     }
-
-    protected static function setValidator(): void
-    {
-        if (!isset(self::$validator))
-            self::$validator = ProductValidation::getValidator();
-    }
-
 
     public function get(array $args = []): void
     {
@@ -32,10 +21,10 @@ class ProductAPI implements API
             if ($_SERVER['REQUEST_METHOD'] !== 'GET')
                 throw new LogicException('Bad request.');
 
-            Logger::logAccess('Create GET request on Product API.');
+            Logger::logAccess('Create GET request on Product Image API.');
 
             $params = [];
-            $stmt = 'SELECT * FROM product';
+            $stmt = 'SELECT * FROM product_image';
 
             // Append WHERE clause if query strings is / are present
             if (count($args) > 0) {
@@ -43,7 +32,7 @@ class ProductAPI implements API
 
                 $validateContents = self::$validator->validateFields($args, self::$fileName);
                 if ($validateContents['status']) {
-                    self::$validator->sanitize($args);
+                    // self::$validator->sanitize($args); TODO: 
 
                     // Collect conditions in an array
                     $conditions = [];
@@ -62,7 +51,7 @@ class ProductAPI implements API
             $query->execute($params);
             $result = $query->fetchAll();
 
-            Logger::logAccess('Finished GET request on Product API.');
+            Logger::logAccess('Finished GET request on Product Image API.');
             Respond::respondSuccess(data: $result);
         } catch (Exception $e) {
             Respond::respondException($e->getMessage());
@@ -76,7 +65,7 @@ class ProductAPI implements API
             if ($_SERVER['REQUEST_METHOD'] !== 'POST')
                 throw new LogicException('Bad request.');
 
-            Logger::logAccess('Create POST request on Product API.');
+            Logger::logAccess('Create POST request on Product Image API.');
 
             $contents = decodeData('php://input');
 
@@ -86,17 +75,16 @@ class ProductAPI implements API
 
             self::$validator->sanitize($contents);
             $params = [
-                ':name' => $contents['name'],
-                ':description' => $contents['description'],
-                ':price' => $contents['price']
+                ':productId' => $contents['productId'],
+                ':imageLink' => $contents['imageLink'],
             ];
 
-            $stmt = 'INSERT INTO product(name, description, price) VALUES(:name, :description, :price)';
+            $stmt = 'INSERT INTO product_image(product_id, image_url) VALUES(:productId, :name)';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            Logger::logAccess('Finished POST request on Product API.');
-            Respond::respondSuccess('Product created successfully.', code: 201);
+            Logger::logAccess('Finished POST request on Product Image API.');
+            Respond::respondSuccess('Product Image uploaded successfully.', code: 201);
         } catch (Exception $e) {
             Respond::respondException($e->getMessage());
         }
@@ -109,7 +97,7 @@ class ProductAPI implements API
             if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
                 throw new LogicException('Bad request.');
 
-            Logger::logAccess('Create PUT request on Product API.');
+            Logger::logAccess('Create PUT request on Product Image API.');
 
             $contents = decodeData('php://input');
             $mergedArrays = [...$args, ...$contents];
@@ -121,17 +109,16 @@ class ProductAPI implements API
             self::$validator->sanitize($mergedArrays);
             $params = [
                 ':id' => $mergedArrays['id'],
-                ':name' => $mergedArrays['name'],
-                ':description' => $mergedArrays['description'],
-                ':price' => $mergedArrays['price']
+                ':productId' => $mergedArrays['productId'],
+                ':imageLink' => $mergedArrays['imageLink'],
             ];
 
-            $stmt = 'UPDATE product SET name = :name, description = :description, price = :price WHERE id = :id';
+            $stmt = 'UPDATE product_image SET product_id = :productId, image_link = :imageLink WHERE id = :id';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            Logger::logAccess('Finished PUT request on roduct API.');
-            Respond::respondSuccess('Product updated successfully.');
+            Logger::logAccess('Finished PUT request on roduct Image API.');
+            Respond::respondSuccess('Product image updated successfully.');
         } catch (Exception $e) {
             Respond::respondException($e->getMessage());
         }
@@ -144,7 +131,7 @@ class ProductAPI implements API
             if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
                 throw new LogicException('Bad request.');
 
-            Logger::logAccess('Create DELETE request on Prodiuct API.');
+            Logger::logAccess('Create DELETE request on Prodiuct Image API.');
 
             $validateId = self::$validator->validateFields($args, self::$fileName);
             if (!$validateId['status'])
@@ -153,12 +140,12 @@ class ProductAPI implements API
             self::$validator->sanitize($args);
             $params = [':id' => $args['id']];
 
-            $stmt = 'DELETE FROM product WHERE id = :id';
+            $stmt = 'DELETE FROM product_image WHERE id = :id';
             $query = $conn->prepare($stmt);
             $query->execute($params);
 
-            Logger::logAccess('Finished DELETE request on Product API.');
-            Respond::respondSuccess('Product deleted successfully.');
+            Logger::logAccess('Finished DELETE request on Product Image API.');
+            Respond::respondSuccess('Product image deleted successfully.');
         } catch (Exception $e) {
             Respond::respondException($e->getMessage());
         }
