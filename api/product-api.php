@@ -46,40 +46,24 @@ class ProductAPI extends API
             'query' => 'SELECT * FROM product',
             'args' => $args
         ];
-        $this->getFunctionTemplate($params);
+        $this->getMethodTemplate($params);
     }
 
     public function post(): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
-                throw new LogicException('Bad request.');
+        $contents = decodeData('php://input');
+        $queryParams = [
+            ':name' => $contents['name'],
+            ':description' => $contents['description'],
+            ':price' => $contents['price']
+        ];
 
-            Logger::logAccess('Create POST request on Product API.');
-
-            $contents = decodeData('php://input');
-
-            $validateContents = self::$validator->validateFields($contents, self::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            self::$validator->sanitize($contents);
-            $params = [
-                ':name' => $contents['name'],
-                ':description' => $contents['description'],
-                ':price' => $contents['price']
-            ];
-
-            $stmt = 'INSERT INTO product(name, description, price) VALUES(:name, :description, :price)';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished POST request on Product API.');
-            Respond::respondSuccess('Product created successfully.', code: 201);
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $param = [
+            'query' => 'INSERT INTO product(name, description, price) VALUES(:name, :description, :price)',
+            'contents' => $contents,
+            'params' => $queryParams
+        ];
+        $this->postMethodTemplate($param);
     }
 
     public function put(array $args): void

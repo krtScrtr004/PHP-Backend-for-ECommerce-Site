@@ -40,26 +40,13 @@ class UserAPI extends API
             'query' => 'SELECT * FROM user',
             'args' => $args
         ]; 
-        $this->getFunctionTemplate($params);
+        $this->getMethodTemplate($params);
     }
 
     public function post(): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
-                throw new LogicException('Bad request.');
-
-            Logger::logAccess('Create POST request on User API.');
-
-            $contents = decodeData('php://input');
-
-            $validateContents = self::$validator->validateFields($contents, self::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            self::$validator->sanitize($contents);
-            $params = [
+        $contents = decodeData('php://input');
+        $queryParams = [
                 ':firstName'  => $contents['firstName'],
                 ':lastName' => $contents['lastName'],
                 ':email'  => $contents['email'],
@@ -67,15 +54,12 @@ class UserAPI extends API
                 ':contact' => $contents['contact']
             ];
 
-            $stmt = 'INSERT INTO user(first_name, last_name, email, password, contact) VALUES(:firstName, :lastName, :email, :password, :contact)';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished POST request on User API.');
-            Respond::respondSuccess('User created successfully.', code: 201);
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $param = [
+            'query' => 'INSERT INTO user(first_name, last_name, email, password, contact) VALUES(:firstName, :lastName, :email, :password, :contact)',
+            'contents' => $contents,
+            'params' => $queryParams
+        ];
+        $this->postMethodTemplate($param);
     }
 
     public function put(array $args): void

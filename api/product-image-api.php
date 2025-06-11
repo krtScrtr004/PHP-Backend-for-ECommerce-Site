@@ -35,39 +35,23 @@ class ProductImageAPI extends ProductAPI
             'query' => 'SELECT * FROM product_image',
             'args' => $args
         ];
-        $this->getFunctionTemplate($params);
+        $this->getMethodTemplate($params);
     }
 
     public function post(): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
-                throw new LogicException('Bad request.');
+        $contents = decodeData('php://input');
+        $queryParams = [
+            ':productId' => $contents['productId'],
+            ':imageLink' => $contents['imageLink'],
+        ];
 
-            Logger::logAccess('Create POST request on Product Image API.');
-
-            $contents = decodeData('php://input');
-
-            $validateContents = self::$validator->validateFields($contents, self::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            self::$validator->sanitize($contents);
-            $params = [
-                ':productId' => $contents['productId'],
-                ':imageLink' => $contents['imageLink'],
-            ];
-
-            $stmt = 'INSERT INTO product_image(product_id, image_link) VALUES(:productId, :name)';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished POST request on Product Image API.');
-            Respond::respondSuccess('Product Image uploaded successfully.', code: 201);
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $param = [
+            'query' => 'INSERT INTO product_image(product_id, image_link) VALUES(:productId, :name)',
+            'contents' => $contents,
+            'params' => $queryParams
+        ];
+        $this->postMethodTemplate($param);
     }
 
     public function put(array $args): void

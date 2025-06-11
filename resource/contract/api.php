@@ -14,7 +14,7 @@ abstract class API
 
     abstract public function delete(array $args): void;
 
-    protected function getFunctionTemplate(array $configs)
+    protected function getMethodTemplate(array $configs)
     {
         $className = get_class($this);
 
@@ -59,6 +59,40 @@ abstract class API
 
             Logger::logAccess("Finished GET request on $className.");
             Respond::respondSuccess(data: $result);
+        } catch (Exception $e) {
+            Respond::respondException($e->getMessage());
+        }
+    }
+
+    protected function postMethodTemplate(array $configs): void {
+        $className = get_class($this);
+
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+                throw new LogicException('Bad request.');
+
+            $requireConfigs = ['query', 'contents', 'params'];
+            foreach ($requireConfigs as $config) {
+                if (!isset($configs[$config])) 
+                    throw new BadMethodCallException("$config is not defined.");
+            }
+
+            Logger::logAccess("Create POST request on $className.");
+
+            $contents = $configs['contents'];
+            $validateContents = static::$validator->validateFields($contents, static::$fileName);
+            if (!$validateContents['status'])
+                Respond::respondFail($validateContents['message']);
+
+            static::$validator->sanitize($contents);
+
+            $stmt = $configs['query'];
+            $query = $conn->prepare($stmt);
+            $query->execute($configs['params']);
+
+            Logger::logAccess("Finished POST request on $className.");
+            Respond::respondSuccess("Creation successful.", code: 201);
         } catch (Exception $e) {
             Respond::respondException($e->getMessage());
         }
