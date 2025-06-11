@@ -16,7 +16,7 @@
 *
 */
 
-class UserAPI implements API
+class UserAPI extends API
 {
     private static $userAPI; // Singleton Pattern
     private static $validator;

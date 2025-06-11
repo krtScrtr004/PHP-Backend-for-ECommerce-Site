@@ -1,6 +1,6 @@
 <?php
 
-class AddressAPI implements API
+class AddressAPI extends API
 {
     private static $addressAPI;
     private static $validator;

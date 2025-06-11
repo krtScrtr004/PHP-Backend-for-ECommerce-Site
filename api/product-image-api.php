@@ -1,6 +1,6 @@
 <?php
 
-class ProductImageAPI extends ProductAPI implements API
+class ProductImageAPI extends ProductAPI
 {
     private static $productImageAPI;
 

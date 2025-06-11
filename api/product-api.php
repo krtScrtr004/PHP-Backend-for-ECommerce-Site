@@ -1,6 +1,6 @@
 <?php
 
-class ProductAPI implements API
+class ProductAPI extends API
 {
     private static $productAPI;
     protected static $validator;
