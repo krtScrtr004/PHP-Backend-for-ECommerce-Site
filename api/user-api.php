@@ -39,7 +39,7 @@ class UserAPI extends API
         $params = [
             'query' => 'SELECT * FROM user',
             'args' => $args
-        ]; 
+        ];
         $this->getMethodTemplate($params);
     }
 
@@ -47,12 +47,12 @@ class UserAPI extends API
     {
         $contents = decodeData('php://input');
         $queryParams = [
-                ':firstName'  => $contents['firstName'],
-                ':lastName' => $contents['lastName'],
-                ':email'  => $contents['email'],
-                ':password'  => password_hash($contents['password'], PASSWORD_ARGON2ID),
-                ':contact' => $contents['contact']
-            ];
+            ':firstName'  => $contents['firstName'],
+            ':lastName' => $contents['lastName'],
+            ':email'  => $contents['email'],
+            ':password'  => password_hash($contents['password'], PASSWORD_ARGON2ID),
+            ':contact' => $contents['contact']
+        ];
 
         $param = [
             'query' => 'INSERT INTO user(first_name, last_name, email, password, contact) VALUES(:firstName, :lastName, :email, :password, :contact)',
@@ -64,39 +64,22 @@ class UserAPI extends API
 
     public function put(array $args): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
-                throw new LogicException('Bad request.');
+        $mergedArrays = [...$args, ...decodeData('php://input')];
+        $queryParams = [
+            ':id' => $mergedArrays['id'],
+            ':firstName' => $mergedArrays['firstName'],
+            ':lastName' => $mergedArrays['lastName'],
+            ':email' => $mergedArrays['email'],
+            ':password' => password_hash($mergedArrays['password'], PASSWORD_ARGON2ID),
+            ':contact' => $mergedArrays['contact']
+        ];
 
-            Logger::logAccess('Create PUT request on User API.');
-
-            $contents = decodeData('php://input');
-            $mergedArrays = [...$args, ...$contents];
-
-            $validateContents = self::$validator->validateFields($mergedArrays, self::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            self::$validator->sanitize($mergedArrays);
-            $params = [
-                ':id' => $mergedArrays['id'],
-                ':firstName' => $mergedArrays['firstName'],
-                ':lastName' => $mergedArrays['lastName'],
-                ':email' => $mergedArrays['email'],
-                ':password' => password_hash($mergedArrays['password'], PASSWORD_ARGON2ID),
-                ':contact' => $mergedArrays['contact']
-            ];
-
-            $stmt = 'UPDATE user SET first_name = :firstName, last_name = :lastName, email = :email, password = :password, contact = :contact WHERE id = :id';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished PUT request on User API.');
-            Respond::respondSuccess('User updated successfully.');
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $param = [
+            'query' => 'UPDATE user SET first_name = :firstName, last_name = :lastName, email = :email, password = :password, contact = :contact WHERE id = :id',
+            'contents' => $mergedArrays,
+            'params' => $queryParams
+        ];
+        $this->putMethodTemplate($param);
     }
 
     public function delete(array $args): void

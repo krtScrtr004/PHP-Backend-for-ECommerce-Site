@@ -68,37 +68,20 @@ class ProductAPI extends API
 
     public function put(array $args): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
-                throw new LogicException('Bad request.');
+        $mergedArrays = [...$args, ...decodeData('php://input')];
+        $queryParams = [
+            ':id' => $mergedArrays['id'],
+            ':name' => $mergedArrays['name'],
+            ':description' => $mergedArrays['description'],
+            ':price' => $mergedArrays['price']
+        ];
 
-            Logger::logAccess('Create PUT request on Product API.');
-
-            $contents = decodeData('php://input');
-            $mergedArrays = [...$args, ...$contents];
-
-            $validateContents = self::$validator->validateFields($mergedArrays, self::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            self::$validator->sanitize($mergedArrays);
-            $params = [
-                ':id' => $mergedArrays['id'],
-                ':name' => $mergedArrays['name'],
-                ':description' => $mergedArrays['description'],
-                ':price' => $mergedArrays['price']
-            ];
-
-            $stmt = 'UPDATE product SET name = :name, description = :description, price = :price WHERE id = :id';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished PUT request on roduct API.');
-            Respond::respondSuccess('Product updated successfully.');
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $param = [
+            'query' => 'UPDATE product SET name = :name, description = :description, price = :price WHERE id = :id',
+            'contents' => $mergedArrays,
+            'params' => $queryParams
+        ];
+        $this->putMethodTemplate($param);
     }
 
     public function delete(array $args): void

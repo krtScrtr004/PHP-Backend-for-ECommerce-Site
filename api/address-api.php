@@ -66,41 +66,23 @@ class AddressAPI extends API
 
     public function put(array $args): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
-                throw new LogicException('Bad Request.');
+        $mergedArrays = [...$args, ...decodeData('php://input')];
+        $queryParams = [
+            ':userId' => $mergedArrays['userId'],
+            ':houseNo' => $mergedArrays['houseNo'],
+            ':street' => $mergedArrays['street'],
+            ':city' => $mergedArrays['city'],
+            ':region' => $mergedArrays['region'],
+            ':postalCode' => $mergedArrays['postalCode'],
+            ':country' => $mergedArrays['country'],
+        ];
 
-            Logger::logAccess('Create PUT request on AAddress API.');
-
-
-            $contents = decodeData('php://input');
-            $mergedArrays = [...$args, ...$contents];
-
-            $validateContents = self::$validator->validateFields($mergedArrays, self::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            self::$validator->sanitize($mergedArrays);
-            $params = [
-                ':userId' => $mergedArrays['userId'],
-                ':houseNo' => $mergedArrays['houseNo'],
-                ':street' => $mergedArrays['street'],
-                ':city' => $mergedArrays['city'],
-                ':region' => $mergedArrays['region'],
-                ':postalCode' => $mergedArrays['postalCode'],
-                ':country' => $mergedArrays['country'],
-            ];
-
-            $stmt = 'UPDATE user_address SET house_no = :houseNo, street = :street, city = :city, region = :region, postal_code = :postalCode, country = :country WHERE user_id = :userId';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished PUT request on Address API.');
-            Respond::respondSuccess('User address updated successfully.');
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $param = [
+            'query' => 'UPDATE user_address SET house_no = :houseNo, street = :street, city = :city, region = :region, postal_code = :postalCode, country = :country WHERE user_id = :userId',
+            'contents' => $mergedArrays,
+            'params' => $queryParams
+        ];
+        $this->putMethodTemplate($param);
     }
 
     public function delete(array $args): void

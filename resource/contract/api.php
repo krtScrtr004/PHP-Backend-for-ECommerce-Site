@@ -20,11 +20,11 @@ abstract class API
 
         global $conn;
         try {
-             if ($_SERVER['REQUEST_METHOD'] !== 'GET')
+            if ($_SERVER['REQUEST_METHOD'] !== 'GET')
                 throw new LogicException('Bad Request.');
 
             $requiredConfigs = ['query', 'args'];
-            foreach ($requiredConfigs as $config){
+            foreach ($requiredConfigs as $config) {
                 if (!isset($configs[$config]))
                     throw new BadMethodCallException("$config is not defined.");
             }
@@ -64,7 +64,8 @@ abstract class API
         }
     }
 
-    protected function postMethodTemplate(array $configs): void {
+    protected function postMethodTemplate(array $configs): void
+    {
         $className = get_class($this);
 
         global $conn;
@@ -72,27 +73,56 @@ abstract class API
             if ($_SERVER['REQUEST_METHOD'] !== 'POST')
                 throw new LogicException('Bad request.');
 
-            $requireConfigs = ['query', 'contents', 'params'];
-            foreach ($requireConfigs as $config) {
-                if (!isset($configs[$config])) 
+            $requiredConfigs = ['query', 'contents', 'params'];
+            foreach ($requiredConfigs as $config) {
+                if (!isset($configs[$config]))
                     throw new BadMethodCallException("$config is not defined.");
             }
 
             Logger::logAccess("Create POST request on $className.");
 
-            $contents = $configs['contents'];
-            $validateContents = static::$validator->validateFields($contents, static::$fileName);
+            $validateContents = static::$validator->validateFields($configs['contents'], static::$fileName);
             if (!$validateContents['status'])
                 Respond::respondFail($validateContents['message']);
 
-            static::$validator->sanitize($contents);
+            static::$validator->sanitize($configs['contents']);
 
-            $stmt = $configs['query'];
-            $query = $conn->prepare($stmt);
+            $query = $conn->prepare($configs['query']);
             $query->execute($configs['params']);
 
             Logger::logAccess("Finished POST request on $className.");
-            Respond::respondSuccess("Creation successful.", code: 201);
+            Respond::respondSuccess("Post request successful.", code: 201);
+        } catch (Exception $e) {
+            Respond::respondException($e->getMessage());
+        }
+    }
+
+    protected function putMethodTemplate(array $configs): void
+    {
+        $className = get_class($this);
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
+                throw new LogicException('Bad request.');
+
+            Logger::logAccess("Create PUT request on $className");
+
+            $requiredConfigs = ['query', 'contents', 'params'];
+            foreach ($requiredConfigs as $config) {
+                if (!isset($configs[$config]))
+                    throw new BadMethodCallException("$config is not defined.");
+            }
+
+            $validateContents = static::$validator->validateFields($configs['contents'], static::$fileName);
+            if (!$validateContents['status'])
+                Respond::respondFail($validateContents['message']);
+
+            static::$validator->sanitize($configs['contents']);
+            $query = $conn->prepare($configs['query']);
+            $query->execute($configs['params']);
+
+            Logger::logAccess("Finished PUT request on $className");
+            Respond::respondSuccess('Put request successful.');
         } catch (Exception $e) {
             Respond::respondException($e->getMessage());
         }
