@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Product API
+ * 
+ * Product API class
  *
  * This file provides API endpoints and logic for managing products.
  * It handles operations such as creating, retrieving, updating,

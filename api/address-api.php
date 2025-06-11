@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Address API
+ * 
+ * Address API class
  *
  * This file provides API endpoints and logic for managing user addresses.
  * It handles operations such as creating, retrieving, updating,

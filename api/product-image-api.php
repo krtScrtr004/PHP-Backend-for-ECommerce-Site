@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Product Image API
+ * 
+ * Product Image API class
  *
  * This file provides API endpoints and logic for managing product images.
  * It handles operations such as creating, retrieving, updating,

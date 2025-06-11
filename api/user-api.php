@@ -1,7 +1,8 @@
 <?php
 
 /**
- * User API
+ * 
+ * User API class
  *
  * This file provides API endpoints and logic for managing users.
  * It handles operations such as creating, retrieving, updating,

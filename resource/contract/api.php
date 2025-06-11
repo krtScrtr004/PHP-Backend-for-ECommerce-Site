@@ -9,10 +9,10 @@
  * Description and Usage:
  * - Extend API to create specific endpoint handlers (e.g., UserAPI, ProductAPI).
  * - Implement all abstract methods such as 
- *      - get(), 
- *      - post(), 
- *      - put(), 
- *      - delete() 
+ *      > get(), 
+ *      > post(), 
+ *      > put(), 
+ *      > delete() 
  *   in the subclass.
  * - Provides shared functionality (method templates) for subclasses.
  * 
@@ -20,9 +20,14 @@
 
 abstract class API
 {
+    protected $className = get_class($this);
     protected static $validator;
     protected static $fileName;
 
+
+    /**
+     * Abstract Methods to Implement
+     */
 
     abstract public function get(array $args = []): void;
 
@@ -32,6 +37,10 @@ abstract class API
 
     abstract public function delete(array $args): void;
 
+
+    /**
+     * Method Templates for HTTP Request Methods
+     */
 
     /**
      * 
@@ -44,52 +53,47 @@ abstract class API
      */
     protected function getMethodTemplate(array $configs): void
     {
-        $className = get_class($this);
-
         global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'GET')
-                throw new LogicException('Bad Request.');
 
-            $requiredConfigs = ['query', 'args'];
-            foreach ($requiredConfigs as $config) {
-                if (!isset($configs[$config]))
-                    throw new BadMethodCallException("$config is not defined.");
-            }
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET')
+            throw new LogicException('Bad Request.');
 
-            Logger::logAccess("Create GET request on $className.");
-
-            $params = [];
-            $stmt = $configs['query'];
-
-            if (count($configs['args']) > 0) {
-                $stmt .= ' WHERE ';
-
-                $validateContents = static::$validator->validateFields($configs['args'], static::$fileName);
-                if ($validateContents['status']) {
-                    // Collect conditions in an array
-                    $conditions = [];
-                    foreach ($configs['args'] as $key => $value) {
-                        $conditionKey = strtolower(camelToSnakeCase($key));
-                        $conditions[] = "$conditionKey = :$key";
-                        $params[":$key"] = $value;
-                    }
-                    // Join conditions with AND in the WHERE clause
-                    $stmt .= implode(' AND ', $conditions);
-                } else {
-                    Respond::respondFail($validateContents['message']);
-                }
-            }
-
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-            $result = $query->fetchAll();
-
-            Logger::logAccess("Finished GET request on $className.");
-            Respond::respondSuccess(data: $result);
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
+        $requiredConfigs = ['query', 'args'];
+        foreach ($requiredConfigs as $config) {
+            if (!isset($configs[$config]))
+                throw new BadMethodCallException("$config is not defined.");
         }
+
+        Logger::logAccess("Create GET request on $this->className.");
+
+        $params = [];
+        $stmt = $configs['query'];
+
+        if (count($configs['args']) > 0) {
+            $stmt .= ' WHERE ';
+
+            $validateContents = static::$validator->validateFields($configs['args'], static::$fileName);
+            if ($validateContents['status']) {
+                // Collect conditions in an array
+                $conditions = [];
+                foreach ($configs['args'] as $key => $value) {
+                    $conditionKey = strtolower(camelToSnakeCase($key));
+                    $conditions[] = "$conditionKey = :$key";
+                    $params[":$key"] = $value;
+                }
+                // Join conditions with AND in the WHERE clause
+                $stmt .= implode(' AND ', $conditions);
+            } else {
+                Respond::respondFail($validateContents['message']);
+            }
+        }
+
+        $query = $conn->prepare($stmt);
+        $query->execute($params);
+        $result = $query->fetchAll();
+
+        Logger::logAccess("Finished GET request on $this->className.");
+        Respond::respondSuccess(data: $result);
     }
 
     /**
@@ -104,38 +108,33 @@ abstract class API
      */
     protected function postMethodTemplate(array $configs): void
     {
-        $className = get_class($this);
-
         global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST')
-                throw new LogicException('Bad request.');
 
-            $requiredConfigs = ['query', 'contents', 'params'];
-            foreach ($requiredConfigs as $config) {
-                if (!isset($configs[$config]))
-                    throw new BadMethodCallException("$config is not defined.");
-            }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST')
+            throw new LogicException('Bad request.');
 
-            Logger::logAccess("Create POST request on $className.");
-
-            $validateContents = static::$validator->validateFields($configs['contents'], static::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            static::$validator->sanitize($configs['contents']);
-
-            $query = $conn->prepare($configs['query']);
-            $query->execute($configs['params']);
-
-            Logger::logAccess("Finished POST request on $className.");
-            Respond::respondSuccess("Post request successful.", code: 201);
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
+        $requiredConfigs = ['query', 'contents', 'params'];
+        foreach ($requiredConfigs as $config) {
+            if (!isset($configs[$config]))
+                throw new BadMethodCallException("$config is not defined.");
         }
+
+        Logger::logAccess("Create POST request on $this->className.");
+
+        $validateContents = static::$validator->validateFields($configs['contents'], static::$fileName);
+        if (!$validateContents['status'])
+            Respond::respondFail($validateContents['message']);
+
+        static::$validator->sanitize($configs['contents']);
+
+        $query = $conn->prepare($configs['query']);
+        $query->execute($configs['params']);
+
+        Logger::logAccess("Finished POST request on $this->className.");
+        Respond::respondSuccess("Post request successful.", code: 201);
     }
 
-        /**
+    /**
      * 
      * This method is used to automate the creation of PUT method
      * 
@@ -147,36 +146,32 @@ abstract class API
      */
     protected function putMethodTemplate(array $configs): void
     {
-        $className = get_class($this);
         global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
-                throw new LogicException('Bad request.');
 
-            Logger::logAccess("Create PUT request on $className");
+        if ($_SERVER['REQUEST_METHOD'] !== 'PUT')
+            throw new LogicException('Bad request.');
 
-            $requiredConfigs = ['query', 'contents', 'params'];
-            foreach ($requiredConfigs as $config) {
-                if (!isset($configs[$config]))
-                    throw new BadMethodCallException("$config is not defined.");
-            }
+        Logger::logAccess("Create PUT request on $this->className");
 
-            $validateContents = static::$validator->validateFields($configs['contents'], static::$fileName);
-            if (!$validateContents['status'])
-                Respond::respondFail($validateContents['message']);
-
-            static::$validator->sanitize($configs['contents']);
-            $query = $conn->prepare($configs['query']);
-            $query->execute($configs['params']);
-
-            Logger::logAccess("Finished PUT request on $className");
-            Respond::respondSuccess('Put request successful.');
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
+        $requiredConfigs = ['query', 'contents', 'params'];
+        foreach ($requiredConfigs as $config) {
+            if (!isset($configs[$config]))
+                throw new BadMethodCallException("$config is not defined.");
         }
+
+        $validateContents = static::$validator->validateFields($configs['contents'], static::$fileName);
+        if (!$validateContents['status'])
+            Respond::respondFail($validateContents['message']);
+
+        static::$validator->sanitize($configs['contents']);
+        $query = $conn->prepare($configs['query']);
+        $query->execute($configs['params']);
+
+        Logger::logAccess("Finished PUT request on $this->className");
+        Respond::respondSuccess('Put request successful.');
     }
 
-        /**
+    /**
      * 
      * This method is used to automate the creation of DELETE method
      * 
@@ -187,35 +182,31 @@ abstract class API
      */
     protected function deleteMethodTemplate(array $configs): void
     {
-        $className = get_class($this);
         global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
-                throw new LogicException('Bad request.');
 
-            $requiredConfigs = ['query', 'args'];
-            foreach ($requiredConfigs as $config) {
-                if (!isset($configs[$config]))
-                    throw new BadMethodCallException("$config is not defined.");
-            }
-            $args = $configs['args'];
+        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
+            throw new LogicException('Bad request.');
 
-            Logger::logAccess("Create DELETE request on $className.");
-
-            $validateId = static::$validator->validateFields($args, static::$fileName);
-            if (!$validateId['status'])
-                Respond::respondFail($validateId['message']);
-
-            static::$validator->sanitize($args);
-            $params = [':id' => $args['id']];
-
-            $query = $conn->prepare($configs['query']);
-            $query->execute($params);
-
-            Logger::logAccess("Finished DELETE request on $className.");
-            Respond::respondSuccess('Delete request successful.');
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
+        $requiredConfigs = ['query', 'args'];
+        foreach ($requiredConfigs as $config) {
+            if (!isset($configs[$config]))
+                throw new BadMethodCallException("$config is not defined.");
         }
+        $args = $configs['args'];
+
+        Logger::logAccess("Create DELETE request on $this->className.");
+
+        $validateId = static::$validator->validateFields($args, static::$fileName);
+        if (!$validateId['status'])
+            Respond::respondFail($validateId['message']);
+
+        static::$validator->sanitize($args);
+        $params = [':id' => $args['id']];
+
+        $query = $conn->prepare($configs['query']);
+        $query->execute($params);
+
+        Logger::logAccess("Finished DELETE request on $this->className.");
+        Respond::respondSuccess('Delete request successful.');
     }
 }

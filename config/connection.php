@@ -9,7 +9,8 @@
  *
  */
 
-class DBConnection {
+class DBConnection
+{
     /**
      * Summary of info
      * @var array
@@ -23,22 +24,20 @@ class DBConnection {
 
     private static $connection = null;
 
-    private function __construct() {
-        try {
-            $dsn = 'mysql: hostname=' . self::$info['hostname'] . '; dbname=' . self::$info['dbname'] . '; charset=utf8mb4';
-            $options = [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false
-            ];
-            self::$connection = new PDO($dsn, self::$info['username'], self::$info['password'], $options);
-        } catch (PDOException $e) {
-            Respond::respondException($e->getMessage());
-        }
+    private function __construct()
+    {
+        $dsn = 'mysql: hostname=' . self::$info['hostname'] . '; dbname=' . self::$info['dbname'] . '; charset=utf8mb4';
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ];
+        self::$connection = new PDO($dsn, self::$info['username'], self::$info['password'], $options);
     }
 
-    public static function getConnection() : PDO {
-        if (self::$connection === null) 
+    public static function getConnection(): PDO
+    {
+        if (self::$connection === null)
             new self();
 
         return self::$connection;
