@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * 
+ * API abstract class
+ * 
+ * Abstract base class API for defining REST API endpoints.
+ *
+ * Description and Usage:
+ * - Extend API to create specific endpoint handlers (e.g., UserAPI, ProductAPI).
+ * - Implement all abstract methods such as 
+ *      - get(), 
+ *      - post(), 
+ *      - put(), 
+ *      - delete() 
+ *   in the subclass.
+ * - Provides shared functionality (method templates) for subclasses.
+ * 
+ */
+
 abstract class API
 {
     protected static $validator;
@@ -14,7 +32,17 @@ abstract class API
 
     abstract public function delete(array $args): void;
 
-    protected function getMethodTemplate(array $configs)
+
+    /**
+     * 
+     * This method is used to automate the creation of GET method
+     * 
+     * Required keys for @param configs
+     * - @param query -- SELECT query to execute
+     * - @param args  -- query parameter (eg. ID)
+     * 
+     */
+    protected function getMethodTemplate(array $configs): void
     {
         $className = get_class($this);
 
@@ -64,6 +92,16 @@ abstract class API
         }
     }
 
+    /**
+     * 
+     * This method is used to automate the creation of POST method
+     * 
+     * Required keys for @param configs
+     * - @param query    -- INSERT query to execute
+     * - @param contents -- data to be inserted
+     * - @param params   -- parameter array for binding values to query statement
+     * 
+     */
     protected function postMethodTemplate(array $configs): void
     {
         $className = get_class($this);
@@ -97,6 +135,16 @@ abstract class API
         }
     }
 
+        /**
+     * 
+     * This method is used to automate the creation of PUT method
+     * 
+     * Required keys for @param configs
+     * - @param query    -- UPDATE query to execute
+     * - @param contents -- data to replace
+     * - @param params   -- parameter array for binding values to query statement
+     * 
+     */
     protected function putMethodTemplate(array $configs): void
     {
         $className = get_class($this);
@@ -128,6 +176,15 @@ abstract class API
         }
     }
 
+        /**
+     * 
+     * This method is used to automate the creation of DELETE method
+     * 
+     * Required keys for @param configs
+     * - @param query -- DELETE query to execute
+     * - @param args  -- query parameter (eg. ID)
+     * 
+     */
     protected function deleteMethodTemplate(array $configs): void
     {
         $className = get_class($this);
