@@ -1,20 +1,19 @@
 <?php
 
-/*
-* UserAPI.php
-*
-* This file contains the UserAPI class which handles user-related API requests.
-* It supports CRUD operations for user data.
-
-*
-* Usage:
-* $userAPI = UserAPI::getApi();
-* $userAPI->get(); // Fetch user
-* $userAPI->post(); // Create a new user
-* $userAPI->put(); // Update user
-* $userAPI->delete(); // Delete user
-*
-*/
+/**
+ * User API
+ *
+ * This file provides API endpoints and logic for managing users.
+ * It handles operations such as creating, retrieving, updating,
+ * and deleting users in the system.
+ *
+ * Usage:
+ * - get(array $args = []): Retrieve users, optionally filtered by parameters.
+ * - post(): Create a new user.
+ * - put(array $args): Update an existing user.
+ * - delete(array $args): Delete a user.
+ *
+ */
 
 class UserAPI extends API
 {

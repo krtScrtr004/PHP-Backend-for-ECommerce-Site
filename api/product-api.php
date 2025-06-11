@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Product API
+ *
+ * This file provides API endpoints and logic for managing products.
+ * It handles operations such as creating, retrieving, updating,
+ * and deleting products in the system.
+ *
+ * Usage:
+ * - get(array $args = []): Retrieve products, optionally filtered by parameters.
+ * - post(): Create a new product.
+ * - put(array $args): Update an existing product.
+ * - delete(array $args): Delete a product.
+ *
+ */
+
 class ProductAPI extends API
 {
     private static $productAPI;

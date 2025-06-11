@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Address API
+ *
+ * This file provides API endpoints and logic for managing user addresses.
+ * It handles operations such as creating, retrieving, updating,
+ * and deleting addresses associated with users in the system.
+ *
+ * Usage:
+ * - get(array $args = []): Retrieve user addresses, optionally filtered by parameters.
+ * - post(): Create a new user address.
+ * - put(array $args): Update an existing user address.
+ * - delete(array $args): Delete a user address.
+ *
+ */
+
 class AddressAPI extends API
 {
     private static $addressAPI;

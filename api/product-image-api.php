@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Product Image API
+ *
+ * This file provides API endpoints and logic for managing product images.
+ * It handles operations such as creating, retrieving, updating,
+ * and deleting product images associated with products in the system.
+ *
+ * Usage:
+ * - get(array $args = []): Retrieve product images, optionally filtered by parameters.
+ * - post(): Upload a new product image.
+ * - put(array $args): Update an existing product image.
+ * - delete(array $args): Delete a product image.
+ *
+ */
+
 class ProductImageAPI extends ProductAPI
 {
     private static $productImageAPI;
