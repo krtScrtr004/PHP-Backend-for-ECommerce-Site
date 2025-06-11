@@ -1,11 +1,11 @@
 <?php
 
-interface API {
-    public function get(array $args = []): void;
+abstract class API {
+    abstract public function get(array $args = []): void;
 
-    public function post(): void;
+    abstract public function post(): void;
 
-    public function put(array $args): void;
+    abstract public function put(array $args): void;
 
-    public function delete(array $args): void;
+    abstract public function delete(array $args): void;
 }

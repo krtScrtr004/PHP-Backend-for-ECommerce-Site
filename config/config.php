@@ -22,24 +22,12 @@ define('IMPLEMENTATION_PATH', RESOURCE_PATH . '/implementation/');
 
 try {
     /**
-     * Include Necessary Files
+     * Include Files
      */
-    foreach (glob(UTIL_PATH . '*.php') as $filename) {
-        require_once $filename;
-    }
-
-    /**
-     * Error Handling Config
-     */
-    ini_set('error_reporting', E_ALL);          // Report all errors
-    // ini_set('display_errors', 0);               // Do not display errors on browser
-    set_error_handler(['Logger', 'logError']);
-    set_exception_handler(['Logger', 'logException']);
-
-
     foreach (glob(CONFIG_PATH . '*.php') as $filename) {
         require_once $filename;
     }
+    require_once UTIL_PATH . 'utility.php';
 
     spl_autoload_register(function ($class) {
         $paths = [API_PATH, CONTRACT_PATH, CONFIG_PATH, IMPLEMENTATION_PATH, ROUTER_PATH, UTIL_PATH];
@@ -53,6 +41,17 @@ try {
         }
     });
 
+    /**
+     * Error Handling Config
+     */
+    ini_set('error_reporting', E_ALL);          // Report all errors
+    ini_set('display_errors', 0);               // Do not display errors on browser
+    set_error_handler(['Logger', 'logError']);
+    set_exception_handler(['Logger', 'logException']);
+
+    /**
+     * Instantiate Classes
+     */
     $conn = DBConnection::getConnection();
     $router = Router::getRouter();
 
@@ -60,7 +59,6 @@ try {
     $addressAPI = AddressAPI::getApi();
     $productAPI = ProductAPI::getApi();
     $productImageAPI = ProductImageAPI::getApi();
-
 } catch (Exception $e) {
-    throw new ErrorException($e->getMessage());
+    throw new Exception($e->getMessage());
 }
