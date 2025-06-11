@@ -127,4 +127,38 @@ abstract class API
             Respond::respondException($e->getMessage());
         }
     }
+
+    protected function deleteMethodTemplate(array $configs): void
+    {
+        $className = get_class($this);
+        global $conn;
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
+                throw new LogicException('Bad request.');
+
+            $requiredConfigs = ['query', 'args'];
+            foreach ($requiredConfigs as $config) {
+                if (!isset($configs[$config]))
+                    throw new BadMethodCallException("$config is not defined.");
+            }
+            $args = $configs['args'];
+
+            Logger::logAccess("Create DELETE request on $className.");
+
+            $validateId = static::$validator->validateFields($args, static::$fileName);
+            if (!$validateId['status'])
+                Respond::respondFail($validateId['message']);
+
+            static::$validator->sanitize($args);
+            $params = [':id' => $args['id']];
+
+            $query = $conn->prepare($configs['query']);
+            $query->execute($params);
+
+            Logger::logAccess("Finished DELETE request on $className.");
+            Respond::respondSuccess('Delete request successful.');
+        } catch (Exception $e) {
+            Respond::respondException($e->getMessage());
+        }
+    }
 }

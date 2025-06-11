@@ -87,28 +87,10 @@ class AddressAPI extends API
 
     public function delete(array $args): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
-                throw new LogicException('Bad request.');
-
-            Logger::logAccess('Create DELETE request on User API.');
-
-            $validateId = self::$validator->validateFields($args, self::$fileName);
-            if (!$validateId['status'])
-                Respond::respondFail($validateId['message']);
-
-            self::$validator->sanitize($args);
-            $params = [':userId' => $args['userId']];
-
-            $stmt = 'DELETE FROM user_address WHERE user_id = :userId';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished DELETE request on Address API.');
-            Respond::respondSuccess('User address deleted successfully.');
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $params = [
+            'query' => 'DELETE FROM user_address WHERE id = :id',
+            'args' => $args
+        ];
+        $this->deleteMethodTemplate($params);
     }
 }

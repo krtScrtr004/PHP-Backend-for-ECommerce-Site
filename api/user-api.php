@@ -84,28 +84,10 @@ class UserAPI extends API
 
     public function delete(array $args): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
-                throw new LogicException('Bad request.');
-
-            Logger::logAccess('Create DELETE request on User API.');
-
-            $validateId = self::$validator->validateFields($args, self::$fileName);
-            if (!$validateId['status'])
-                Respond::respondFail($validateId['message']);
-
-            self::$validator->sanitize($args);
-            $params = [':id' => $args['id']];
-
-            $stmt = 'DELETE FROM user WHERE id = :id';
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-
-            Logger::logAccess('Finished DELETE request on User API.');
-            Respond::respondSuccess('User deleted successfully.');
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $params = [
+            'query' => 'DELETE FROM user WHERE id = :id',
+            'args' => $args
+        ];
+        $this->deleteMethodTemplate($params);
     }
 }
