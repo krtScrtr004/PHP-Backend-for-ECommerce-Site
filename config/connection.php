@@ -1,12 +1,27 @@
 <?php
 
 /**
- * Database Connection Class
+ * Class DBConnection
+ * 
+ * DBConnection class provides a singleton-style interface for establishing and retrieving
+ * a PDO connection to a MySQL database using predefined configuration settings.
+ *
+ * This class encapsulates the database connection details (hostname, username, password, dbname)
+ * and ensures that only one PDO connection instance is created and reused throughout the application.
  *
  * Usage:
- * $object = new ClassName($parameters);
- * $object->methodName($arguments);
+ *   $pdo = DBConnection::getConnection();
+ *   // Use $pdo to interact with the database using PDO methods.
  *
+ * Features:
+ * - Uses PDO for secure and flexible database access.
+ * - Sets PDO error mode to exception for better error handling.
+ * - Sets default fetch mode to associative arrays.
+ * - Disables emulated prepared statements for improved security.
+ * - Automatically connects to the database on first use.
+ *
+ * Note:
+ * - Designed for MySQL databases with UTF-8 (utf8mb4) character set.
  */
 
 class DBConnection

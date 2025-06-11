@@ -1,19 +1,24 @@
 <?php
 
 /**
- * 
- * User API class
+ * Class UserAPI
  *
- * This file provides API endpoints and logic for managing users.
- * It handles operations such as creating, retrieving, updating,
- * and deleting users in the system.
+ * The UserAPI class provides a RESTful API interface for managing user data.
+ * It extends the base API class and implements CRUD operations (Create, Read, Update, Delete)
+ * for user records in the database. This class uses the Singleton pattern to ensure only one
+ * instance is used throughout the application. It also integrates user data validation via
+ * the UserValidation class.
+ *
+ * Methods:
+ * - getApi(): Returns the singleton instance of UserAPI and initializes the validator if needed.
+ * - get(array $args = []): Retrieves user records from the database. Accepts optional arguments for query customization.
+ * - post(): Handles the creation of a new user. Reads input data, hashes the password, and inserts a new user record.
+ * - put(array $args): Updates an existing user record. Merges input data and arguments, hashes the password, and updates the user in the database.
+ * - delete(array $args): Deletes a user record based on the provided arguments (typically user ID).
  *
  * Usage:
- * - get(array $args = []): Retrieve users, optionally filtered by parameters.
- * - post(): Create a new user.
- * - put(array $args): Update an existing user.
- * - delete(array $args): Delete a user.
- *
+ * Use this class to expose user management endpoints in a RESTful API. Each method corresponds to an HTTP verb
+ * (GET, POST, PUT, DELETE) and interacts with the user table in the database accordingly.
  */
 
 class UserAPI extends API

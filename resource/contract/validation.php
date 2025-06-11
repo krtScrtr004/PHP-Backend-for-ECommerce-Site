@@ -1,5 +1,29 @@
 <?php
 
+/**
+ * Abstract class Validation
+ *
+ * Provides a base structure for validating and sanitizing data fields, typically used in resource or contract validation scenarios.
+ * 
+ * This class defines a set of methods to:
+ * - Validate individual fields based on length, presence, and optional custom callbacks.
+ * - Validate multiple fields against a schema defined in an external data file.
+ * - Enforce implementation of a sanitizer for data cleaning in subclasses.
+ * 
+ * Usage:
+ * - Extend this class to implement specific validation logic for different resources or data contracts.
+ * - Implement the abstract methods `getValidator()` and `sanitize()` in the subclass.
+ * 
+ * Methods:
+ * - abstract public static function getValidator(): Must be implemented to return a validator instance or configuration.
+ * - public function validate(string $fieldName, mixed $data, int $MIN = 8, int $MAX = 255, callable|array|null $callback = null): array
+ *      Validates a single field for presence, length, and optionally with a custom callback. Returns an array with validation status and message.
+ * - public function validateFields(array $data, String $fileName): array
+ *      Validates multiple fields based on a schema loaded from a file. Returns the first validation error or a success status.
+ * - abstract public static function sanitize(array &$data): void
+ *      Must be implemented to clean or sanitize the provided data array.
+ */
+
 abstract class Validation
 {
     abstract public static function getValidator();

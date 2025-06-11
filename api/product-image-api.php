@@ -1,19 +1,24 @@
 <?php
 
 /**
- * 
- * Product Image API class
+ * Class ProductImageAPI
  *
- * This file provides API endpoints and logic for managing product images.
- * It handles operations such as creating, retrieving, updating,
- * and deleting product images associated with products in the system.
+ * Handles API operations related to product images in the application.
+ * Inherits from ProductAPI and provides CRUD (Create, Read, Update, Delete) methods
+ * for managing records in the `product_image` database table.
  *
  * Usage:
- * - get(array $args = []): Retrieve product images, optionally filtered by parameters.
- * - post(): Upload a new product image.
- * - put(array $args): Update an existing product image.
- * - delete(array $args): Delete a product image.
+ * - Use ProductImageAPI::getApi() to obtain a singleton instance of this API handler.
+ * - Call the respective methods (get, post, put, delete) to perform operations on product images.
  *
+ * Methods:
+ * - get(array $args = []): Retrieves product image records from the database. Accepts optional filter arguments.
+ * - post(): Creates a new product image record using data from the request body.
+ * - put(array $args): Updates an existing product image record. Merges URL arguments and request body data.
+ * - delete(array $args): Deletes a product image record specified by the provided arguments.
+ *
+ * This class uses method templates (getMethodTemplate, postMethodTemplate, etc.) inherited from ProductAPI
+ * to standardize the execution of database queries and response formatting.
  */
 
 class ProductImageAPI extends ProductAPI
