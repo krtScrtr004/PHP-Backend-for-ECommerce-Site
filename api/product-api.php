@@ -42,53 +42,11 @@ class ProductAPI extends API
 
     public function get(array $args = []): void
     {
-        global $conn;
-        try {
-            if ($_SERVER['REQUEST_METHOD'] !== 'GET')
-                throw new LogicException('Bad request.');
-
-            Logger::logAccess('Create GET request on Product API.');
-
-            $params = [];
-            $stmt = 'SELECT * FROM product';
-
-            // Append WHERE clause if query strings is / are present
-            if (count($args) > 0) {
-                $stmt .= ' WHERE ';
-
-                $validateContents = self::$validator->validateFields($args, self::$fileName);
-                if ($validateContents['status']) {
-                    self::$validator->sanitize($args);
-
-                    // Collect conditions in an array
-                    $conditions = [];
-                    foreach ($args as $key => $value) {
-                        $conditions[] = "$key = :$key";
-                        $params[":$key"] = $value;
-                    }
-                    // Join conditions with AND in the WHERE clause
-                    $stmt .= implode(' AND ', $conditions);
-                } else {
-                    Respond::respondFail($validateContents['message']);
-                }
-            }
-
-            $query = $conn->prepare($stmt);
-            $query->execute($params);
-            $result = $query->fetchAll();
-
-            if (count($result) > 0) {
-                foreach ($result as &$row) {
-                    if (isset($row['price']))
-                        $row['price'] = (float) ($row['price'] / 100);
-                }
-            }
-
-            Logger::logAccess('Finished GET request on Product API.');
-            Respond::respondSuccess(data: $result);
-        } catch (Exception $e) {
-            Respond::respondException($e->getMessage());
-        }
+        $params = [
+            'query' => 'SELECT * FROM product',
+            'args' => $args
+        ];
+        $this->getFunctionTemplate($params);
     }
 
     public function post(): void
