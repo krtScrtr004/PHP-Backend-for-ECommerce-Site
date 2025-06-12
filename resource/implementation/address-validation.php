@@ -38,9 +38,6 @@ class AddressValidation extends Validation
     }
     public static function sanitize(array &$data): void
     {
-        if (!isset($data))
-            throw new ErrorException('No data array to sanitize.');
-
         $trimmableFields = ['houseNo', 'street', 'city', 'region', 'postalCode', 'country'];
         foreach ($trimmableFields as $trimmable) {
             if (isset($data[$trimmable]))

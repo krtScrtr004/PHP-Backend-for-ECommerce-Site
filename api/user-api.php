@@ -51,18 +51,16 @@ class UserAPI extends API
 
     public function post(): void
     {
-        $contents = decodeData('php://input');
         $queryParams = [
-            ':firstName'  => $contents['firstName'],
-            ':lastName' => $contents['lastName'],
-            ':email'  => $contents['email'],
-            ':password'  => password_hash($contents['password'], PASSWORD_ARGON2ID),
-            ':contact' => $contents['contact']
+            ':firstName'  => 'firstName',
+            ':lastName' => 'lastName',
+            ':email'  => 'email',
+            ':password'  => 'password', 
+            ':contact' => 'contact'
         ];
 
         $param = [
             'query' => 'INSERT INTO user(first_name, last_name, email, password, contact) VALUES(:firstName, :lastName, :email, :password, :contact)',
-            'contents' => $contents,
             'params' => $queryParams
         ];
         $this->postMethodTemplate($param);
@@ -70,19 +68,18 @@ class UserAPI extends API
 
     public function put(array $args): void
     {
-        $mergedArrays = [...$args, ...decodeData('php://input')];
         $queryParams = [
-            ':id' => $mergedArrays['id'],
-            ':firstName' => $mergedArrays['firstName'],
-            ':lastName' => $mergedArrays['lastName'],
-            ':email' => $mergedArrays['email'],
-            ':password' => password_hash($mergedArrays['password'], PASSWORD_ARGON2ID),
-            ':contact' => $mergedArrays['contact']
+            ':id' => 'id',
+            ':firstName' => 'firstName',
+            ':lastName' => 'lastName',
+            ':email' => 'email',
+            ':password' => 'password',
+            ':contact' => 'contact'
         ];
 
         $param = [
             'query' => 'UPDATE user SET first_name = :firstName, last_name = :lastName, email = :email, password = :password, contact = :contact WHERE id = :id',
-            'contents' => $mergedArrays,
+            'args' => $args,
             'params' => $queryParams
         ];
         $this->putMethodTemplate($param);

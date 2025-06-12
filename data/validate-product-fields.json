@@ -1,33 +1,41 @@
 {
-    "name": {
-        "name": "product name",
-        "data": "name",
-        "min": 1,
-        "max": 100,
-        "callback": null
-    },
+  "id": {
+    "name": "id",
+    "data": "id",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
 
-    "description": {
-        "name": "product description",
-        "data": "description",
-        "min": 1,
-        "max": 500,
-        "callback": null
-    },
+  "name": {
+    "name": "product name",
+    "data": "name",
+    "min": 1,
+    "max": 100,
+    "callback": null
+  },
 
-    "price": {
-        "name": "product price",
-        "data": "price",
-        "min": null,
-        "max": null,
-        "callback": "validateProduct"
-    },
+  "description": {
+    "name": "product description",
+    "data": "description",
+    "min": 1,
+    "max": 500,
+    "callback": null
+  },
 
-    "imageLink": {
-        "name": "image link",
-        "data": "imageLink",
-        "min": null,
-        "max": null,
-        "callback": "validateImageUrl"
-    }
+  "price": {
+    "name": "product price",
+    "data": "price",
+    "min": null,
+    "max": null,
+    "callback": "validateProduct"
+  },
+
+  "imageLink": {
+    "name": "image link",
+    "data": "imageLink",
+    "min": null,
+    "max": null,
+    "callback": "validateImageUrl"
+  }
 }

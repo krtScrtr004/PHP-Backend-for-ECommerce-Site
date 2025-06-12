@@ -49,20 +49,18 @@ class AddressAPI extends API
 
     public function post(): void
     {
-        $contents = decodeData('php://input');
         $queryParams = [
-            ':userId' => $contents['userId'],
-            ':houseNo' => $contents['houseNo'],
-            ':street' => $contents['street'],
-            ':city' => $contents['city'],
-            ':region' => $contents['region'],
-            ':postalCode' => $contents['postalCode'],
-            ':country' => $contents['country'],
+            ':userId' => 'userId',
+            ':houseNo' => 'houseNo',
+            ':street' => 'street',
+            ':city' => 'city',
+            ':region' => 'region',
+            ':postalCode' => 'postalCode',
+            ':country' => 'country',
         ];
 
         $param = [
             'query' => 'INSERT INTO user_address(user_id, house_no, street, city, region, postal_code, country) VALUES(:userId, :houseNo, :street, :city, :region, :postalCode, :country)',
-            'contents' => $contents,
             'params' => $queryParams
         ];
         $this->postMethodTemplate($param);
@@ -70,20 +68,19 @@ class AddressAPI extends API
 
     public function put(array $args): void
     {
-        $mergedArrays = [...$args, ...decodeData('php://input')];
         $queryParams = [
-            ':userId' => $mergedArrays['userId'],
-            ':houseNo' => $mergedArrays['houseNo'],
-            ':street' => $mergedArrays['street'],
-            ':city' => $mergedArrays['city'],
-            ':region' => $mergedArrays['region'],
-            ':postalCode' => $mergedArrays['postalCode'],
-            ':country' => $mergedArrays['country'],
+            ':userId' => 'userId',
+            ':houseNo' => 'houseNo',
+            ':street' => 'street',
+            ':city' => 'city',
+            ':region' => 'region',
+            ':postalCode' => 'postalCode',
+            ':country' => 'country',
         ];
 
         $param = [
             'query' => 'UPDATE user_address SET house_no = :houseNo, street = :street, city = :city, region = :region, postal_code = :postalCode, country = :country WHERE user_id = :userId',
-            'contents' => $mergedArrays,
+            'args' => $args,
             'params' => $queryParams
         ];
         $this->putMethodTemplate($param);

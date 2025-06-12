@@ -61,16 +61,14 @@ class ProductAPI extends API
 
     public function post(): void
     {
-        $contents = decodeData('php://input');
         $queryParams = [
-            ':name' => $contents['name'],
-            ':description' => $contents['description'],
-            ':price' => $contents['price']
+            ':name' => 'name',
+            ':description' => 'description',
+            ':price' => 'price'
         ];
 
         $param = [
             'query' => 'INSERT INTO product(name, description, price) VALUES(:name, :description, :price)',
-            'contents' => $contents,
             'params' => $queryParams
         ];
         $this->postMethodTemplate($param);
@@ -78,17 +76,16 @@ class ProductAPI extends API
 
     public function put(array $args): void
     {
-        $mergedArrays = [...$args, ...decodeData('php://input')];
         $queryParams = [
-            ':id' => $mergedArrays['id'],
-            ':name' => $mergedArrays['name'],
-            ':description' => $mergedArrays['description'],
-            ':price' => $mergedArrays['price']
+            ':id' => 'id',
+            ':name' => 'name',
+            ':description' => 'description',
+            ':price' => 'price'
         ];
 
         $param = [
             'query' => 'UPDATE product SET name = :name, description = :description, price = :price WHERE id = :id',
-            'contents' => $mergedArrays,
+            'args' => $args,
             'params' => $queryParams
         ];
         $this->putMethodTemplate($param);

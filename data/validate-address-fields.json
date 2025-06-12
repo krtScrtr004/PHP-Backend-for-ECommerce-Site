@@ -1,13 +1,21 @@
 {
+  "id": {
+    "name": "id",
+    "data": "id",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
   "userId": {
     "name": "user id",
     "data": "userId",
     "min": null,
     "max": null,
-    "callback": null 
+    "callback": "validateId"
   },
 
-   "houseNo": {
+  "houseNo": {
     "name": "house number",
     "data": "houseNo",
     "min": 1,
@@ -15,7 +23,7 @@
     "callback": "validateHouseNo"
   },
 
-   "street": {
+  "street": {
     "name": "street",
     "data": "street",
     "min": 1,
@@ -23,7 +31,7 @@
     "callback": "validateStreet"
   },
 
-   "city": {
+  "city": {
     "name": "city",
     "data": "city",
     "min": 2,
@@ -31,7 +39,7 @@
     "callback": "validateCity"
   },
 
-   "region": {
+  "region": {
     "name": "region",
     "data": "region",
     "min": 1,
@@ -39,7 +47,7 @@
     "callback": "validateRegion"
   },
 
-   "postalCode": {
+  "postalCode": {
     "name": "postal code",
     "data": "postalCode",
     "min": 4,
@@ -47,7 +55,7 @@
     "callback": "validatePostalCode"
   },
 
-   "country": {
+  "country": {
     "name": "country",
     "data": "country",
     "min": 1,

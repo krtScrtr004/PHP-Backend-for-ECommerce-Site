@@ -46,15 +46,13 @@ class ProductImageAPI extends ProductAPI
 
     public function post(): void
     {
-        $contents = decodeData('php://input');
         $queryParams = [
-            ':productId' => $contents['productId'],
-            ':imageLink' => $contents['imageLink'],
+            ':productId' => 'productId',
+            ':imageLink' => 'imageLink',
         ];
 
         $param = [
             'query' => 'INSERT INTO product_image(product_id, image_link) VALUES(:productId, :name)',
-            'contents' => $contents,
             'params' => $queryParams
         ];
         $this->postMethodTemplate($param);
@@ -62,15 +60,14 @@ class ProductImageAPI extends ProductAPI
 
     public function put(array $args): void
     {
-        $mergedArrays = [...$args, ...decodeData('php://input')];
         $queryParams = [
-            ':id' => $mergedArrays['id'],
-            ':imageLink' => $mergedArrays['imageLink'],
+            ':id' => 'id',
+            ':imageLink' => 'imageLink',
         ];
 
         $param = [
             'query' => 'UPDATE product_image SET image_link = :imageLink WHERE id = :id',
-            'contents' => $mergedArrays,
+            'args' => $args,
             'params' => $queryParams
         ];
         $this->putMethodTemplate($param);

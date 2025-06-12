@@ -53,17 +53,6 @@ class UserValidation extends Validation
 
     /* --Callback validator functions-- */
 
-    public function validateId($param): array
-    {
-        if (!is_numeric($param)) {
-            return [
-                'status' => false,
-                'message' => 'Id must be a number.'
-            ];
-        }
-        return ['status' => true];
-    }
-
     public function validatePassword($param): array
     {
         if (preg_match("/[^a-zA-Z0-9_!@'.-]/", $param) === 1) {

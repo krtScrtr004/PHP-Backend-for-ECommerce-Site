@@ -17,7 +17,11 @@
     "/Rest/product-image/": 
         ["productImage", "get"],
      "/Rest/product-image/{id:[0-9]+}": 
-        ["productImage", "get"]
+        ["productImage", "get"],
+    "/Rest/order/": 
+        ["order", "get"],
+    "/Rest/order/{id:[0-9]+}": 
+        ["order", "get"]
   },
 
   "POST": {
@@ -28,7 +32,9 @@
     "/Rest/product/": 
         ["product", "post"],
     "/Rest/product-image/": 
-        ["productImage", "post"] 
+        ["productImage", "post"],
+    "/Rest/order/": 
+        ["order", "post"]  
     },
 
   "PUT": {
@@ -39,7 +45,9 @@
     "/Rest/product/{id:[0-9]+}": 
         ["product", "put"],
     "/Rest/product-image/{id:[0-9]+}": 
-        ["productImage", "put"]
+        ["productImage", "put"],
+     "/Rest/order/{id:[0-9]+}": 
+        ["order", "put"]
   },
 
   "DELETE": {
@@ -50,6 +58,8 @@
     "/Rest/product/{id:[0-9]+}": 
         ["productImage", "delete"],
     "/Rest/product-image/{id:[0-9]+}": 
-        ["productImage", "delete"]
+        ["productImage", "delete"],
+    "/Rest/order/{id:[0-9]+}": 
+        ["order", "delete"]
   }
 }

@@ -58,3 +58,4 @@ $userAPI = UserApi::getApi();
 $addressAPI = AddressAPI::getApi();
 $productAPI = ProductAPI::getApi();
 $productImageAPI = ProductImageAPI::getApi();
+$orderAPI = OrderAPI::getApi();

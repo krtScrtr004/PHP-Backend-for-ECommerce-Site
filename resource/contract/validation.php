@@ -58,7 +58,7 @@ abstract class Validation
             $callbackReturn = null;
             if (is_callable($callback))
                 $callbackReturn = call_user_func($callback, $data);
-            else if (is_array($callback)) 
+            else if (is_array($callback))
                 $callbackReturn = call_user_func([$callback[0], $callback[1]], $data);
 
             if (!$callbackReturn['status'])
@@ -103,4 +103,15 @@ abstract class Validation
     }
 
     abstract public static function sanitize(array &$data): void;
+
+    protected function validateId($param): array
+    {
+        if (!is_numeric($param)) {
+            return [
+                'status' => false,
+                'message' => 'Id must be a numeric.'
+            ];
+        }
+        return ['status' => true];
+    }
 };
