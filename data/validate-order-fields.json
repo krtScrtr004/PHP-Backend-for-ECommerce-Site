@@ -1,0 +1,25 @@
+{
+  "id": {
+    "name": "id",
+    "data": "id",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "userId": {
+    "name": "user id",
+    "data": "userId",
+    "min": null,
+    "max": null,
+    "callback": "validateId" 
+  },
+
+  "status": {
+    "name": "status",
+    "data": "status",
+    "min": 7,
+    "max": null,
+    "callback": "validateStatus"
+  }
+}
