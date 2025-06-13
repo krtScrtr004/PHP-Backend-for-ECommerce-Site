@@ -72,19 +72,15 @@ class ProductAPI extends API
 
     public function put(array $args): void
     {
-        $queryParams = [
-            ':id' => 'id',
-            ':name' => 'name',
-            ':description' => 'description',
-            ':price' => 'price'
-        ];
-
-        $param = [
-            'query' => 'UPDATE product SET name = :name, description = :description, price = :price WHERE id = :id',
+        $this->putMethodTemplate([
+            'table' => 'product',
             'args' => $args,
-            'params' => $queryParams
-        ];
-        $this->putMethodTemplate($param);
+            'columns' => [
+                'name',
+                'description',
+                'price'
+            ]
+        ]);
     }
 
     public function delete(array $args): void

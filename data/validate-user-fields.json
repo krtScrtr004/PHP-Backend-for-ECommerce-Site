@@ -39,6 +39,14 @@
     "callback": "validatePassword"
   },
 
+  "profileImageLink": {
+    "name": "profile image link",
+    "data": "profileImageLink",
+    "min": null,
+    "max": null,
+    "callback": "validateUrl"
+  },
+
   "contact": {
     "name": "contact",
     "data": "contact",

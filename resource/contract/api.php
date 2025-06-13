@@ -68,9 +68,8 @@ abstract class API
      * This method is used to automate the creation of GET method
      * 
      * Required keys for @param configs
-     * - @param query       -- SELECT query array. It must contain the ff:
-     *      > @param table  -- table name (REQUIRED)
-     * - @param args        -- query parameter (eg. ID)
+     * - @param table -- table name
+     * - @param args  -- query parameter (eg. ID)
      * 
      */
     protected function getMethodTemplate(array $configs): void
@@ -125,8 +124,8 @@ abstract class API
      * This method is used to automate the creation of POST method
      * 
      * Required keys for @param configs
-     * - @param query    -- INSERT query to execute
-     * - @param params   -- parameter array for binding values to query statement
+     * - @param table  -- table name
+     * - @param columns -- column names where data is inserted
      * 
      */
     protected function postMethodTemplate(array $configs): void
@@ -150,6 +149,7 @@ abstract class API
         if (!$validateContents['status'])
             Respond::respondFail($validateContents['message']);
 
+        // Build the binding paramters for query
         $params = [];
         foreach ($configs['columns'] as $value) {
             $value = snakeToCamelCase($value);
@@ -194,7 +194,7 @@ abstract class API
 
         Logger::logAccess("Create PUT request on $className");
 
-        $requiredConfigs = ['query', 'args', 'params'];
+        $requiredConfigs = ['table', 'args', 'columns'];
         foreach ($requiredConfigs as $config) {
             if (!isset($configs[$config]))
                 throw new BadMethodCallException("$config is not defined.");
@@ -206,16 +206,24 @@ abstract class API
         if (!$validateContents['status'])
             Respond::respondFail($validateContents['message']);
 
+        // Build the binding paramters for query
         $params = [];
-        foreach ($configs['params'] as $key => $value) {
-            if (preg_match('/(^:password$|Password$)/', $key))
-                $params[$key] = password_hash($contents[$value], PASSWORD_ARGON2ID);
+        foreach ($configs['columns'] as $value) {
+            $value = snakeToCamelCase($value);
+            if (preg_match('/(^password$|Password$)/', $value))
+                $params[$value] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
             else
-                $params[$key] = $contents[$value];
+                $params[$value] = $contents[$value];
         }
+        $params['id'] = $configs['args']['id'];
+
+        $updateStmt = implode(', ', array_map(function ($val) {
+            return $val . ' = :' . snakeToCamelCase($val);
+        }, $configs['columns']));
+        $stmt = "UPDATE {$configs['table']} SET $updateStmt WHERE id = :id";
 
         static::$validator->sanitize($contents);
-        $query = $conn->prepare($configs['query']);
+        $query = $conn->prepare($stmt);
         $query->execute($params);
 
         Logger::logAccess("Finished PUT request on $className");

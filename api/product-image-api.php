@@ -45,7 +45,6 @@ class ProductImageAPI extends ProductAPI
 
     public function post(): void
     {
-
         $this->postMethodTemplate( [
             'table' => 'product_image',
             'columns' => [
@@ -57,17 +56,14 @@ class ProductImageAPI extends ProductAPI
 
     public function put(array $args): void
     {
-        $queryParams = [
-            ':id' => 'id',
-            ':imageLink' => 'imageLink',
-        ];
-
-        $param = [
-            'query' => 'UPDATE product_image SET image_link = :imageLink WHERE id = :id',
+        $this->putMethodTemplate( [
+            'table' => 'product_image',
             'args' => $args,
-            'params' => $queryParams
-        ];
-        $this->putMethodTemplate($param);
+            'columns' => [
+                'product_id',
+                'image_link'
+            ]
+        ]);
     }
 
     public function delete(array $args): void

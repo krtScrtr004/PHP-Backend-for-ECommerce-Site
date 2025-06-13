@@ -42,12 +42,10 @@ class UserAPI extends API
 
     public function get(array $args = []): void
     {
-        $params = [
+        $this->getMethodTemplate([
             'table' => 'user',
             'args' => $args
-        ];
-
-        $this->getMethodTemplate($params);
+        ]);
     }
 
     public function post(): void
@@ -60,34 +58,24 @@ class UserAPI extends API
                 'email', 
                 'password', 
                 'contact'
-            ],
-            'values' => [
-                'firstName',
-                'lastName',
-                'email',
-                'password',
-                'contact'
             ]
         ]);
     }
 
     public function put(array $args): void
     {
-        $queryParams = [
-            ':id' => 'id',
-            ':firstName' => 'firstName',
-            ':lastName' => 'lastName',
-            ':email' => 'email',
-            ':password' => 'password',
-            ':contact' => 'contact'
-        ];
-
-        $param = [
-            'query' => 'UPDATE user SET first_name = :firstName, last_name = :lastName, email = :email, password = :password, contact = :contact WHERE id = :id',
+        $this->putMethodTemplate([
+            'table' => 'user',
             'args' => $args,
-            'params' => $queryParams
-        ];
-        $this->putMethodTemplate($param);
+            'columns' => [
+                'first_name', 
+                'last_name', 
+                'email', 
+                'password', 
+                'profile_image_link',
+                'contact'
+            ]
+        ]);
     }
 
     public function delete(array $args): void

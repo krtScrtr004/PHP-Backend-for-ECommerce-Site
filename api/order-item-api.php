@@ -60,19 +60,15 @@ class OrderItemApi extends OrderAPI
 
     public function put(array $args): void
     {
-        $queryParams = [
-            ':id' => 'id',
-            ':orderId' => 'orderId',
-            ':productId' => 'productId',
-            ':quantity' => 'quantity'
-        ];
-
-        $param = [
-            'query' => 'UPDATE order_item SET order_id = :orderId, product_id = :productId, quantity = :quantity WHERE id = :id',
+         $this->putMethodTemplate([
+            'table' => 'order_item',
             'args' => $args,
-            'params' => $queryParams
-        ];
-        $this->putMethodTemplate($param);
+            'columns' => [
+                'order_id', 
+                'product_id',
+                'quantity'
+            ]        
+        ]);
     }
 
     public function delete(array $args): void

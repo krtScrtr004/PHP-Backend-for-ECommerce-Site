@@ -68,18 +68,11 @@ class OrderAPI extends API
 
     public function put(array $args): void
     {
-        $queryParams = [
-            ':id' => 'id',
-            ':userId' => 'userId',
-            'status' => 'status'
-        ];
-
-        $param = [
-            'query' => 'UPDATE orders SET user_id = :userId, status = :status WHERE id = :id',
+        $this->putMethodTemplate([
+            'table' => 'orders',
             'args' => $args,
-            'params' => $queryParams
-        ];
-        $this->putMethodTemplate($param);
+            'columns' => ['user_id', 'status']        
+        ]);
     }
 
     public function delete(array $args): void

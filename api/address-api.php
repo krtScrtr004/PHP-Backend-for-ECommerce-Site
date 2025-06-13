@@ -64,22 +64,19 @@ class AddressAPI extends API
 
     public function put(array $args): void
     {
-        $queryParams = [
-            ':userId' => 'userId',
-            ':houseNo' => 'houseNo',
-            ':street' => 'street',
-            ':city' => 'city',
-            ':region' => 'region',
-            ':postalCode' => 'postalCode',
-            ':country' => 'country',
-        ];
-
-        $param = [
-            'query' => 'UPDATE user_address SET house_no = :houseNo, street = :street, city = :city, region = :region, postal_code = :postalCode, country = :country WHERE user_id = :userId',
+        $this->postMethodTemplate([
+            'table' => 'user_address',
             'args' => $args,
-            'params' => $queryParams
-        ];
-        $this->putMethodTemplate($param);
+            'columns' => [
+                'user_id',
+                'house_no',
+                'steet',
+                'city',
+                'region',
+                'postal_code',
+                'country'
+            ]
+        ]);
     }
 
     public function delete(array $args): void
