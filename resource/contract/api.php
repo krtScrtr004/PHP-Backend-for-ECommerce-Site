@@ -68,8 +68,9 @@ abstract class API
      * This method is used to automate the creation of GET method
      * 
      * Required keys for @param configs
-     * - @param query -- SELECT query to execute
-     * - @param args  -- query parameter (eg. ID)
+     * - @param query       -- SELECT query array. It must contain the ff:
+     *      > @param table  -- table name (REQUIRED)
+     * - @param args        -- query parameter (eg. ID)
      * 
      */
     protected function getMethodTemplate(array $configs): void
@@ -80,21 +81,17 @@ abstract class API
         if ($_SERVER['REQUEST_METHOD'] !== 'GET')
             throw new LogicException('Bad Request.');
 
-        $requiredConfigs = ['query', 'args'];
+        $requiredConfigs = ['table', 'args'];
         foreach ($requiredConfigs as $config) {
             if (!isset($configs[$config]))
                 throw new BadMethodCallException("$config is not defined.");
         }
 
-        $query = $configs['query'];
-        if (!isset($query['table']))
-            throw new BadMethodCallException('Table name is not defined.');
-
         Logger::logAccess("Create GET request on $className.");
 
         $params = [];
 
-        $stmt = "SELECT * FROM {$query['table']}";
+        $stmt = "SELECT * FROM {$configs['table']}";
 
         if (count($configs['args']) > 0) {
             $stmt .= ' WHERE ';
@@ -140,7 +137,7 @@ abstract class API
         if ($_SERVER['REQUEST_METHOD'] !== 'POST')
             throw new LogicException('Bad request.');
 
-        $requiredConfigs = ['query', 'params'];
+        $requiredConfigs = ['table', 'columns'];
         foreach ($requiredConfigs as $config) {
             if (!isset($configs[$config]))
                 throw new BadMethodCallException("$config is not defined.");
@@ -148,23 +145,29 @@ abstract class API
 
         Logger::logAccess("Create POST request on $className.");
 
-        $contents = decodeData('php://input');
-
+        $contents = $configs['contents'] ?? decodeData('php://input');
         $validateContents = static::$validator->validateFields($contents, static::$fileName);
         if (!$validateContents['status'])
             Respond::respondFail($validateContents['message']);
 
         $params = [];
-        foreach ($configs['params'] as $key => $value) {
-            if (preg_match('/(^:password$|Password$)/', $key))
-                $params[$key] = password_hash($contents[$value], PASSWORD_ARGON2ID);
+        foreach ($configs['columns'] as $value) {
+            $value = snakeToCamelCase($value);
+            if (preg_match('/(^password$|Password$)/', $value))
+                $params[$value] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
             else
-                $params[$key] = $contents[$value];
+                $params[$value] = $contents[$value];
         }
 
         static::$validator->sanitize($contents);
 
-        $query = $conn->prepare($configs['query']);
+        // Building query statement
+        $columns = implode(',', $configs['columns']);
+        $values = implode(',', array_map(fn($v) => ':' . snakeToCamelCase($v), $configs['columns']));
+
+        $stmt = "INSERT INTO {$configs['table']}({$columns}) VALUES({$values})";
+
+        $query = $conn->prepare($stmt);
         $query->execute($params);
 
         Logger::logAccess("Finished POST request on $className.");

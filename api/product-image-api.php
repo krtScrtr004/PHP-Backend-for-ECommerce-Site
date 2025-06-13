@@ -37,27 +37,22 @@ class ProductImageAPI extends ProductAPI
 
     public function get(array $args = []): void
     {
-        $query = ['table' => 'product_image'];
-        $params = [
-            'query' => $query,
+        $this->getMethodTemplate([
+            'table' => 'product_image',
             'args' => $args
-        ];
-
-        $this->getMethodTemplate($params);
+        ]);
     }
 
     public function post(): void
     {
-        $queryParams = [
-            ':productId' => 'productId',
-            ':imageLink' => 'imageLink',
-        ];
 
-        $param = [
-            'query' => 'INSERT INTO product_image(product_id, image_link) VALUES(:productId, :name)',
-            'params' => $queryParams
-        ];
-        $this->postMethodTemplate($param);
+        $this->postMethodTemplate( [
+            'table' => 'product_image',
+            'columns' => [
+                'product_id',
+                'image_link'
+            ]
+        ]);
     }
 
     public function put(array $args): void

@@ -36,42 +36,29 @@ class OrderItemApi extends OrderAPI
         return self::$orderItemAPI;
     }
 
-    public function get(array $args = []): void 
+    public function get(array $args = []): void
     {
-        $query = ['table' => 'order_item'];
-        $params = [
-            'query' => $query,
+        $this->getMethodTemplate([
+            'table' => 'order_item',
             'args' => $args
-        ];
-
-        $this->getMethodTemplate($params);
+        ]);
     }
 
-    public function post(): void 
+    public function post(): void
     {
-        $query = 'INSERT INTO order_item(order_id, product_id) VALUES(:orderId, :productId)';
-
+        $columns = ['order_id', 'product_id'];
         $contents = decodeData('php://input');
-        $queryParams = [
-            ':orderId' => 'orderId',
-            ':productId' => 'productId'
-        ];
-        if (isset($contents['quantity'])) {
-            $queryParams[':quantity'] = 'quantity';
+        if (isset($contents['quantity'])) 
+            array_push($columns, 'quantity');
 
-            // Update query to include quantity
-            $query = 'INSERT INTO order_item(order_id,product_id, quantity) VALUES(:orderId, :productId, :quantity)';
-        }
-
-        $param = [
-            'query' => $query,
-            'params' => $queryParams,
+        $this->postMethodTemplate([
+            'table' => 'order_item',
+            'columns' => $columns,
             'contents' => $contents
-        ];
-        $this->postMethodTemplate($param);
+        ]);
     }
 
-    public function put(array $args): void 
+    public function put(array $args): void
     {
         $queryParams = [
             ':id' => 'id',
@@ -88,7 +75,7 @@ class OrderItemApi extends OrderAPI
         $this->putMethodTemplate($param);
     }
 
-    public function delete(array $args): void 
+    public function delete(array $args): void
     {
         $params = [
             'query' => 'DELETE FROM order_item WHERE id = :id',

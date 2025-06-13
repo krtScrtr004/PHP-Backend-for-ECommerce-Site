@@ -42,30 +42,33 @@ class UserAPI extends API
 
     public function get(array $args = []): void
     {
-        $query = ['table' => 'user'];
         $params = [
-            'query' => $query,
+            'table' => 'user',
             'args' => $args
         ];
-        
+
         $this->getMethodTemplate($params);
     }
 
     public function post(): void
     {
-        $queryParams = [
-            ':firstName'  => 'firstName',
-            ':lastName' => 'lastName',
-            ':email'  => 'email',
-            ':password'  => 'password',
-            ':contact' => 'contact'
-        ];
-
-        $param = [
-            'query' => 'INSERT INTO user(first_name, last_name, email, password, contact) VALUES(:firstName, :lastName, :email, :password, :contact)',
-            'params' => $queryParams
-        ];
-        $this->postMethodTemplate($param);
+        $this->postMethodTemplate([
+            'table' => 'user',
+            'columns' => [
+                'first_name', 
+                'last_name', 
+                'email', 
+                'password', 
+                'contact'
+            ],
+            'values' => [
+                'firstName',
+                'lastName',
+                'email',
+                'password',
+                'contact'
+            ]
+        ]);
     }
 
     public function put(array $args): void

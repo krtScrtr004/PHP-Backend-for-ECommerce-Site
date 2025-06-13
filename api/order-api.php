@@ -21,7 +21,7 @@
  *
  * Usage:
  * Instantiate the class using OrderAPI::getApi() and call the appropriate method based on the HTTP request type.
-*/
+ */
 
 enum OrderStatus: string
 {
@@ -50,30 +50,23 @@ class OrderAPI extends API
         return self::$orderAPI;
     }
 
-    public function get(array $args = []): void 
+    public function get(array $args = []): void
     {
-        $query = ['table' => 'orders'];
-        $params = [
-            'query' => $query,
+        $this->getMethodTemplate([
+            'table' => 'orders',
             'args' => $args
-        ];
-        $this->getMethodTemplate($params);
+        ]);
     }
 
-    public function post(): void 
+    public function post(): void
     {
-        $queryParams = [
-            ':userId' => 'userId',
-        ];
-
-        $param = [
-            'query' => 'INSERT INTO orders(user_id) VALUES(:userId)',
-            'params' => $queryParams
-        ];
-        $this->postMethodTemplate($param);
+        $this->postMethodTemplate([
+            'table' => 'orders',
+            'columns' => ['user_id']        
+        ]);
     }
 
-    public function put(array $args): void 
+    public function put(array $args): void
     {
         $queryParams = [
             ':id' => 'id',
@@ -89,7 +82,7 @@ class OrderAPI extends API
         $this->putMethodTemplate($param);
     }
 
-    public function delete(array $args): void 
+    public function delete(array $args): void
     {
         $params = [
             'query' => 'DELETE FROM orders WHERE id = :id',

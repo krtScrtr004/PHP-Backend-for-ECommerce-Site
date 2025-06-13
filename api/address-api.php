@@ -40,31 +40,26 @@ class AddressAPI extends API
 
     public function get(array $args = []): void
     {
-        $query = ['table' => 'user_address'];
-        $params = [
-            'query' => $query,
+        $this->getMethodTemplate([
+            'table' => 'user_address',
             'args' => $args
-        ];
-        $this->getMethodTemplate($params);
+        ]);
     }
 
     public function post(): void
     {
-        $queryParams = [
-            ':userId' => 'userId',
-            ':houseNo' => 'houseNo',
-            ':street' => 'street',
-            ':city' => 'city',
-            ':region' => 'region',
-            ':postalCode' => 'postalCode',
-            ':country' => 'country',
-        ];
-
-        $param = [
-            'query' => 'INSERT INTO user_address(user_id, house_no, street, city, region, postal_code, country) VALUES(:userId, :houseNo, :street, :city, :region, :postalCode, :country)',
-            'params' => $queryParams
-        ];
-        $this->postMethodTemplate($param);
+        $this->postMethodTemplate([
+            'table' => 'user_address',
+            'columns' => [
+                'user_id',
+                'house_no',
+                'steet',
+                'city',
+                'region',
+                'postal_code',
+                'country'
+            ]
+        ]);
     }
 
     public function put(array $args): void

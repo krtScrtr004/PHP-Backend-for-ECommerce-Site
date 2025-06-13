@@ -21,3 +21,8 @@ function camelToSnakeCase(String $str): String
 {
     return preg_replace('/([a-z])([A-Z])/', '$1_$2',$str);
 }
+
+function snakeToCamelCase(string $str): string
+{
+    return lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $str))));
+}

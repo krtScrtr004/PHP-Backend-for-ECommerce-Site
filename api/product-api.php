@@ -52,28 +52,22 @@ class ProductAPI extends API
 
     public function get(array $args = []): void
     {
-        $query = ['table' => 'product'];
-        $params = [
-            'query' => $query,
+        $this->getMethodTemplate([
+            'table' => 'product',
             'args' => $args
-        ];
-        
-        $this->getMethodTemplate($params);
+        ]);
     }
 
     public function post(): void
     {
-        $queryParams = [
-            ':name' => 'name',
-            ':description' => 'description',
-            ':price' => 'price'
-        ];
-
-        $param = [
-            'query' => 'INSERT INTO product(name, description, price) VALUES(:name, :description, :price)',
-            'params' => $queryParams
-        ];
-        $this->postMethodTemplate($param);
+        $this->postMethodTemplate([
+            'table' => 'product',
+            'columns' => [
+                'name',
+                'description',
+                'price'
+            ]
+        ]);
     }
 
     public function put(array $args): void
