@@ -48,7 +48,7 @@ class OrderItemApi extends OrderAPI
     {
         $columns = ['order_id', 'product_id'];
         $contents = decodeData('php://input');
-        if (isset($contents['quantity'])) 
+        if (isset($contents['quantity']))
             array_push($columns, 'quantity');
 
         $this->postMethodTemplate([
@@ -60,23 +60,22 @@ class OrderItemApi extends OrderAPI
 
     public function put(array $args): void
     {
-         $this->putMethodTemplate([
+        $this->putMethodTemplate([
             'table' => 'order_item',
             'args' => $args,
             'columns' => [
-                'order_id', 
+                'order_id',
                 'product_id',
                 'quantity'
-            ]        
+            ]
         ]);
     }
 
     public function delete(array $args): void
     {
-        $params = [
-            'query' => 'DELETE FROM order_item WHERE id = :id',
+        $this->deleteMethodTemplate([
+            'table' => 'order_item',
             'args' => $args
-        ];
-        $this->deleteMethodTemplate($params);
+        ]);
     }
 }

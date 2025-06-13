@@ -124,7 +124,7 @@ abstract class API
      * This method is used to automate the creation of POST method
      * 
      * Required keys for @param configs
-     * - @param table  -- table name
+     * - @param table   -- table name
      * - @param columns -- column names where data is inserted
      * 
      */
@@ -179,9 +179,9 @@ abstract class API
      * This method is used to automate the creation of PUT method
      * 
      * Required keys for @param configs
-     * - @param query    -- UPDATE query to execute
-     * - @param args     -- additional data to the form content (eg. id)
-     * - @param params   -- parameter array for binding values to query statement
+     * - @param table   -- table name
+     * - @param args    -- additional data to the form content (eg. id)
+     * - @param columns -- column names where data is updated
      * 
      */
     protected function putMethodTemplate(array $configs): void
@@ -200,7 +200,9 @@ abstract class API
                 throw new BadMethodCallException("$config is not defined.");
         }
 
-        $contents = [...$configs['args'], ...$configs['content'] ?? decodeData('php://input')];
+        $args = $configs['args'];
+
+        $contents = [...$args, ...$configs['content'] ?? decodeData('php://input')];
 
         $validateContents = static::$validator->validateFields($contents, static::$fileName);
         if (!$validateContents['status'])
@@ -215,7 +217,7 @@ abstract class API
             else
                 $params[$value] = $contents[$value];
         }
-        $params['id'] = $configs['args']['id'];
+        $params['id'] = $args['id'];
 
         $updateStmt = implode(', ', array_map(function ($val) {
             return $val . ' = :' . snakeToCamelCase($val);
@@ -235,7 +237,7 @@ abstract class API
      * This method is used to automate the creation of DELETE method
      * 
      * Required keys for @param configs
-     * - @param query -- DELETE query to execute
+     * - @param table -- table name
      * - @param args  -- query parameter (eg. ID)
      * 
      */
@@ -247,7 +249,7 @@ abstract class API
         if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
             throw new LogicException('Bad request.');
 
-        $requiredConfigs = ['query', 'args'];
+        $requiredConfigs = ['table', 'args'];
         foreach ($requiredConfigs as $config) {
             if (!isset($configs[$config]))
                 throw new BadMethodCallException("$config is not defined.");
@@ -263,7 +265,9 @@ abstract class API
         static::$validator->sanitize($args);
         $params = [':id' => $args['id']];
 
-        $query = $conn->prepare($configs['query']);
+        $stmt = "DELETE FROM {$configs['table']} WHERE id = :id";
+
+        $query = $conn->prepare($stmt);
         $query->execute($params);
 
         Logger::logAccess("Finished DELETE request on $className.");

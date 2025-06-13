@@ -45,7 +45,7 @@ class ProductImageAPI extends ProductAPI
 
     public function post(): void
     {
-        $this->postMethodTemplate( [
+        $this->postMethodTemplate([
             'table' => 'product_image',
             'columns' => [
                 'product_id',
@@ -56,7 +56,7 @@ class ProductImageAPI extends ProductAPI
 
     public function put(array $args): void
     {
-        $this->putMethodTemplate( [
+        $this->putMethodTemplate([
             'table' => 'product_image',
             'args' => $args,
             'columns' => [
@@ -68,10 +68,9 @@ class ProductImageAPI extends ProductAPI
 
     public function delete(array $args): void
     {
-        $params = [
-            'query' => 'DELETE FROM product_image WHERE id = :id',
+        $this->deleteMethodTemplate([
+            'table' => 'product_image',
             'args' => $args
-        ];
-        $this->deleteMethodTemplate($params);
+        ]);
     }
 }

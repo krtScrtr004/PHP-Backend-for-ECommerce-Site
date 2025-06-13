@@ -85,10 +85,9 @@ class ProductAPI extends API
 
     public function delete(array $args): void
     {
-        $params = [
-            'query' => 'DELETE FROM product WHERE id = :id',
+        $this->deleteMethodTemplate([
+            'table' => 'product',
             'args' => $args
-        ];
-        $this->deleteMethodTemplate($params);
+        ]);
     }
 }

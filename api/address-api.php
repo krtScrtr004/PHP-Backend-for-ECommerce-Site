@@ -81,10 +81,9 @@ class AddressAPI extends API
 
     public function delete(array $args): void
     {
-        $params = [
-            'query' => 'DELETE FROM user_address WHERE id = :id',
+        $this->deleteMethodTemplate([
+            'table' => 'user_address',
             'args' => $args
-        ];
-        $this->deleteMethodTemplate($params);
+        ]);
     }
 }

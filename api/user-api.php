@@ -80,10 +80,9 @@ class UserAPI extends API
 
     public function delete(array $args): void
     {
-        $params = [
-            'query' => 'DELETE FROM user WHERE id = :id',
+        $this->deleteMethodTemplate([
+            'table' => 'user',
             'args' => $args
-        ];
-        $this->deleteMethodTemplate($params);
+        ]);
     }
 }

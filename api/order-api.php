@@ -62,7 +62,7 @@ class OrderAPI extends API
     {
         $this->postMethodTemplate([
             'table' => 'orders',
-            'columns' => ['user_id']        
+            'columns' => ['user_id']
         ]);
     }
 
@@ -71,16 +71,15 @@ class OrderAPI extends API
         $this->putMethodTemplate([
             'table' => 'orders',
             'args' => $args,
-            'columns' => ['user_id', 'status']        
+            'columns' => ['user_id', 'status']
         ]);
     }
 
     public function delete(array $args): void
     {
-        $params = [
-            'query' => 'DELETE FROM orders WHERE id = :id',
+        $this->deleteMethodTemplate([
+            'table' => 'order',
             'args' => $args
-        ];
-        $this->deleteMethodTemplate($params);
+        ]);
     }
 }
