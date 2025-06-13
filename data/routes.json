@@ -21,7 +21,11 @@
     "/Rest/order/": 
         ["order", "get"],
     "/Rest/order/{id:[0-9]+}": 
-        ["order", "get"]
+        ["order", "get"],
+    "/Rest/order-item/": 
+        ["orderItem", "get"],
+    "/Rest/order-item/{id:[0-9]+}": 
+        ["orderItem", "get"]
   },
 
   "POST": {
@@ -34,7 +38,9 @@
     "/Rest/product-image/": 
         ["productImage", "post"],
     "/Rest/order/": 
-        ["order", "post"]  
+        ["order", "post"],
+     "/Rest/order-item/": 
+        ["orderItem", "post"]    
     },
 
   "PUT": {
@@ -47,7 +53,9 @@
     "/Rest/product-image/{id:[0-9]+}": 
         ["productImage", "put"],
      "/Rest/order/{id:[0-9]+}": 
-        ["order", "put"]
+        ["order", "put"],
+     "/Rest/order-item/{id:[0-9]+}": 
+        ["orderItem", "put"]
   },
 
   "DELETE": {
@@ -60,6 +68,8 @@
     "/Rest/product-image/{id:[0-9]+}": 
         ["productImage", "delete"],
     "/Rest/order/{id:[0-9]+}": 
-        ["order", "delete"]
+        ["order", "delete"],
+    "/Rest/order-item/{id:[0-9]+}": 
+        ["orderItem", "delete"]
   }
 }

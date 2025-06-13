@@ -22,6 +22,8 @@ try {
                 $action[0] = $productImageAPI;
             } else if (strcasecmp($action[0], 'order') === 0) {
                 $action[0] = $orderAPI;
+            } else {
+                $action[0] = $orderItemAPI;
             }
             $router->register($path, $method, $action);
         }

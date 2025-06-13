@@ -192,7 +192,7 @@ abstract class API
                 throw new BadMethodCallException("$config is not defined.");
         }
 
-        $contents = [...$configs['args'], ...decodeData('php://input')];
+        $contents = [...$configs['args'], ...$configs['content'] ?? decodeData('php://input')];
 
         $validateContents = static::$validator->validateFields($contents, static::$fileName);
         if (!$validateContents['status'])

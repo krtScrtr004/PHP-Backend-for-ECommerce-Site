@@ -12,7 +12,23 @@
     "data": "userId",
     "min": null,
     "max": null,
-    "callback": "validateId" 
+    "callback": "validateId"
+  },
+
+  "productId": {
+    "name": "user id",
+    "data": "userId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "orderId": {
+    "name": "user id",
+    "data": "userId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
   },
 
   "status": {
@@ -21,5 +37,13 @@
     "min": 7,
     "max": null,
     "callback": "validateStatus"
+  },
+
+  "quantity": {
+    "name": "quantity",
+    "data": "quantity",
+    "min": 1,
+    "max": null,
+    "callback": null
   }
 }

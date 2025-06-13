@@ -37,13 +37,8 @@ abstract class Validation
             'message' => "$fieldName is valid."
         ];
 
-        // Undefined / Null validation
-        if (!$data) {
-            $validationResult['status'] = false;
-            $validationResult['message'] = "$fieldName is not defined";
-        }
         // Empty string validation
-        else if (empty($data)) {
+        if (empty($data)) {
             $validationResult['status'] = false;
             $validationResult['message'] = "$fieldName cannot be empty.";
         } else if (strcasecmp($fieldName, 'id') !== 0) {
