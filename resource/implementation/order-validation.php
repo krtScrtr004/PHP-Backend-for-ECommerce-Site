@@ -37,4 +37,21 @@ class OrderValidation extends Validation
 
         return ['status' => true];
     }
+
+    public function validateQuantity(float $param): array
+    {
+        if ($param < 1) {
+            return [
+                'status' => false,
+                'message' => 'Quantity must be positive only.'
+            ];
+        } else if ($param > 99) {
+            return [
+                'status' => false,
+                'message' => 'Maximum quantity is 99.'
+            ];
+        }
+
+        return ['status' => true];
+    }
 }

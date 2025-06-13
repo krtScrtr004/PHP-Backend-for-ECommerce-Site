@@ -42,8 +42,8 @@
   "quantity": {
     "name": "quantity",
     "data": "quantity",
-    "min": 1,
+    "min": null,
     "max": null,
-    "callback": null
+    "callback": "validateQuantity"
   }
 }

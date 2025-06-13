@@ -72,15 +72,4 @@ class ProductValidation extends Validation
 
         return ['status' => true];
     }
-
-    public function validateImageUrl(String $url): array 
-    {
-        if (filter_var($url, FILTER_VALIDATE_URL)) {
-            return [
-                'status' => false,
-                'message' => 'Invalid URL format.'
-            ];
-        }
-        return ['status' => true];
-    }
 }

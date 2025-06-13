@@ -36,6 +36,6 @@
     "data": "imageLink",
     "min": null,
     "max": null,
-    "callback": "validateImageUrl"
+    "callback": "validateUrl"
   }
 }
