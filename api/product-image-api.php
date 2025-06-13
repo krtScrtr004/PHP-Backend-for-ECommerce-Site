@@ -37,10 +37,12 @@ class ProductImageAPI extends ProductAPI
 
     public function get(array $args = []): void
     {
+        $query = ['table' => 'product_image'];
         $params = [
-            'query' => 'SELECT * FROM product_image',
+            'query' => $query,
             'args' => $args
         ];
+
         $this->getMethodTemplate($params);
     }
 

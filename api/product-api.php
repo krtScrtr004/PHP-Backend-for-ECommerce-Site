@@ -52,10 +52,12 @@ class ProductAPI extends API
 
     public function get(array $args = []): void
     {
+        $query = ['table' => 'product'];
         $params = [
-            'query' => 'SELECT * FROM product',
+            'query' => $query,
             'args' => $args
         ];
+        
         $this->getMethodTemplate($params);
     }
 
@@ -93,7 +95,7 @@ class ProductAPI extends API
 
     public function delete(array $args): void
     {
-         $params = [
+        $params = [
             'query' => 'DELETE FROM product WHERE id = :id',
             'args' => $args
         ];

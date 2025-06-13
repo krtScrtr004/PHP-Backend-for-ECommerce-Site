@@ -86,10 +86,15 @@ abstract class API
                 throw new BadMethodCallException("$config is not defined.");
         }
 
+        $query = $configs['query'];
+        if (!isset($query['table']))
+            throw new BadMethodCallException('Table name is not defined.');
+
         Logger::logAccess("Create GET request on $className.");
 
         $params = [];
-        $stmt = $configs['query'];
+
+        $stmt = "SELECT * FROM {$query['table']}";
 
         if (count($configs['args']) > 0) {
             $stmt .= ' WHERE ';

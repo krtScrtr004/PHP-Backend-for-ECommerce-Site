@@ -40,8 +40,9 @@ class AddressAPI extends API
 
     public function get(array $args = []): void
     {
+        $query = ['table' => 'user_address'];
         $params = [
-            'query' => 'SELECT * FROM user_address',
+            'query' => $query,
             'args' => $args
         ];
         $this->getMethodTemplate($params);

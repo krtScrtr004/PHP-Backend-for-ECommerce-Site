@@ -38,10 +38,12 @@ class OrderItemApi extends OrderAPI
 
     public function get(array $args = []): void 
     {
+        $query = ['table' => 'order_item'];
         $params = [
-            'query' => 'SELECT * FROM order_item',
+            'query' => $query,
             'args' => $args
         ];
+
         $this->getMethodTemplate($params);
     }
 

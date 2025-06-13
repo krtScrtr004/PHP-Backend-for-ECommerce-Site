@@ -52,8 +52,9 @@ class OrderAPI extends API
 
     public function get(array $args = []): void 
     {
+        $query = ['table' => 'orders'];
         $params = [
-            'query' => 'SELECT * FROM orders',
+            'query' => $query,
             'args' => $args
         ];
         $this->getMethodTemplate($params);

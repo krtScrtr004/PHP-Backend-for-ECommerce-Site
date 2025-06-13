@@ -42,10 +42,12 @@ class UserAPI extends API
 
     public function get(array $args = []): void
     {
+        $query = ['table' => 'user'];
         $params = [
-            'query' => 'SELECT * FROM user',
+            'query' => $query,
             'args' => $args
         ];
+        
         $this->getMethodTemplate($params);
     }
 
@@ -55,7 +57,7 @@ class UserAPI extends API
             ':firstName'  => 'firstName',
             ':lastName' => 'lastName',
             ':email'  => 'email',
-            ':password'  => 'password', 
+            ':password'  => 'password',
             ':contact' => 'contact'
         ];
 
