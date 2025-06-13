@@ -1,5 +1,28 @@
 <?php
 
+/**
+ * Class OrderAPI
+ *
+ * The OrderAPI class provides a RESTful API interface for managing orders in the system.
+ * It extends the base API class and implements CRUD operations for the "orders" resource.
+ * This class uses a singleton pattern to ensure only one instance is used throughout the application.
+ * 
+ * Main responsibilities:
+ * - Handling HTTP GET, POST, PUT, and DELETE requests for orders.
+ * - Validating order data using an external OrderValidation class.
+ * - Interacting with the database to perform operations on the "orders" table.
+ * 
+ * Methods:
+ * - getApi(): Returns the singleton instance of OrderAPI and initializes the validator if needed.
+ * - get(array $args = []): Retrieves orders from the database. Accepts optional filtering arguments.
+ * - post(): Creates a new order in the database. Expects user ID as input.
+ * - put(array $args): Updates an existing order's user ID and status based on provided arguments.
+ * - delete(array $args): Deletes an order from the database by its ID.
+ *
+ * Usage:
+ * Instantiate the class using OrderAPI::getApi() and call the appropriate method based on the HTTP request type.
+*/
+
 enum OrderStatus: string
 {
     case P = 'pending';
