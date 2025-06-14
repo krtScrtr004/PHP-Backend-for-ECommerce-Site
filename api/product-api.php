@@ -52,42 +52,36 @@ class ProductAPI extends API
 
     public function get(array $args = []): void
     {
-        $this->getMethodTemplate([
-            'table' => 'product',
-            'args' => $args
-        ]);
+        $this->getMethodTemplate('product', $args);
     }
 
     public function post(): void
     {
-        $this->postMethodTemplate([
-            'table' => 'product',
-            'columns' => [
+        $this->postMethodTemplate(
+            'product',
+            [
                 'name',
                 'description',
                 'price'
             ]
-        ]);
+        );
     }
 
     public function put(array $args): void
     {
-        $this->putMethodTemplate([
-            'table' => 'product',
-            'args' => $args,
-            'columns' => [
+        $this->putMethodTemplate(
+            'product',
+            $args,
+            [
                 'name',
                 'description',
                 'price'
             ]
-        ]);
+        );
     }
 
     public function delete(array $args): void
     {
-        $this->deleteMethodTemplate([
-            'table' => 'product',
-            'args' => $args
-        ]);
+        $this->deleteMethodTemplate('product',$args);
     }
 }

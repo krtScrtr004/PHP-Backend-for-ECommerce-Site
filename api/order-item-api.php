@@ -38,10 +38,7 @@ class OrderItemApi extends OrderAPI
 
     public function get(array $args = []): void
     {
-        $this->getMethodTemplate([
-            'table' => 'order_item',
-            'args' => $args
-        ]);
+        $this->getMethodTemplate('order_item', $args);
     }
 
     public function post(): void
@@ -51,31 +48,28 @@ class OrderItemApi extends OrderAPI
         if (isset($contents['quantity']))
             array_push($columns, 'quantity');
 
-        $this->postMethodTemplate([
-            'table' => 'order_item',
-            'columns' => $columns,
-            'contents' => $contents
-        ]);
+        $this->postMethodTemplate(
+            'order_item',
+            $columns,
+            $contents
+        );
     }
 
     public function put(array $args): void
     {
-        $this->putMethodTemplate([
-            'table' => 'order_item',
-            'args' => $args,
-            'columns' => [
+        $this->putMethodTemplate(
+            'order_item',
+            $args,
+            [
                 'order_id',
                 'product_id',
                 'quantity'
             ]
-        ]);
+        );
     }
 
     public function delete(array $args): void
     {
-        $this->deleteMethodTemplate([
-            'table' => 'order_item',
-            'args' => $args
-        ]);
+        $this->deleteMethodTemplate('order_item', $args);
     }
 }

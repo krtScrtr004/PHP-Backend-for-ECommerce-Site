@@ -67,12 +67,11 @@ abstract class API
      * 
      * This method is used to automate the creation of GET method
      * 
-     * Required keys for @param configs
      * - @param table -- table name
      * - @param args  -- query parameter (eg. ID)
      * 
      */
-    protected function getMethodTemplate(array $configs): void
+    protected function getMethodTemplate(String $table, array $args): void
     {
         $className = get_class($this);
         global $conn;
@@ -80,26 +79,20 @@ abstract class API
         if ($_SERVER['REQUEST_METHOD'] !== 'GET')
             throw new LogicException('Bad Request.');
 
-        $requiredConfigs = ['table', 'args'];
-        foreach ($requiredConfigs as $config) {
-            if (!isset($configs[$config]))
-                throw new BadMethodCallException("$config is not defined.");
-        }
-
         Logger::logAccess("Create GET request on $className.");
 
         $params = [];
 
-        $stmt = "SELECT * FROM {$configs['table']}";
+        $stmt = "SELECT * FROM $table";
 
-        if (count($configs['args']) > 0) {
+        if (count($args) > 0) {
             $stmt .= ' WHERE ';
 
-            $validateContents = static::$validator->validateFields($configs['args'], static::$fileName);
+            $validateContents = static::$validator->validateFields($args, static::$fileName);
             if ($validateContents['status']) {
                 // Collect conditions in an array
                 $conditions = [];
-                foreach ($configs['args'] as $key => $value) {
+                foreach ($args as $key => $value) {
                     $conditionKey = strtolower(camelToSnakeCase($key));
                     $conditions[] = "$conditionKey = :$key";
                     $params[":$key"] = $value;
@@ -123,12 +116,12 @@ abstract class API
      * 
      * This method is used to automate the creation of POST method
      * 
-     * Required keys for @param configs
-     * - @param table   -- table name
-     * - @param columns -- column names where data is inserted
+     * - @param table    -- table name
+     * - @param columns  -- column names where data is inserted
+     * - @param contets -- passed data on request (optional)
      * 
      */
-    protected function postMethodTemplate(array $configs): void
+    protected function postMethodTemplate(String $table, array $columns, array $contents = []): void
     {
         $className = get_class($this);
         global $conn;
@@ -136,22 +129,18 @@ abstract class API
         if ($_SERVER['REQUEST_METHOD'] !== 'POST')
             throw new LogicException('Bad request.');
 
-        $requiredConfigs = ['table', 'columns'];
-        foreach ($requiredConfigs as $config) {
-            if (!isset($configs[$config]))
-                throw new BadMethodCallException("$config is not defined.");
-        }
-
         Logger::logAccess("Create POST request on $className.");
 
-        $contents = $configs['contents'] ?? decodeData('php://input');
+        if (empty($contents)) 
+            $contents = decodeData('php://input');
+
         $validateContents = static::$validator->validateFields($contents, static::$fileName);
         if (!$validateContents['status'])
             Respond::respondFail($validateContents['message']);
 
         // Build the binding paramters for query
         $params = [];
-        foreach ($configs['columns'] as $value) {
+        foreach ($columns as $value) {
             $value = snakeToCamelCase($value);
             if (preg_match('/(^password$|Password$)/', $value))
                 $params[$value] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
@@ -162,10 +151,10 @@ abstract class API
         static::$validator->sanitize($contents);
 
         // Building query statement
-        $columns = implode(',', $configs['columns']);
-        $values = implode(',', array_map(fn($v) => ':' . snakeToCamelCase($v), $configs['columns']));
+        $columnList = implode(',', $columns);
+        $values = implode(',', array_map(fn($v) => ':' . snakeToCamelCase($v), $columns));
 
-        $stmt = "INSERT INTO {$configs['table']}({$columns}) VALUES({$values})";
+        $stmt = "INSERT INTO $table({$columnList}) VALUES({$values})";
 
         $query = $conn->prepare($stmt);
         $query->execute($params);
@@ -178,13 +167,13 @@ abstract class API
      * 
      * This method is used to automate the creation of PUT method
      * 
-     * Required keys for @param configs
      * - @param table   -- table name
      * - @param args    -- additional data to the form content (eg. id)
      * - @param columns -- column names where data is updated
+     * - @param contets -- passed data on request (optional)
      * 
      */
-    protected function putMethodTemplate(array $configs): void
+    protected function putMethodTemplate(String $table, array $args, array $columns, array $contents = []): void
     {
         $className = get_class($this);
         global $conn;
@@ -194,15 +183,10 @@ abstract class API
 
         Logger::logAccess("Create PUT request on $className");
 
-        $requiredConfigs = ['table', 'args', 'columns'];
-        foreach ($requiredConfigs as $config) {
-            if (!isset($configs[$config]))
-                throw new BadMethodCallException("$config is not defined.");
-        }
-
-        $args = $configs['args'];
-
-        $contents = [...$args, ...$configs['content'] ?? decodeData('php://input')];
+         if (empty($contents)) 
+            $contents = [...$args, ...decodeData('php://input')];
+        else 
+            $contents = [...$args, ...$contents];
 
         $validateContents = static::$validator->validateFields($contents, static::$fileName);
         if (!$validateContents['status'])
@@ -210,7 +194,7 @@ abstract class API
 
         // Build the binding paramters for query
         $params = [];
-        foreach ($configs['columns'] as $value) {
+        foreach ($columns as $value) {
             $value = snakeToCamelCase($value);
             if (preg_match('/(^password$|Password$)/', $value))
                 $params[$value] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
@@ -221,8 +205,8 @@ abstract class API
 
         $updateStmt = implode(', ', array_map(function ($val) {
             return $val . ' = :' . snakeToCamelCase($val);
-        }, $configs['columns']));
-        $stmt = "UPDATE {$configs['table']} SET $updateStmt WHERE id = :id";
+        }, $columns));
+        $stmt = "UPDATE $table SET $updateStmt WHERE id = :id";
 
         static::$validator->sanitize($contents);
         $query = $conn->prepare($stmt);
@@ -236,25 +220,17 @@ abstract class API
      * 
      * This method is used to automate the creation of DELETE method
      * 
-     * Required keys for @param configs
      * - @param table -- table name
      * - @param args  -- query parameter (eg. ID)
      * 
      */
-    protected function deleteMethodTemplate(array $configs): void
+    protected function deleteMethodTemplate(String $table, array $args): void
     {
         $className = get_class($this);
         global $conn;
 
         if ($_SERVER['REQUEST_METHOD'] !== 'DELETE')
             throw new LogicException('Bad request.');
-
-        $requiredConfigs = ['table', 'args'];
-        foreach ($requiredConfigs as $config) {
-            if (!isset($configs[$config]))
-                throw new BadMethodCallException("$config is not defined.");
-        }
-        $args = $configs['args'];
 
         Logger::logAccess("Create DELETE request on $className.");
 
@@ -263,9 +239,9 @@ abstract class API
             Respond::respondFail($validateId['message']);
 
         static::$validator->sanitize($args);
-        $params = [':id' => $args['id']];
+        $params = [':id' => $args['id'] ?? throw new BadMethodCallException('Id is note defined.')];
 
-        $stmt = "DELETE FROM {$configs['table']} WHERE id = :id";
+        $stmt = "DELETE FROM $table WHERE id = :id";
 
         $query = $conn->prepare($stmt);
         $query->execute($params);

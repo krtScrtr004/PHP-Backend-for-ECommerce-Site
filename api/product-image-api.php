@@ -37,40 +37,34 @@ class ProductImageAPI extends ProductAPI
 
     public function get(array $args = []): void
     {
-        $this->getMethodTemplate([
-            'table' => 'product_image',
-            'args' => $args
-        ]);
+        $this->getMethodTemplate('product_image', $args);
     }
 
     public function post(): void
     {
-        $this->postMethodTemplate([
-            'table' => 'product_image',
-            'columns' => [
+        $this->postMethodTemplate(
+            'product_image',
+            [
                 'product_id',
                 'image_link'
             ]
-        ]);
+        );
     }
 
     public function put(array $args): void
     {
-        $this->putMethodTemplate([
-            'table' => 'product_image',
-            'args' => $args,
-            'columns' => [
+        $this->putMethodTemplate(
+            'product_image',
+            $args,
+            [
                 'product_id',
                 'image_link'
             ]
-        ]);
+        );
     }
 
     public function delete(array $args): void
     {
-        $this->deleteMethodTemplate([
-            'table' => 'product_image',
-            'args' => $args
-        ]);
+        $this->deleteMethodTemplate('product_image', $args);
     }
 }

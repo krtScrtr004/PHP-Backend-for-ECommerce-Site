@@ -40,17 +40,14 @@ class AddressAPI extends API
 
     public function get(array $args = []): void
     {
-        $this->getMethodTemplate([
-            'table' => 'user_address',
-            'args' => $args
-        ]);
+        $this->getMethodTemplate('user_address', $args);
     }
 
     public function post(): void
     {
-        $this->postMethodTemplate([
-            'table' => 'user_address',
-            'columns' => [
+        $this->postMethodTemplate(
+            'user_address',
+            [
                 'user_id',
                 'house_no',
                 'steet',
@@ -59,15 +56,15 @@ class AddressAPI extends API
                 'postal_code',
                 'country'
             ]
-        ]);
+        );
     }
 
     public function put(array $args): void
     {
-        $this->postMethodTemplate([
-            'table' => 'user_address',
-            'args' => $args,
-            'columns' => [
+        $this->postMethodTemplate(
+            'user_address',
+            $args,
+            [
                 'user_id',
                 'house_no',
                 'steet',
@@ -76,14 +73,11 @@ class AddressAPI extends API
                 'postal_code',
                 'country'
             ]
-        ]);
+        );
     }
 
     public function delete(array $args): void
     {
-        $this->deleteMethodTemplate([
-            'table' => 'user_address',
-            'args' => $args
-        ]);
+        $this->deleteMethodTemplate('user_address', $args);
     }
 }

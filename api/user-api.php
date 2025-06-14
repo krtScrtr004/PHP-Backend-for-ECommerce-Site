@@ -42,47 +42,41 @@ class UserAPI extends API
 
     public function get(array $args = []): void
     {
-        $this->getMethodTemplate([
-            'table' => 'user',
-            'args' => $args
-        ]);
+        $this->getMethodTemplate('user', $args);
     }
 
     public function post(): void
     {
-        $this->postMethodTemplate([
-            'table' => 'user',
-            'columns' => [
-                'first_name', 
-                'last_name', 
-                'email', 
-                'password', 
+        $this->postMethodTemplate(
+            'user',
+            [
+                'first_name',
+                'last_name',
+                'email',
+                'password',
                 'contact'
             ]
-        ]);
+        );
     }
 
     public function put(array $args): void
     {
-        $this->putMethodTemplate([
-            'table' => 'user',
-            'args' => $args,
-            'columns' => [
-                'first_name', 
-                'last_name', 
-                'email', 
-                'password', 
+        $this->putMethodTemplate(
+            'user',
+            $args,
+            [
+                'first_name',
+                'last_name',
+                'email',
+                'password',
                 'profile_image_link',
                 'contact'
             ]
-        ]);
+        );
     }
 
     public function delete(array $args): void
     {
-        $this->deleteMethodTemplate([
-            'table' => 'user',
-            'args' => $args
-        ]);
+        $this->deleteMethodTemplate('user', $args);
     }
 }

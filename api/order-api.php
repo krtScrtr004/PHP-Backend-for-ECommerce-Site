@@ -52,34 +52,22 @@ class OrderAPI extends API
 
     public function get(array $args = []): void
     {
-        $this->getMethodTemplate([
-            'table' => 'orders',
-            'args' => $args
-        ]);
+        $this->getMethodTemplate('orders', $args);
     }
 
     public function post(): void
     {
-        $this->postMethodTemplate([
-            'table' => 'orders',
-            'columns' => ['user_id']
-        ]);
+        $this->postMethodTemplate('orders', ['user_id']);
     }
 
     public function put(array $args): void
     {
-        $this->putMethodTemplate([
-            'table' => 'orders',
-            'args' => $args,
-            'columns' => ['user_id', 'status']
-        ]);
+        $this->putMethodTemplate('orders', $args,['user_id', 'status']
+        );
     }
 
     public function delete(array $args): void
     {
-        $this->deleteMethodTemplate([
-            'table' => 'order',
-            'args' => $args
-        ]);
+        $this->deleteMethodTemplate('order', $args);
     }
 }
