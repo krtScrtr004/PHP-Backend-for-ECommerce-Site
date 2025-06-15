@@ -1,6 +1,5 @@
 {
   "id": {
-    "name": "id",
     "data": "id",
     "min": null,
     "max": null,
@@ -8,7 +7,6 @@
   },
 
   "userId": {
-    "name": "user id",
     "data": "userId",
     "min": null,
     "max": null,
@@ -16,7 +14,6 @@
   },
 
   "houseNo": {
-    "name": "house number",
     "data": "houseNo",
     "min": 1,
     "max": null,
@@ -24,7 +21,6 @@
   },
 
   "street": {
-    "name": "street",
     "data": "street",
     "min": 1,
     "max": null,
@@ -32,7 +28,6 @@
   },
 
   "city": {
-    "name": "city",
     "data": "city",
     "min": 2,
     "max": null,
@@ -40,7 +35,6 @@
   },
 
   "region": {
-    "name": "region",
     "data": "region",
     "min": 1,
     "max": null,
@@ -48,7 +42,6 @@
   },
 
   "postalCode": {
-    "name": "postal code",
     "data": "postalCode",
     "min": 4,
     "max": null,
@@ -56,7 +49,6 @@
   },
 
   "country": {
-    "name": "country",
     "data": "country",
     "min": 1,
     "max": null,

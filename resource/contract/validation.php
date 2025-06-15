@@ -89,7 +89,7 @@ abstract class Validation
                 continue;
 
             $params = [
-                'fieldName' => $field['name'],
+                'fieldName' => camelToSentenceCase($field['data']),
                 'data' => $data[$field['data']],
             ];
             if ($field['min'])
