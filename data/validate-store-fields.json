@@ -1,0 +1,71 @@
+{
+  "id": {
+    "data": "id",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "headOwnerId": {
+    "data": "headOwnerId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "name": {
+    "data": "name",
+    "min": 1,
+    "max": null,
+    "callback": null
+  },
+
+  "description": {
+    "data": "description",
+    "min": 1,
+    "max": 500,
+    "callback": null
+  },
+
+  "slug": {
+    "data": "slug",
+    "min": 1,
+    "max": null,
+    "callback": null
+  },
+
+  "logoImageLink": {
+    "data": "logoImageLink",
+    "min": null,
+    "max": null,
+    "callback": "validateUrl"
+  },
+
+  "siteLink": {
+    "data": "siteLink",
+    "min": null,
+    "max": null,
+    "callback": "validateUrl"
+  },
+
+  "email": {
+    "data": "email",
+    "min": 3,
+    "max": null,
+    "callback": "validateEmail"
+  },
+
+  "contact": {
+    "data": "contact",
+    "min": null,
+    "max": null,
+    "callback": "validateContact"
+  },
+
+  "locationId": {
+    "data": "locationId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  }
+}
