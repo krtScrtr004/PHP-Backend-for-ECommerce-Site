@@ -27,4 +27,11 @@ class Id
         }
         return $uuid->toString();
     }
+
+    public static function validate(String|UuidInterface $uuid): bool 
+    {
+        if (is_string($uuid))
+            return Uuid::isValid($uuid);
+        return Uuid::isValid($uuid->toString());
+    }
 }

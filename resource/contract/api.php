@@ -95,7 +95,7 @@ abstract class API
                 foreach ($args as $key => $value) {
                     $conditionKey = strtolower(camelToSnakeCase($key));
                     $conditions[] = "$conditionKey = :$key";
-                    $params[":$key"] = $value;
+                    $params["$key"] = $value;
                 }
                 // Join conditions with AND in the WHERE clause
                 $stmt .= implode(' AND ', $conditions);
@@ -103,10 +103,17 @@ abstract class API
                 Respond::respondFail($validateContents['message']);
             }
         }
+        static::$validator->sanitize($params);
 
         $query = $conn->prepare($stmt);
         $query->execute($params);
         $result = $query->fetchAll();
+
+        foreach ($result as &$row) {
+            if (isset($row['id'])) {
+                $row['id'] = Id::toString($row['id']);
+            }
+        }
 
         Logger::logAccess("Finished GET request on $className.");
         Respond::respondSuccess(data: $result);
@@ -131,7 +138,7 @@ abstract class API
 
         Logger::logAccess("Create POST request on $className.");
 
-        if (empty($contents)) 
+        if (empty($contents))
             $contents = decodeData('php://input');
 
         $validateContents = static::$validator->validateFields($contents, static::$fileName);
@@ -141,14 +148,16 @@ abstract class API
         // Build the binding paramters for query
         $params = [];
         foreach ($columns as $value) {
-            $value = snakeToCamelCase($value);
+            $valueSnakeCase = snakeToCamelCase($value);
             if (preg_match('/(^password$|Password$)/', $value))
-                $params[$value] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
+                $params[$valueSnakeCase] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
+            else if (preg_match('/^id$|Id$/', $value))
+                $params[$valueSnakeCase] = Id::generate();
             else
-                $params[$value] = $contents[$value];
+                $params[$valueSnakeCase] = $contents[$value];
         }
 
-        static::$validator->sanitize($contents);
+        static::$validator->sanitize($params);
 
         // Building query statement
         $columnList = implode(',', $columns);
@@ -183,9 +192,9 @@ abstract class API
 
         Logger::logAccess("Create PUT request on $className");
 
-         if (empty($contents)) 
+        if (empty($contents))
             $contents = [...$args, ...decodeData('php://input')];
-        else 
+        else
             $contents = [...$args, ...$contents];
 
         $validateContents = static::$validator->validateFields($contents, static::$fileName);
@@ -195,11 +204,11 @@ abstract class API
         // Build the binding paramters for query
         $params = [];
         foreach ($columns as $value) {
-            $value = snakeToCamelCase($value);
+            $valueSnakeCase = snakeToCamelCase($value);
             if (preg_match('/(^password$|Password$)/', $value))
-                $params[$value] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
+                $params[$valueSnakeCase] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
             else
-                $params[$value] = $contents[$value];
+                $params[$valueSnakeCase] = $contents[$value];
         }
         $params['id'] = $args['id'];
 
@@ -208,7 +217,7 @@ abstract class API
         }, $columns));
         $stmt = "UPDATE $table SET $updateStmt WHERE id = :id";
 
-        static::$validator->sanitize($contents);
+        static::$validator->sanitize($params);
         $query = $conn->prepare($stmt);
         $query->execute($params);
 
@@ -239,7 +248,7 @@ abstract class API
             Respond::respondFail($validateId['message']);
 
         static::$validator->sanitize($args);
-        $params = [':id' => $args['id'] ?? throw new BadMethodCallException('Id is note defined.')];
+        $params = [':id' => $args['id'] ?? throw new BadMethodCallException('Id is not defined.')];
 
         $stmt = "DELETE FROM $table WHERE id = :id";
 

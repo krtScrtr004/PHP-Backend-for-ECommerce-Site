@@ -74,7 +74,7 @@ class Logger
         $dateTime = new DateTime();
         $date = $dateTime->format("Y-m-d : h:i:s A");
 
-        $exceptionMessage = "[$date] -> $exception" . PHP_EOL;
+        $exceptionMessage = "[$date] -> $exception\n" . PHP_EOL;
         $handle = fopen(self::$fileName['exception'], 'a');
         if (!$handle) {
             throw new ErrorException('Cannot open ' . self::$fileName['exception']);

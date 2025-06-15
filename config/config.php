@@ -24,6 +24,9 @@ define('SERVICE_PATH', RESOURCE_PATH . '/service/');
 /**
  * Include Files
  */
+
+require_once BASE_PATH . '/vendor/autoload.php';
+
 foreach (glob(CONFIG_PATH . '*.php') as $filename) {
     require_once $filename;
 }

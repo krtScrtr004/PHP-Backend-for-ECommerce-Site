@@ -40,7 +40,8 @@ class UserValidation extends Validation
         if (!isset($data))
             throw new ErrorException('No data array to sanitize.');
 
-        if (isset($data['id'])) $data['id'] = (int) $data['id'];
+        if (isset($data['id'])) $data['id'] = Id::toBinary($data['id']);
+        
         if (isset($data['email'])) $data['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
 
         $trimmableField = ['firstName', 'lastName', 'password', 'contact'];

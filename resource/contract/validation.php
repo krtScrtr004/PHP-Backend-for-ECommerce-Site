@@ -101,10 +101,10 @@ abstract class Validation
 
     protected function validateId($param): array
     {
-        if (!is_numeric($param)) {
+        if (!Id::validate($param)) {
             return [
                 'status' => false,
-                'message' => 'Id must be a numeric.'
+                'message' => 'Id is invalid.'
             ];
         }
         return ['status' => true];

@@ -2,29 +2,29 @@
   "GET": {
     "/Rest/user/": 
         ["user", "get"],
-    "/Rest/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[\\w-]+}": 
         ["user", "get"],
     "/Rest/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
         ["user", "get"],
     "/Rest/address/": 
         ["address", "get"],
-    "/Rest/address/{userId:[0-9]+}": 
+    "/Rest/address/{userId:[\\w-]+}": 
         ["address", "get"],
     "/Rest/product/": 
         ["product", "get"],
-    "/Rest/product/{id:[0-9]+}": 
+    "/Rest/product/{id:[\\w-]+}": 
         ["product", "get"],
     "/Rest/product-image/": 
         ["productImage", "get"],
-     "/Rest/product-image/{id:[0-9]+}": 
+     "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "get"],
     "/Rest/order/": 
         ["order", "get"],
-    "/Rest/order/{id:[0-9]+}": 
+    "/Rest/order/{id:[\\w-]+}": 
         ["order", "get"],
     "/Rest/order-item/": 
         ["orderItem", "get"],
-    "/Rest/order-item/{id:[0-9]+}": 
+    "/Rest/order-item/{id:[\\w-]+}": 
         ["orderItem", "get"]
   },
 
@@ -44,32 +44,32 @@
     },
 
   "PUT": {
-    "/Rest/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[\\w-]+}": 
         ["user", "put"],
-    "/Rest/address/{userId:[0-9]+}": 
+    "/Rest/address/{userId:[\\w-]+}": 
         ["address", "put"],
-    "/Rest/product/{id:[0-9]+}": 
+    "/Rest/product/{id:[\\w-]+}": 
         ["product", "put"],
-    "/Rest/product-image/{id:[0-9]+}": 
+    "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "put"],
-     "/Rest/order/{id:[0-9]+}": 
+     "/Rest/order/{id:[\\w-]+}": 
         ["order", "put"],
-     "/Rest/order-item/{id:[0-9]+}": 
+     "/Rest/order-item/{id:[\\w-]+}": 
         ["orderItem", "put"]
   },
 
   "DELETE": {
-    "/Rest/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[\\w-]+}": 
         ["user", "delete"],
-    "/Rest/address/{userId:[0-9]+}": 
+    "/Rest/address/{userId:[\\w-]+}": 
         ["address", "delete"],
-    "/Rest/product/{id:[0-9]+}": 
+    "/Rest/product/{id:[\\w-]+}": 
         ["productImage", "delete"],
-    "/Rest/product-image/{id:[0-9]+}": 
+    "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "delete"],
-    "/Rest/order/{id:[0-9]+}": 
+    "/Rest/order/{id:[\\w-]+}": 
         ["order", "delete"],
-    "/Rest/order-item/{id:[0-9]+}": 
+    "/Rest/order-item/{id:[\\w-]+}": 
         ["orderItem", "delete"]
   }
 }
