@@ -39,9 +39,12 @@ class AddressValidation extends Validation
     public static function sanitize(array &$data): void
     {
         $trimmableFields = ['houseNo', 'street', 'city', 'region', 'postalCode', 'country'];
-        foreach ($trimmableFields as $trimmable) {
-            if (isset($data[$trimmable]))
-                $data[$trimmable] = trim($data[$trimmable]);
+
+        foreach ($data as $key => $field) {
+            if (preg_match('/^id$|Id$/', $key))
+                $data[$key] = Id::toBinary($field);
+            else if (in_array($key, $trimmableFields, true))
+                $data[$key] = trim($field);
         }
     }
 

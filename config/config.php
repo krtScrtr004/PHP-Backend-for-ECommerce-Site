@@ -59,7 +59,7 @@ $conn = DBConnection::getConnection();
 $router = Router::getRouter();
 
 $userAPI = UserApi::getApi();
-$addressAPI = AddressAPI::getApi();
+$userAddressAPI = UserAddressAPI::getApi();
 $productAPI = ProductAPI::getApi();
 $productImageAPI = ProductImageAPI::getApi();
 $orderAPI = OrderAPI::getApi();

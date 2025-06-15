@@ -6,10 +6,10 @@
         ["user", "get"],
     "/Rest/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
         ["user", "get"],
-    "/Rest/address/": 
-        ["address", "get"],
-    "/Rest/address/{userId:[\\w-]+}": 
-        ["address", "get"],
+    "/Rest/user-address/": 
+        ["userAddress", "get"],
+    "/Rest/user-address/{userId:[\\w-]+}": 
+        ["userAddress", "get"],
     "/Rest/product/": 
         ["product", "get"],
     "/Rest/product/{id:[\\w-]+}": 
@@ -31,8 +31,8 @@
   "POST": {
     "/Rest/user/": 
         ["user", "post"],
-    "/Rest/address/": 
-        ["address", "post"],
+    "/Rest/user-address/": 
+        ["userAddress", "post"],
     "/Rest/product/": 
         ["product", "post"],
     "/Rest/product-image/": 
@@ -46,8 +46,8 @@
   "PUT": {
     "/Rest/user/{id:[\\w-]+}": 
         ["user", "put"],
-    "/Rest/address/{userId:[\\w-]+}": 
-        ["address", "put"],
+    "/Rest/user-address/{userId:[\\w-]+}": 
+        ["userAddress", "put"],
     "/Rest/product/{id:[\\w-]+}": 
         ["product", "put"],
     "/Rest/product-image/{id:[\\w-]+}": 
@@ -61,8 +61,8 @@
   "DELETE": {
     "/Rest/user/{id:[\\w-]+}": 
         ["user", "delete"],
-    "/Rest/address/{userId:[\\w-]+}": 
-        ["address", "delete"],
+    "/Rest/user-address/{userId:[\\w-]+}": 
+        ["userAddress", "delete"],
     "/Rest/product/{id:[\\w-]+}": 
         ["productImage", "delete"],
     "/Rest/product-image/{id:[\\w-]+}": 

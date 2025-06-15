@@ -108,10 +108,10 @@ abstract class API
         $query = $conn->prepare($stmt);
         $query->execute($params);
         $result = $query->fetchAll();
-
-        foreach ($result as &$row) {
-            if (isset($row['id'])) {
-                $row['id'] = Id::toString($row['id']);
+        foreach ($result as &$data) { // Stringify id info
+            foreach ($data as $column => $row) {
+                if (preg_match('/(^id$|Id$|_id$)/', $column)) 
+                    $data[$column] = Id::toString($row);
             }
         }
 
@@ -151,7 +151,7 @@ abstract class API
             $valueSnakeCase = snakeToCamelCase($value);
             if (preg_match('/(^password$|Password$)/', $value))
                 $params[$valueSnakeCase] = password_hash($contents[camelToSnakeCase($value)], PASSWORD_ARGON2ID);
-            else if (preg_match('/^id$|Id$/', $value))
+            else if (preg_match('/^id$/', $value))
                 $params[$valueSnakeCase] = Id::generate();
             else
                 $params[$valueSnakeCase] = $contents[$value];
@@ -210,12 +210,19 @@ abstract class API
             else
                 $params[$valueSnakeCase] = $contents[$value];
         }
-        $params['id'] = $args['id'];
+        
+        $idName = '';
+        foreach ($args as $key => $value) {
+            if (preg_match('/^id$|Id$|_id$/', $key)){
+                $params[$key] = $value;
+                $idName = $key;
+            }
+        }
 
         $updateStmt = implode(', ', array_map(function ($val) {
             return $val . ' = :' . snakeToCamelCase($val);
         }, $columns));
-        $stmt = "UPDATE $table SET $updateStmt WHERE id = :id";
+        $stmt = "UPDATE $table SET $updateStmt WHERE " . strtolower(camelToSnakeCase($idName)) . " = :$idName";
 
         static::$validator->sanitize($params);
         $query = $conn->prepare($stmt);
@@ -247,10 +254,17 @@ abstract class API
         if (!$validateId['status'])
             Respond::respondFail($validateId['message']);
 
-        static::$validator->sanitize($args);
-        $params = [':id' => $args['id'] ?? throw new BadMethodCallException('Id is not defined.')];
+        $idName = '';
+        foreach ($args as $key => $value) {
+            if (preg_match('/^id$|Id$|_id$/', $key)){
+                $idName = $key;
+            }
+        }
 
-        $stmt = "DELETE FROM $table WHERE id = :id";
+        $params = [":$idName" => $args[$idName] ?? throw new BadMethodCallException('Id is not defined.')];
+
+        static::$validator->sanitize($params);
+        $stmt = "DELETE FROM $table WHERE " . strtolower(camelToSnakeCase($idName)) . " = :" . $idName;
 
         $query = $conn->prepare($stmt);
         $query->execute($params);

@@ -19,23 +19,23 @@
  * Instantiate and use this class through the getApi() static method. Each public method corresponds to a RESTful endpoint for address management.
  */
 
-class AddressAPI extends API
+class UserAddressAPI extends API
 {
-    private static $addressAPI;
+    private static $userAddressAPI;
     protected static $validator;
     protected static $fileName = 'validate-address-fields.json';
 
     private function __construct() {}
 
-    public static function getApi(): AddressAPI
+    public static function getApi(): UserAddressAPI
     {
-        if (!isset(self::$addressAPI))
-            self::$addressAPI = new self();
+        if (!isset(self::$userAddressAPI))
+            self::$userAddressAPI = new self();
 
         if (!isset(self::$validator))
             self::$validator = AddressValidation::getValidator();
 
-        return self::$addressAPI;
+        return self::$userAddressAPI;
     }
 
     public function get(array $args = []): void
@@ -50,7 +50,7 @@ class AddressAPI extends API
             [
                 'user_id',
                 'house_no',
-                'steet',
+                'street',
                 'city',
                 'region',
                 'postal_code',
@@ -61,13 +61,12 @@ class AddressAPI extends API
 
     public function put(array $args): void
     {
-        $this->postMethodTemplate(
+        $this->putMethodTemplate(
             'user_address',
             $args,
             [
-                'user_id',
                 'house_no',
-                'steet',
+                'street',
                 'city',
                 'region',
                 'postal_code',
