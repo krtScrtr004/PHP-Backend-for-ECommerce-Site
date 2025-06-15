@@ -22,7 +22,7 @@
 
   "email": {
     "data": "email",
-    "min": null,
+    "min": 3,
     "max": null,
     "callback": "validateEmail"
   },

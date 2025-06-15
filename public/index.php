@@ -16,6 +16,8 @@ try {
                 $action[0] = $userAPI;
             } else if (strcasecmp($action[0], 'userAddress') === 0) {
                 $action[0] = $userAddressAPI;
+            } else if (strcasecmp($action[0], 'store') === 0) {
+                $action[0] = $storeAPI;
             } else if (strcasecmp($action[0], 'product') === 0) {
                 $action[0] = $productAPI;
             } else if (strcasecmp($action[0], 'productImage') === 0) {

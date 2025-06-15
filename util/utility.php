@@ -12,6 +12,11 @@ function decodeData(String $rawData): array
     return $contents;
 }
 
+function sentenceToKebabCase(String $str): String
+{
+    return preg_replace('/([\w+]) ([\w+])/', '$1-$2', $str);
+}
+
 function camelToKebabCase(String $str): String
 {
     return preg_replace('/([a-z])([A-Z])/', '$1-$2', $str);

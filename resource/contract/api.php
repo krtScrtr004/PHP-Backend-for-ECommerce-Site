@@ -83,7 +83,7 @@ abstract class API
 
         $params = [];
 
-        $stmt = "SELECT * FROM $table";
+        $stmt = "SELECT * FROM `$table`";
 
         if (count($args) > 0) {
             $stmt .= ' WHERE ';
@@ -163,7 +163,7 @@ abstract class API
         $columnList = implode(',', $columns);
         $values = implode(',', array_map(fn($v) => ':' . snakeToCamelCase($v), $columns));
 
-        $stmt = "INSERT INTO $table({$columnList}) VALUES({$values})";
+        $stmt = "INSERT INTO `$table`({$columnList}) VALUES({$values})";
 
         $query = $conn->prepare($stmt);
         $query->execute($params);
@@ -222,7 +222,7 @@ abstract class API
         $updateStmt = implode(', ', array_map(function ($val) {
             return $val . ' = :' . snakeToCamelCase($val);
         }, $columns));
-        $stmt = "UPDATE $table SET $updateStmt WHERE " . strtolower(camelToSnakeCase($idName)) . " = :$idName";
+        $stmt = "UPDATE `$table` SET $updateStmt WHERE " . strtolower(camelToSnakeCase($idName)) . " = :$idName";
 
         static::$validator->sanitizeData($params);
         $query = $conn->prepare($stmt);
@@ -264,7 +264,7 @@ abstract class API
         $params = [":$idName" => $args[$idName] ?? throw new BadMethodCallException('Id is not defined.')];
 
         static::$validator->sanitizeData($params);
-        $stmt = "DELETE FROM $table WHERE " . strtolower(camelToSnakeCase($idName)) . " = :" . $idName;
+        $stmt = "DELETE FROM `$table` WHERE " . strtolower(camelToSnakeCase($idName)) . " = :" . $idName;
 
         $query = $conn->prepare($stmt);
         $query->execute($params);

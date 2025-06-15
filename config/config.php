@@ -55,12 +55,13 @@ set_exception_handler(['Logger', 'logException']);
 /**
  * Instantiate Classes
  */
-$conn = DBConnection::getConnection();
-$router = Router::getRouter();
+$conn               =       DBConnection::getConnection();
+$router             =       Router::getRouter();
 
-$userAPI = UserApi::getApi();
-$userAddressAPI = UserAddressAPI::getApi();
-$productAPI = ProductAPI::getApi();
-$productImageAPI = ProductImageAPI::getApi();
-$orderAPI = OrderAPI::getApi();
-$orderItemAPI = OrderItemApi::getApi();
+$userAPI            =       UserApi::getApi();
+$userAddressAPI     =       UserAddressAPI::getApi();
+$storeAPI           =       StoreAPI::getApi();
+$productAPI         =       ProductAPI::getApi();
+$productImageAPI    =       ProductImageAPI::getApi();
+$orderAPI           =       OrderAPI::getApi();
+$orderItemAPI       =       OrderItemApi::getApi();
