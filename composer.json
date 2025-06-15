@@ -11,5 +11,7 @@
             "email": "secretariokurt3219@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ramsey/uuid": "^4.8"
+    }
 }
