@@ -19,6 +19,7 @@ define('UTIL_PATH', BASE_PATH . '/util/');
 
 define('CONTRACT_PATH', RESOURCE_PATH . '/contract/');
 define('CLASS_PATH', RESOURCE_PATH . '/class/');
+define('SERVICE_PATH', RESOURCE_PATH . '/service/');
 
 /**
  * Include Files
@@ -29,7 +30,7 @@ foreach (glob(CONFIG_PATH . '*.php') as $filename) {
 require_once UTIL_PATH . 'utility.php';
 
 spl_autoload_register(function ($class) {
-    $paths = [API_PATH, CONTRACT_PATH, CONFIG_PATH, CLASS_PATH, ROUTER_PATH, UTIL_PATH];
+    $paths = [API_PATH, CONTRACT_PATH, CONFIG_PATH, CLASS_PATH, ROUTER_PATH, SERVICE_PATH, UTIL_PATH];
     foreach ($paths as $path) {
         // Turn camel case to kebab case
         $class = strtolower(camelToKebabCase($class));
