@@ -1,0 +1,15 @@
+{
+    "name": "secre/rest",
+    "autoload": {
+        "psr-4": {
+            "Secre\\Rest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "krtScrtr44",
+            "email": "secretariokurt3219@gmail.com"
+        }
+    ],
+    "require": {}
+}
