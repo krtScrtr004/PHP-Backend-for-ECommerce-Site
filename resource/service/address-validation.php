@@ -36,16 +36,9 @@ class AddressValidation extends Validation
 
         return self::$addressValidation;
     }
-    public static function sanitize(array &$data): void
+    public static function sanitizeData(array &$data): void
     {
-        $trimmableFields = ['houseNo', 'street', 'city', 'region', 'postalCode', 'country'];
-
-        foreach ($data as $key => $field) {
-            if (preg_match('/^id$|Id$/', $key))
-                $data[$key] = Id::toBinary($field);
-            else if (in_array($key, $trimmableFields, true))
-                $data[$key] = trim($field);
-        }
+        self::sanitize($data, ['houseNo', 'street', 'city', 'region', 'postalCode', 'country']);
     }
 
     public function validateHouseNo(int|String $param): array

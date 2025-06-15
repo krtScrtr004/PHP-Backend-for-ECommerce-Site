@@ -32,13 +32,9 @@ class OrderValidation extends Validation
         return self::$orderValidation;
     }
 
-    public static function sanitize(array &$data): void
+    public static function sanitizeData(array &$data): void
     {
-        foreach ($data as $key => $value) {
-            if (preg_match('/(^id$|_id$|Id$)/', $key)) {
-                $data[$key] = (int) $value;
-            }
-        }
+        self::sanitize($data);
 
         if (isset($data['status']))
             $data['status'] = trim(ucfirst($data['status']));

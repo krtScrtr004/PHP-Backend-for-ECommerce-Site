@@ -103,7 +103,7 @@ abstract class API
                 Respond::respondFail($validateContents['message']);
             }
         }
-        static::$validator->sanitize($params);
+        static::$validator->sanitizeData($params);
 
         $query = $conn->prepare($stmt);
         $query->execute($params);
@@ -157,7 +157,7 @@ abstract class API
                 $params[$valueSnakeCase] = $contents[$value];
         }
 
-        static::$validator->sanitize($params);
+        static::$validator->sanitizeData($params);
 
         // Building query statement
         $columnList = implode(',', $columns);
@@ -224,7 +224,7 @@ abstract class API
         }, $columns));
         $stmt = "UPDATE $table SET $updateStmt WHERE " . strtolower(camelToSnakeCase($idName)) . " = :$idName";
 
-        static::$validator->sanitize($params);
+        static::$validator->sanitizeData($params);
         $query = $conn->prepare($stmt);
         $query->execute($params);
 
@@ -263,7 +263,7 @@ abstract class API
 
         $params = [":$idName" => $args[$idName] ?? throw new BadMethodCallException('Id is not defined.')];
 
-        static::$validator->sanitize($params);
+        static::$validator->sanitizeData($params);
         $stmt = "DELETE FROM $table WHERE " . strtolower(camelToSnakeCase($idName)) . " = :" . $idName;
 
         $query = $conn->prepare($stmt);

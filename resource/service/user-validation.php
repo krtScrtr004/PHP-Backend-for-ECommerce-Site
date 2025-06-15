@@ -35,21 +35,9 @@ class UserValidation extends Validation
         return self::$userValidation;
     }
 
-    public static function sanitize(array &$data): void
+    public static function sanitizeData(array &$data): void
     {
-        if (!isset($data))
-            throw new ErrorException('No data array to sanitize.');
-
-        if (isset($data['id'])) $data['id'] = Id::toBinary($data['id']);
-        
-        if (isset($data['email'])) $data['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
-
-        $trimmableField = ['firstName', 'lastName', 'password', 'contact'];
-        foreach ($trimmableField as $trimmable) {
-            if (isset($data[$trimmable])) {
-                $data[$trimmable] = trim($data[$trimmable]);
-            }
-        }
+        parent::sanitize($data, ['firstName', 'lastName', 'password', 'contact']);
     }
 
     /* --Callback validator functions-- */
@@ -60,28 +48,6 @@ class UserValidation extends Validation
             return [
                 'status' => false,
                 'message' => "Password should only contain lower and uppercase characters, numbers, and special characters (_, -, !, @, ')."
-            ];
-        }
-        return ['status' => true];
-    }
-
-    public function validateEmail($param): array
-    {
-        if (!filter_var($param, FILTER_VALIDATE_EMAIL)) {
-            return [
-                'status' => false,
-                'message' => 'Invalid email format.'
-            ];
-        }
-        return ['status' => true];
-    }
-
-    public function validateContact($param): array
-    {
-        if (preg_match('/^0-9\[\]\-\_\(\)\+\s\#]+@/', $param) === 1) {
-            return [
-                'status' => false,
-                'message' => 'Contact number should only contain numbers, space, and special characters (\+, \[, \], \(, \), \-, \_, \#).'
             ];
         }
         return ['status' => true];

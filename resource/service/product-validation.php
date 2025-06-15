@@ -38,22 +38,12 @@ class ProductValidation extends Validation
         return self::$productValidation;
     }
 
-    public static function sanitize(array &$data): void
+    public static function sanitizeData(array &$data): void
     {
-        if (!isset($data))
-            throw new ErrorException('No data array to sanitize.');
-
-        if (isset($data['id']))
-            $data['id'] = (int) $data['id'];
+        self::sanitize($data, ['name', 'description']);
 
         if (isset($data['price']))
             $data['price'] = (int) ((float) $data['price'] * 100);
-
-        $trimmableFields = ['name', 'description'];
-        foreach ($trimmableFields as $trimmable) {
-            if (isset($data[$trimmable]))
-                $data[$trimmable] = trim($data[$trimmable]);
-        }
     }
 
     public function validatePrice(float $param): array
