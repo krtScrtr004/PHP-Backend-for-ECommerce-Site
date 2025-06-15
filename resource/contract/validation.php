@@ -109,7 +109,7 @@ abstract class Validation
     public static function sanitize(array &$data, array $trimmableFields = []): void
     {
        foreach ($data as $key => $field) {
-            if (preg_match('/^id$|_id$/', $key))
+            if (preg_match('/^id$|_id$|Id$/', $key))
                 $data[$key] = Id::toBinary($field);
             else if (preg_match('/email/', $key))
                 $data[$key] = filter_var($field, FILTER_SANITIZE_EMAIL);

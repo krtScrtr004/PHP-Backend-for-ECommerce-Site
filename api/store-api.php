@@ -56,6 +56,7 @@ class StoreAPI extends API
 
         $this->putMethodTemplate(
             'store',
+            $args,
             [
                 'head_owner_id',
                 'name',

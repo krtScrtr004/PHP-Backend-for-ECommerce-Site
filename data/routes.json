@@ -74,7 +74,7 @@
     "/Rest/user-address/{userId:[\\w-]+}": 
         ["userAddress", "delete"],
     "/Rest/store/{id:[\\w-]+}": 
-        ["user", "delete"],
+        ["store", "delete"],
     "/Rest/product/{id:[\\w-]+}": 
         ["productImage", "delete"],
     "/Rest/product-image/{id:[\\w-]+}": 

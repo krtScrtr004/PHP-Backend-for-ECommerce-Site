@@ -261,7 +261,7 @@ abstract class API
             }
         }
 
-        $params = [":$idName" => $args[$idName] ?? throw new BadMethodCallException('Id is not defined.')];
+        $params = ["$idName" => $args[$idName] ?? throw new BadMethodCallException('Id is not defined.')];
 
         static::$validator->sanitizeData($params);
         $stmt = "DELETE FROM `$table` WHERE " . strtolower(camelToSnakeCase($idName)) . " = :" . $idName;
