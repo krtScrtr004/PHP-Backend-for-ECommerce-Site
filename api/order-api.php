@@ -52,17 +52,29 @@ class OrderAPI extends API
 
     public function get(array $args = []): void
     {
-        $this->getMethodTemplate('orders', $args);
+        $this->getMethodTemplate('order', $args);
     }
 
     public function post(): void
     {
-        $this->postMethodTemplate('orders', ['user_id']);
+        $currentDateTime = new DateTime();
+        $currentDateTime->add(new DateInterval('P3D'));
+
+        $contents = decodeData('php://input');
+        $contents['expected_arrival'] = $currentDateTime->format("Y-m-d H:i:s");
+
+        $this->postMethodTemplate('order', ['id', 'user_id', 'expected_arrival'], $contents);
     }
 
     public function put(array $args): void
     {
-        $this->putMethodTemplate('orders', $args,['user_id', 'status']
+        $this->putMethodTemplate(
+            'order',
+            $args,
+            [ 
+                'status',
+                'actual_arrival'
+            ]
         );
     }
 

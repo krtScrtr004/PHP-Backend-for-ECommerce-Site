@@ -113,7 +113,7 @@ abstract class Validation
                 $data[$key] = Id::toBinary($field);
             else if (preg_match('/email|Email/', $key))
                 $data[$key] = filter_var($field, FILTER_SANITIZE_EMAIL);
-            else if (preg_match('/link|Link/', $field))
+            else if (preg_match('/link|Link/', $key))
                 $data[$key] = filter_var($field, FILTER_SANITIZE_URL);
             else if (in_array($key, $trimmableFields, true))
                 $data[$key] = trim($field);

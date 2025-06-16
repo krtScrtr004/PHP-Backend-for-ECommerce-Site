@@ -14,14 +14,14 @@
   },
 
   "productId": {
-    "data": "userId",
+    "data": "productId",
     "min": null,
     "max": null,
     "callback": "validateId"
   },
 
   "orderId": {
-    "data": "userId",
+    "data": "orderId",
     "min": null,
     "max": null,
     "callback": "validateId"
