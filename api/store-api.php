@@ -34,6 +34,7 @@ class StoreAPI extends API
             'store',
             [
                 'id',
+                'type',
                 'head_owner_id',
                 'name',
                 'description',
@@ -57,6 +58,7 @@ class StoreAPI extends API
             'store',
             $args,
             [
+                'type',
                 'head_owner_id',
                 'name',
                 'description',

@@ -6,6 +6,13 @@
     "callback": "validateId"
   },
 
+  "type": {
+    "data": "type",
+    "min": 4,
+    "max": null,
+    "callback": "validateType"
+  },
+
   "headOwnerId": {
     "data": "headOwnerId",
     "min": null,
