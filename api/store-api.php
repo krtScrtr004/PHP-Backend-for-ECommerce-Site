@@ -27,8 +27,8 @@ class StoreAPI extends API
     public function post(): void
     {
         $contents = decodeData('php://input');
-        $contents['slug'] = strtolower(sentenceToKebabCase($contents['name'])) 
-                            ?? throw new ErrorException('Store name is not defined.');
+        $contents['slug'] = strtolower(sentenceToKebabCase($contents['name']))
+            ?? throw new ErrorException('Store name is not defined.');
 
         $this->postMethodTemplate(
             'store',
@@ -41,18 +41,17 @@ class StoreAPI extends API
                 'logo_image_link',
                 'site_link',
                 'email',
-                'contact',
-                'location_id',
+                'contact'
             ],
             $contents
         );
     }
 
-    public function put(array $args): void 
+    public function put(array $args): void
     {
         $contents = decodeData('php://input');
-        $contents['slug'] = strtolower(sentenceToKebabCase($contents['name'])) 
-                            ?? throw new ErrorException('Store name is not defined.');
+        $contents['slug'] = strtolower(sentenceToKebabCase($contents['name']))
+            ?? throw new ErrorException('Store name is not defined.');
 
         $this->putMethodTemplate(
             'store',
@@ -65,14 +64,13 @@ class StoreAPI extends API
                 'logo_image_link',
                 'site_link',
                 'email',
-                'contact',
-                'location_id',
+                'contact'
             ],
             $contents
         );
     }
 
-    public function delete(array $args): void 
+    public function delete(array $args): void
     {
         $this->deleteMethodTemplate('store', $args);
     }

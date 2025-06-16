@@ -13,6 +13,13 @@
     "callback": "validateId"
   },
 
+  "storeId": {
+    "data": "storeId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
   "houseNo": {
     "data": "houseNo",
     "min": 1,

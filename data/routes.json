@@ -16,6 +16,10 @@
         ["store", "get"],
     "/Rest/store/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
         ["store", "get"],
+    "/Rest/store-address/": 
+        ["storeAddress", "get"],
+    "/Rest/store-address/{storeId:[\\w-]+}": 
+        ["storeAddress", "get"],
     "/Rest/product/": 
         ["product", "get"],
     "/Rest/product/{id:[\\w-]+}": 
@@ -41,6 +45,8 @@
         ["userAddress", "post"],
     "/Rest/store/": 
         ["store", "post"],
+    "/Rest/store-address/": 
+        ["storeAddress", "post"],
     "/Rest/product/": 
         ["product", "post"],
     "/Rest/product-image/": 
@@ -58,6 +64,8 @@
         ["userAddress", "put"],
     "/Rest/store/{id:[\\w-]+}": 
         ["store", "put"],
+    "/Rest/store-address/{storeId:[\\w-]+}": 
+        ["storeAddress", "put"],
     "/Rest/product/{id:[\\w-]+}": 
         ["product", "put"],
     "/Rest/product-image/{id:[\\w-]+}": 
@@ -75,6 +83,8 @@
         ["userAddress", "delete"],
     "/Rest/store/{id:[\\w-]+}": 
         ["store", "delete"],
+    "/Rest/store-address/{storeId:[\\w-]+}": 
+        ["storeAddress", "delete"],
     "/Rest/product/{id:[\\w-]+}": 
         ["productImage", "delete"],
     "/Rest/product-image/{id:[\\w-]+}": 
