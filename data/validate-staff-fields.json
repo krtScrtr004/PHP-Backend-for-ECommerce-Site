@@ -1,0 +1,15 @@
+{
+  "storeId": {
+    "data": "storeId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "userId": {
+    "data": "storeId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  }
+}

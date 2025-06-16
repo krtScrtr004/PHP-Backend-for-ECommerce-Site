@@ -6,32 +6,48 @@
         ["user", "get"],
     "/Rest/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
         ["user", "get"],
+
     "/Rest/user-address/": 
         ["userAddress", "get"],
     "/Rest/user-address/{userId:[\\w-]+}": 
         ["userAddress", "get"],
+
     "/Rest/store/": 
         ["store", "get"],
     "/Rest/store/{id:[\\w-]+}": 
-        ["store", "get"],
+        ["store", "get"],    
     "/Rest/store/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
         ["store", "get"],
+    
+    "/Rest/store-staff/": 
+        ["storeStaff", "get"],
+    "/Rest/store-staff/{id:[\\w-]+}": 
+        ["storeStaff", "get"],
+    "/Rest/store-staff/store/{storeId:[\\w-]+}": 
+        ["storeStaff", "get"],
+    "/Rest/store-staff/user/{userId:[\\w-]+}": 
+        ["storeStaff", "get"],
+
     "/Rest/store-address/": 
         ["storeAddress", "get"],
     "/Rest/store-address/{storeId:[\\w-]+}": 
         ["storeAddress", "get"],
+
     "/Rest/product/": 
         ["product", "get"],
     "/Rest/product/{id:[\\w-]+}": 
         ["product", "get"],
+
     "/Rest/product-image/": 
         ["productImage", "get"],
      "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "get"],
+
     "/Rest/order/": 
         ["order", "get"],
     "/Rest/order/{id:[\\w-]+}": 
         ["order", "get"],
+
     "/Rest/order-item/": 
         ["orderItem", "get"],
     "/Rest/order-item/{id:[\\w-]+}": 
@@ -45,6 +61,8 @@
         ["userAddress", "post"],
     "/Rest/store/": 
         ["store", "post"],
+    "/Rest/store-staff/": 
+        ["storeStaff", "post"],
     "/Rest/store-address/": 
         ["storeAddress", "post"],
     "/Rest/product/": 
@@ -64,7 +82,9 @@
         ["userAddress", "put"],
     "/Rest/store/{id:[\\w-]+}": 
         ["store", "put"],
-    "/Rest/store-address/{storeId:[\\w-]+}": 
+    "/Rest/store-staff/{id:[\\w-]+}": 
+        ["storeStaff", "put"],
+    "/Rest/store-address/{id:[\\w-]+}": 
         ["storeAddress", "put"],
     "/Rest/product/{id:[\\w-]+}": 
         ["product", "put"],
@@ -83,6 +103,8 @@
         ["userAddress", "delete"],
     "/Rest/store/{id:[\\w-]+}": 
         ["store", "delete"],
+    "/Rest/store-staff/{id:[\\w-]+}": 
+        ["storeStaff", "delete"],
     "/Rest/store-address/{storeId:[\\w-]+}": 
         ["storeAddress", "delete"],
     "/Rest/product/{id:[\\w-]+}": 

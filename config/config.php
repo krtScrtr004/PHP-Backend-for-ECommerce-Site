@@ -61,6 +61,7 @@ $router             =       Router::getRouter();
 $userAPI            =       UserApi::getApi();
 $userAddressAPI     =       UserAddressAPI::getApi();
 $storeAPI           =       StoreAPI::getApi();
+$storeStaffAPI      =       StoreStaffAPI::getApi();
 $storeAddressAPI    =       StoreAddressAPI::getApi();
 $productAPI         =       ProductAPI::getApi();
 $productImageAPI    =       ProductImageAPI::getApi();
