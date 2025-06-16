@@ -69,10 +69,31 @@
     "callback": "validateContact"
   },
 
-  "locationId": {
-    "data": "locationId",
-    "min": null,
+  "vatStatus": {
+    "data": "vatStatus",
+    "min": 3,
+    "max": 3,
+    "callback": "validateStatus"
+  },
+
+  "tin": {
+    "data": "tin",
+    "min": 9,
+    "max": 15,
+    "callback": "validateTin"
+  },
+
+  "govIdImageLink": {
+    "data": "tin",
+    "min": 3,
     "max": null,
-    "callback": "validateId"
+    "callback": "validateUrl"
+  },
+
+  "businessPermitImageLink": {
+    "data": "businessPermitImageLink",
+    "min": 3,
+    "max": null,
+    "callback": "validateUrl"
   }
 }

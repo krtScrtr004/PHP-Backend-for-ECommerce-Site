@@ -9,6 +9,12 @@ enum StoreType: String
     case OP = 'one_person';
 }
 
+enum StoreVatStatus: String 
+{
+    case V = 'vat';
+    case N = 'non';
+}
+
 class StoreValidation extends Validation
 {
     private static $storeValidation;
@@ -25,7 +31,8 @@ class StoreValidation extends Validation
 
     public static function sanitizeData(array &$data): void
     {
-        self::sanitize($data, ['name', 'description']);
+        self::sanitize($data, ['name', 'description', 'type', 'vat_status']);
+
     }
 
     public function validateType(String $param): array
@@ -34,6 +41,30 @@ class StoreValidation extends Validation
             return [
                 'status' => false,
                 'message' => 'Invalid store type.'
+            ];
+        }
+        return ['status' => true];
+    }
+
+    // Document validator methods
+
+    public function validateVatStatus(String $param): array 
+    {
+        if (!StoreVatStatus::tryFrom($param)) {
+            return [
+                'status' => false,
+                'message' => 'Invalid store VAT type.'
+            ];
+        }
+        return ['status' => true];
+    }
+
+    public function validateTin(String $param): array
+    {
+        if (preg_match('/(\d{3,3})-(\d{3,3})-(\d{3,3})(-(\d{3,3}))?/', $param) === 0) {
+            return [
+                'status' => false,
+                'message' => 'Invalid TIN format.'
             ];
         }
         return ['status' => true];

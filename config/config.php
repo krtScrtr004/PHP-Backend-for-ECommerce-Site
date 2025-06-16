@@ -62,6 +62,7 @@ $userAPI            =       UserApi::getApi();
 $userAddressAPI     =       UserAddressAPI::getApi();
 $storeAPI           =       StoreAPI::getApi();
 $storeStaffAPI      =       StoreStaffAPI::getApi();
+$storeDocumentAPI   =       StoreDocumentAPI::getApi();
 $storeAddressAPI    =       StoreAddressAPI::getApi();
 $productAPI         =       ProductAPI::getApi();
 $productImageAPI    =       ProductImageAPI::getApi();

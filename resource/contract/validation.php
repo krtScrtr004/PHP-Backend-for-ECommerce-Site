@@ -111,9 +111,9 @@ abstract class Validation
        foreach ($data as $key => $field) {
             if (preg_match('/^id$|_id$|Id$/', $key))
                 $data[$key] = Id::toBinary($field);
-            else if (preg_match('/email/', $key))
+            else if (preg_match('/email|Email/', $key))
                 $data[$key] = filter_var($field, FILTER_SANITIZE_EMAIL);
-            else if (preg_match('/link/', $field))
+            else if (preg_match('/link|Link/', $field))
                 $data[$key] = filter_var($field, FILTER_SANITIZE_URL);
             else if (in_array($key, $trimmableFields, true))
                 $data[$key] = trim($field);

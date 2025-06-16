@@ -20,6 +20,8 @@ try {
                 $action[0] = $storeAPI;
             } else if (strcasecmp($action[0], 'storeStaff') === 0) {
                 $action[0] = $storeStaffAPI;
+            } else if (strcasecmp($action[0], 'storeDocument') === 0) {
+                $action[0] = $storeDocumentAPI;
             } else if (strcasecmp($action[0], 'storeAddress') === 0) {
                 $action[0] = $storeAddressAPI;
             }else if (strcasecmp($action[0], 'product') === 0) {
