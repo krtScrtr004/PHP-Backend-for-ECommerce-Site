@@ -43,7 +43,7 @@ class OrderItemApi extends OrderAPI
 
     public function post(): void
     {
-        $columns = ['order_id', 'product_id'];
+        $columns = ['id', 'order_id', 'product_id'];
         $contents = decodeData('php://input');
         if (isset($contents['quantity']))
             array_push($columns, 'quantity');
@@ -61,8 +61,6 @@ class OrderItemApi extends OrderAPI
             'order_item',
             $args,
             [
-                'order_id',
-                'product_id',
                 'quantity'
             ]
         );

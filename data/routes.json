@@ -60,7 +60,12 @@
     "/Rest/order-item/": 
         ["orderItem", "get"],
     "/Rest/order-item/{id:[\\w-]+}": 
+        ["orderItem", "get"],
+    "/Rest/order-item/order/{orderId:[\\w-]+}": 
+        ["orderItem", "get"],
+    "/Rest/order-item/product/{productId:[\\w-]+}": 
         ["orderItem", "get"]
+
   },
 
   "POST": {
