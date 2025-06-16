@@ -42,6 +42,8 @@
         ["product", "get"],
     "/Rest/product/{id:[\\w-]+}": 
         ["product", "get"],
+    "/Rest/product/store/{storeId:[\\w-]+}": 
+        ["product", "get"],
 
     "/Rest/product-image/": 
         ["productImage", "get"],
@@ -119,7 +121,7 @@
     "/Rest/store-address/{storeId:[\\w-]+}": 
         ["storeAddress", "delete"],
     "/Rest/product/{id:[\\w-]+}": 
-        ["productImage", "delete"],
+        ["product", "delete"],
     "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "delete"],
     "/Rest/order/{id:[\\w-]+}": 

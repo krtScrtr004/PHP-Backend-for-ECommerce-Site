@@ -57,14 +57,12 @@ class ProductAPI extends API
 
     public function post(): void
     {
-        $this->postMethodTemplate(
-            'product',
-            [
-                'name',
-                'description',
-                'price'
-            ]
-        );
+        $columns = ['id', 'store_id', 'name', 'description', 'price'];
+        $contents = decodeData('php://input');
+        if (isset($contents['currency']))
+            array_push($columns, 'currency');
+
+        $this->postMethodTemplate('product',$columns,$contents);
     }
 
     public function put(array $args): void
@@ -75,7 +73,8 @@ class ProductAPI extends API
             [
                 'name',
                 'description',
-                'price'
+                'price',
+                'currency'
             ]
         );
     }
