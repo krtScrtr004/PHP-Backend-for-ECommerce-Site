@@ -71,7 +71,8 @@ class UserAPI extends API
                 'email',
                 'password',
                 'profile_image_link',
-                'contact'
+                'contact',
+                'is_verified'
             ]
         );
     }

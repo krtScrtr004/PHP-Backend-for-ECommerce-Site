@@ -66,7 +66,8 @@ class StoreAPI extends API
                 'logo_image_link',
                 'site_link',
                 'email',
-                'contact'
+                'contact',
+                'is_verified'
             ],
             $contents
         );
