@@ -49,6 +49,8 @@
         ["productImage", "get"],
      "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "get"],
+     "/Rest/product-image/product/{productId:[\\w-]+}": 
+        ["productImage", "get"],
 
     "/Rest/order/": 
         ["order", "get"],

@@ -45,6 +45,7 @@ class ProductImageAPI extends ProductAPI
         $this->postMethodTemplate(
             'product_image',
             [
+                'id',
                 'product_id',
                 'image_link'
             ]
@@ -57,7 +58,6 @@ class ProductImageAPI extends ProductAPI
             'product_image',
             $args,
             [
-                'product_id',
                 'image_link'
             ]
         );

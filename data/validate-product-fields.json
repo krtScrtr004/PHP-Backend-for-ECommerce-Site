@@ -6,6 +6,13 @@
     "callback": "validateId"
   },
 
+  "storeId": {
+    "data": "storeId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
   "name": {
     "data": "name",
     "min": 1,
