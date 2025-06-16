@@ -3,24 +3,23 @@
 /**
  * Class OrderAPI
  *
- * The OrderAPI class provides a RESTful API interface for managing orders in the system.
- * It extends the base API class and implements CRUD operations for the "orders" resource.
- * This class uses a singleton pattern to ensure only one instance is used throughout the application.
+ * Provides a RESTful API for managing orders.
  * 
- * Main responsibilities:
- * - Handling HTTP GET, POST, PUT, and DELETE requests for orders.
- * - Validating order data using an external OrderValidation class.
- * - Interacting with the database to perform operations on the "orders" table.
+ * Responsibilities:
+ * - Handles HTTP GET, POST, PUT, and DELETE requests for orders.
+ * - Validates order data using OrderValidation.
+ * - Interacts with the database for CRUD operations on the "order" table.
+ * - Uses a singleton pattern for consistent API access.
  * 
- * Methods:
- * - getApi(): Returns the singleton instance of OrderAPI and initializes the validator if needed.
- * - get(array $args = []): Retrieves orders from the database. Accepts optional filtering arguments.
- * - post(): Creates a new order in the database. Expects user ID as input.
- * - put(array $args): Updates an existing order's user ID and status based on provided arguments.
- * - delete(array $args): Deletes an order from the database by its ID.
+ * Main Methods:
+ * - getApi(): Returns the singleton instance and initializes the validator.
+ * - get(array $args = []): Retrieves orders, with optional filters.
+ * - post(): Creates a new order, setting expected arrival to 3 days from now.
+ * - put(array $args): Updates an order's status and actual arrival.
+ * - delete(array $args): Deletes an order by ID.
  *
  * Usage:
- * Instantiate the class using OrderAPI::getApi() and call the appropriate method based on the HTTP request type.
+ * Use OrderAPI::getApi() to obtain the instance, then call methods based on HTTP requests.
  */
 
 enum OrderStatus: string

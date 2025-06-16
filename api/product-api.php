@@ -1,28 +1,27 @@
 <?php
-
 /**
  * Class ProductAPI
  *
- * The ProductAPI class provides a RESTful API interface for managing products in a database.
- * It extends the base API class and implements CRUD (Create, Read, Update, Delete) operations
- * for the 'product' resource. This class follows the singleton pattern to ensure only one instance
- * is used throughout the application.
+ * Provides a RESTful API for managing products in a database.
+ * Inherits from the base API class and implements CRUD operations
+ * (Create, Read, Update, Delete) for the 'product' resource.
  *
- * Responsibilities:
+ * Key Features:
+ * - Singleton pattern: Ensures only one instance of ProductAPI exists.
  * - Handles HTTP GET, POST, PUT, and DELETE requests for products.
- * - Validates product data using a validator loaded from a JSON schema.
- * - Interacts with the database to perform operations on the 'product' table.
+ * - Validates product data using a JSON schema validator.
+ * - Interacts with the database for all product operations.
  *
- * Methods:
- * - getApi(): Returns the singleton instance of ProductAPI and ensures the validator is set.
- * - get(array $args = []): Retrieves all products from the database. Accepts optional arguments for filtering.
- * - post(): Creates a new product using data from the request body. Validates and inserts the product into the database.
- * - put(array $args): Updates an existing product. Merges URL arguments and request body, then updates the product in the database.
- * - delete(array $args): Deletes a product specified by its ID from the database.
+ * Main Methods:
+ * - getApi(): Returns the singleton instance and sets up the validator.
+ * - get(array $args = []): Retrieves products, with optional filtering.
+ * - post(): Creates a new product after validating input data.
+ * - put(array $args): Updates an existing product with merged input.
+ * - delete(array $args): Deletes a product by its ID.
  *
  * Usage:
- * Instantiate and use this class via the getApi() static method. Use the public methods to handle
- * corresponding HTTP requests for product resources.
+ * Use ProductAPI::getApi() to obtain the instance, then call the public methods
+ * to handle HTTP requests for product resources.
  */
 
 class ProductAPI extends API

@@ -3,22 +3,18 @@
 /**
  * Class UserValidation
  *
- * A singleton class extending Validation, responsible for validating and sanitizing user-related data.
- * This class provides static and instance methods to ensure user input conforms to expected formats
- * and is safe for further processing or storage.
+ * Singleton class for validating and sanitizing user-related data.
+ * Inherits from Validation and provides methods to ensure user input is safe and conforms to expected formats.
  *
  * Usage:
- * - Use UserValidation::getValidator() to obtain the singleton instance.
- * - Use UserValidation::sanitize(&$data) to clean and normalize user data arrays before validation or storage.
- * - Use instance methods (validateId, validatePassword, validateEmail, validateContact) to validate specific user fields.
+ * - Use UserValidation::getValidator() to get the singleton instance.
+ * - Use UserValidation::sanitizeData(&$data) to clean user data arrays before validation or storage.
+ * - Use instance methods (e.g., validatePassword) to validate specific user fields.
  *
  * Methods:
- * - static getValidator(): Returns the singleton instance of UserValidation.
- * - static sanitize(array &$data): Sanitizes and normalizes user data fields in the provided array.
- * - validateId($param): Validates that the provided ID is numeric.
- * - validatePassword($param): Validates that the password contains only allowed characters (letters, numbers, and specific special characters).
- * - validateEmail($param): Validates that the email is in a proper format.
- * - validateContact($param): Validates that the contact number contains only allowed characters (numbers, spaces, and specific special characters).
+ * - static getValidator(): Returns the singleton UserValidation instance.
+ * - static sanitizeData(array &$data): Sanitizes and normalizes user data fields in the provided array.
+ * - validatePassword($param): Validates that the password contains only allowed characters.
  */
 
 class UserValidation extends Validation

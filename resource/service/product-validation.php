@@ -8,19 +8,16 @@
  * Extends the abstract Validation class (not shown here).
  *
  * Responsibilities:
- * - Sanitizes product data arrays by converting and trimming specific fields.
- * - Validates product price to ensure it falls within acceptable bounds.
- * - Validates product image URLs for correct format.
+ * - Sanitizes product data arrays by trimming and converting specific fields.
+ * - Converts 'price' to an integer value in cents.
+ * - Validates product price to ensure it is within acceptable bounds.
  *
  * Methods:
  * - getValidator(): Returns the singleton instance of ProductValidation.
- * - sanitize(array &$data): Static method that sanitizes the provided product data array by:
- *      - Casting 'id' to integer.
- *      - Converting 'price' to an integer representing cents.
+ * - sanitizeData(array &$data): Static method that sanitizes the provided product data array by:
  *      - Trimming whitespace from 'name' and 'description' fields.
+ *      - Converting 'price' to an integer representing cents.
  * - validatePrice(float $param): Validates that the price is positive and does not exceed the maximum allowed value.
- *      Returns an array with validation status and message.
- * - validateImageUrl(string $url): Validates the format of the provided image URL.
  *      Returns an array with validation status and message.
  */
 

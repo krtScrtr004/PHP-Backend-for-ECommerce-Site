@@ -3,18 +3,17 @@
 /**
  * Abstract class API
  *
- * This abstract class provides a standardized template for implementing RESTful API endpoints
- * in PHP. It defines the structure and reusable method templates for handling HTTP request
- * methods (GET, POST, PUT, DELETE) with built-in validation, logging, and response handling.
+ * This abstract class serves as a foundational template for building RESTful API endpoints in PHP.
+ * It defines the structure and reusable method templates for handling HTTP request methods (GET, POST, PUT, DELETE)
+ * with built-in validation, logging, and standardized response handling.
  *
  * Usage:
- * - Extend this class to create specific API resource handlers.
+ * - Extend this class to implement specific API resource handlers.
  * - Implement the abstract methods: get(), post(), put(), and delete() to define resource-specific logic.
  * - Use the provided protected method templates (getMethodTemplate, postMethodTemplate, putMethodTemplate, deleteMethodTemplate)
  *   to automate common CRUD operations with validation and consistent response formatting.
  *
  * Properties:
- * - $className: Stores the name of the child class for logging and identification.
  * - static $validator: Reference to a validator instance for input validation and sanitization.
  * - static $fileName: Reference to a file or schema name used during validation.
  *
@@ -25,17 +24,17 @@
  * - delete(array $args): Handle DELETE requests for removing resources.
  *
  * Method Templates:
- * - getMethodTemplate(array $configs): Automates GET request handling, including query preparation,
+ * - getMethodTemplate(string $table, array $args): Automates GET request handling, including query preparation,
  *   parameter binding, validation, and response formatting.
- * - postMethodTemplate(array $configs): Automates POST request handling, including input validation,
- *   sanitization, query execution, and response formatting.
- * - putMethodTemplate(array $configs): Automates PUT request handling, including input validation,
- *   sanitization, query execution, and response formatting.
- * - deleteMethodTemplate(array $configs): Automates DELETE request handling, including input validation,
- *   sanitization, query execution, and response formatting.
+ * - postMethodTemplate(string $table, array $columns, array $contents = []): Automates POST request handling,
+ *   including input validation, sanitization, query execution, and response formatting.
+ * - putMethodTemplate(string $table, array $args, array $columns, array $contents = []): Automates PUT request handling,
+ *   including input validation, sanitization, query execution, and response formatting.
+ * - deleteMethodTemplate(string $table, array $args): Automates DELETE request handling,
+ *   including input validation, sanitization, query execution, and response formatting.
  *
- * Each method template expects a configuration array with required keys (such as 'query', 'args', 'contents', 'params')
- * and throws exceptions or returns standardized responses in case of errors or invalid requests.
+ * Each method template expects specific parameters and throws exceptions or returns standardized responses
+ * in case of errors or invalid requests.
  *
  * This class is intended to be used as a base for building robust, maintainable, and secure RESTful APIs.
  */

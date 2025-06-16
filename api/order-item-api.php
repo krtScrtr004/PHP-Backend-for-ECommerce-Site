@@ -1,22 +1,20 @@
 <?php
-
 /**
  * Class OrderItemApi
  *
- * Handles API operations related to order items in the system.
- * This class extends OrderAPI and provides CRUD (Create, Read, Update, Delete) methods
- * for managing order items in the database. It implements the singleton pattern to ensure
- * only one instance is used throughout the application.
+ * Provides RESTful API operations for managing order items in the system.
+ * Inherits from OrderAPI and implements CRUD (Create, Read, Update, Delete) methods
+ * for the 'order_item' database table. Utilizes the singleton pattern to ensure a single
+ * instance is used throughout the application.
  *
- * Methods:
- * - getApi(): Returns the singleton instance of OrderItemApi, initializing it and its validator if necessary.
- * - get(array $args = []): Retrieves order item records from the database. Accepts optional arguments for query customization.
- * - post(): Creates a new order item record in the database. Reads input data, supports optional quantity, and inserts the record.
- * - put(array $args): Updates an existing order item record in the database. Requires identifiers and new values as arguments.
- * - delete(array $args): Deletes an order item record from the database based on the provided identifier.
+ * Main Methods:
+ * - getApi(): Returns the singleton instance of OrderItemApi, initializing the validator if needed.
+ * - get(array $args = []): Retrieves order item records, with optional query parameters.
+ * - post(): Creates a new order item, supporting optional quantity.
+ * - put(array $args): Updates an existing order item, allowing quantity modification.
+ * - delete(array $args): Deletes an order item by identifier.
  *
- * Usage:
- * Use this class to perform RESTful API operations on order items, such as listing, creating, updating, and deleting order items.
+ * Use this class to perform API operations such as listing, creating, updating, and deleting order items.
  */
 
 class OrderItemApi extends OrderAPI

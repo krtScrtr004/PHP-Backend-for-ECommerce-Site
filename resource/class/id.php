@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * Class Id
+ *
+ * Utility class for generating, converting, and validating UUIDs using the Ramsey\Uuid library.
+ * This class provides static methods to work with UUIDs in both string and binary formats.
+ * 
+ * Methods:
+ * - generate(): Generates a new version 4 (random) UUID and returns it as a UuidInterface instance.
+ * - toBinary(string|UuidInterface $uuid): Converts a UUID (string or UuidInterface) to its binary representation.
+ * - toString(string|UuidInterface $uuid): Converts a UUID (binary string or UuidInterface) to its canonical string representation.
+ * - validate(string|UuidInterface $uuid): Validates whether the given value is a valid UUID (accepts both string and UuidInterface).
+ *
+ * Note: This class cannot be instantiated; all methods are static.
+ */
+
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

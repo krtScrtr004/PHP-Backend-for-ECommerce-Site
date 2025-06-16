@@ -1,5 +1,26 @@
 <?php
 
+/**
+ * Class StoreValidation
+ *
+ * Provides validation and sanitization utilities for store-related data.
+ * Implements a singleton pattern to ensure a single instance is used throughout the application.
+ * 
+ * Methods:
+ * - getValidator(): Returns the singleton instance of StoreValidation.
+ * - sanitizeData(array &$data): Sanitizes the provided data array, focusing on keys: 'name', 'description', 'type', and 'vat_status'.
+ * - validateType(string $param): Validates if the provided store type matches one of the defined StoreType enum values.
+ * - validateVatStatus(string $param): Validates if the provided VAT status matches one of the defined StoreVatStatus enum values.
+ * - validateTin(string $param): Validates if the provided TIN (Tax Identification Number) matches the required format (e.g., 123-456-789 or 123-456-789-000).
+ *
+ * Usage:
+ *   $validator = StoreValidation::getValidator();
+ *   $result = $validator->validateType('corporation');
+ *   if (!$result['status']) { // handle invalid type }
+ *
+ * This class is intended to be used for validating and sanitizing store data before processing or persisting it.
+ */
+
 enum StoreType: String 
 {
     case SP = 'sole_proprietorship';
