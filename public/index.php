@@ -14,9 +14,17 @@ try {
         foreach ($paths as $path => $action) {
             if (strcasecmp($action[0], 'user') === 0) {
                 $action[0] = $userAPI;
-            } else if (strcasecmp($action[0], 'address') === 0) {
-                $action[0] = $addressAPI;
-            } else if (strcasecmp($action[0], 'product') === 0) {
+            } else if (strcasecmp($action[0], 'userAddress') === 0) {
+                $action[0] = $userAddressAPI;
+            } else if (strcasecmp($action[0], 'store') === 0) {
+                $action[0] = $storeAPI;
+            } else if (strcasecmp($action[0], 'storeStaff') === 0) {
+                $action[0] = $storeStaffAPI;
+            } else if (strcasecmp($action[0], 'storeDocument') === 0) {
+                $action[0] = $storeDocumentAPI;
+            } else if (strcasecmp($action[0], 'storeAddress') === 0) {
+                $action[0] = $storeAddressAPI;
+            }else if (strcasecmp($action[0], 'product') === 0) {
                 $action[0] = $productAPI;
             } else if (strcasecmp($action[0], 'productImage') === 0) {
                 $action[0] = $productImageAPI;

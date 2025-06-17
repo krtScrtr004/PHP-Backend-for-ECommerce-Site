@@ -3,22 +3,20 @@
 /**
  * Class ProductImageAPI
  *
- * Handles API operations related to product images in the application.
- * Inherits from ProductAPI and provides CRUD (Create, Read, Update, Delete) methods
- * for managing records in the `product_image` database table.
+ * Provides API endpoints for managing product images in the application.
+ * Extends ProductAPI and implements CRUD operations for the `product_image` table.
  *
  * Usage:
- * - Use ProductImageAPI::getApi() to obtain a singleton instance of this API handler.
- * - Call the respective methods (get, post, put, delete) to perform operations on product images.
+ * - Use ProductImageAPI::getApi() to get a singleton instance.
+ * - Call get(), post(), put(), or delete() to perform respective operations.
  *
  * Methods:
- * - get(array $args = []): Retrieves product image records from the database. Accepts optional filter arguments.
- * - post(): Creates a new product image record using data from the request body.
- * - put(array $args): Updates an existing product image record. Merges URL arguments and request body data.
- * - delete(array $args): Deletes a product image record specified by the provided arguments.
+ * - get(array $args = []): Fetches product image records, optionally filtered by arguments.
+ * - post(): Creates a new product image record from request data.
+ * - put(array $args): Updates an existing product image record with provided data.
+ * - delete(array $args): Removes a product image record specified by arguments.
  *
- * This class uses method templates (getMethodTemplate, postMethodTemplate, etc.) inherited from ProductAPI
- * to standardize the execution of database queries and response formatting.
+ * This class uses inherited method templates to handle database queries and responses.
  */
 
 class ProductImageAPI extends ProductAPI
@@ -45,6 +43,7 @@ class ProductImageAPI extends ProductAPI
         $this->postMethodTemplate(
             'product_image',
             [
+                'id',
                 'product_id',
                 'image_link'
             ]
@@ -57,7 +56,6 @@ class ProductImageAPI extends ProductAPI
             'product_image',
             $args,
             [
-                'product_id',
                 'image_link'
             ]
         );

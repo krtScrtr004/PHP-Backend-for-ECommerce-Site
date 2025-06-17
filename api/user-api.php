@@ -3,22 +3,21 @@
 /**
  * Class UserAPI
  *
- * The UserAPI class provides a RESTful API interface for managing user data.
+ * UserAPI provides a RESTful interface for managing user records in the database.
  * It extends the base API class and implements CRUD operations (Create, Read, Update, Delete)
- * for user records in the database. This class uses the Singleton pattern to ensure only one
- * instance is used throughout the application. It also integrates user data validation via
- * the UserValidation class.
+ * for users. The class uses the Singleton pattern to ensure a single instance is used
+ * throughout the application. User data validation is handled via the UserValidation class.
  *
- * Methods:
- * - getApi(): Returns the singleton instance of UserAPI and initializes the validator if needed.
- * - get(array $args = []): Retrieves user records from the database. Accepts optional arguments for query customization.
- * - post(): Handles the creation of a new user. Reads input data, hashes the password, and inserts a new user record.
- * - put(array $args): Updates an existing user record. Merges input data and arguments, hashes the password, and updates the user in the database.
- * - delete(array $args): Deletes a user record based on the provided arguments (typically user ID).
+ * Main Features:
+ * - Singleton access via getApi()
+ * - GET: Retrieve user records with optional query arguments
+ * - POST: Create a new user with validated and hashed data
+ * - PUT: Update existing user records, including password hashing and field validation
+ * - DELETE: Remove user records by ID or other criteria
  *
- * Usage:
- * Use this class to expose user management endpoints in a RESTful API. Each method corresponds to an HTTP verb
- * (GET, POST, PUT, DELETE) and interacts with the user table in the database accordingly.
+ * Intended Usage:
+ * Use this class to expose user management endpoints in a RESTful API.
+ * Each method corresponds to an HTTP verb and interacts with the user table accordingly.
  */
 
 class UserAPI extends API
@@ -50,6 +49,7 @@ class UserAPI extends API
         $this->postMethodTemplate(
             'user',
             [
+                'id',
                 'first_name',
                 'last_name',
                 'email',
@@ -70,7 +70,8 @@ class UserAPI extends API
                 'email',
                 'password',
                 'profile_image_link',
-                'contact'
+                'contact',
+                'is_verified'
             ]
         );
     }

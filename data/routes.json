@@ -2,37 +2,85 @@
   "GET": {
     "/Rest/user/": 
         ["user", "get"],
-    "/Rest/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[\\w-]+}": 
         ["user", "get"],
     "/Rest/user/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
         ["user", "get"],
-    "/Rest/address/": 
-        ["address", "get"],
-    "/Rest/address/{userId:[0-9]+}": 
-        ["address", "get"],
+
+    "/Rest/user-address/": 
+        ["userAddress", "get"],
+    "/Rest/user-address/{userId:[\\w-]+}": 
+        ["userAddress", "get"],
+
+    "/Rest/store/": 
+        ["store", "get"],
+    "/Rest/store/{id:[\\w-]+}": 
+        ["store", "get"],    
+    "/Rest/store/{email:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[^\\s@]+[^\\d]}": 
+        ["store", "get"],
+    
+    "/Rest/store-staff/": 
+        ["storeStaff", "get"],
+    "/Rest/store-staff/{id:[\\w-]+}": 
+        ["storeStaff", "get"],
+    "/Rest/store-staff/store/{storeId:[\\w-]+}": 
+        ["storeStaff", "get"],
+    "/Rest/store-staff/user/{userId:[\\w-]+}": 
+        ["storeStaff", "get"],
+
+    "/Rest/store-document/": 
+        ["storeDocument", "get"],
+    "/Rest/store-document/{storeId:[\\w-]+}": 
+        ["storeDocument", "get"],    
+
+    "/Rest/store-address/": 
+        ["storeAddress", "get"],
+    "/Rest/store-address/{storeId:[\\w-]+}": 
+        ["storeAddress", "get"],
+
     "/Rest/product/": 
         ["product", "get"],
-    "/Rest/product/{id:[0-9]+}": 
+    "/Rest/product/{id:[\\w-]+}": 
         ["product", "get"],
+    "/Rest/product/store/{storeId:[\\w-]+}": 
+        ["product", "get"],
+
     "/Rest/product-image/": 
         ["productImage", "get"],
-     "/Rest/product-image/{id:[0-9]+}": 
+     "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "get"],
+     "/Rest/product-image/product/{productId:[\\w-]+}": 
+        ["productImage", "get"],
+
     "/Rest/order/": 
         ["order", "get"],
-    "/Rest/order/{id:[0-9]+}": 
+    "/Rest/order/{id:[\\w-]+}": 
         ["order", "get"],
+
     "/Rest/order-item/": 
         ["orderItem", "get"],
-    "/Rest/order-item/{id:[0-9]+}": 
+    "/Rest/order-item/{id:[\\w-]+}": 
+        ["orderItem", "get"],
+    "/Rest/order-item/order/{orderId:[\\w-]+}": 
+        ["orderItem", "get"],
+    "/Rest/order-item/product/{productId:[\\w-]+}": 
         ["orderItem", "get"]
+
   },
 
   "POST": {
     "/Rest/user/": 
         ["user", "post"],
-    "/Rest/address/": 
-        ["address", "post"],
+    "/Rest/user-address/": 
+        ["userAddress", "post"],
+    "/Rest/store/": 
+        ["store", "post"],
+    "/Rest/store-staff/": 
+        ["storeStaff", "post"],
+    "/Rest/store-document/": 
+        ["storeDocument", "post"],
+    "/Rest/store-address/": 
+        ["storeAddress", "post"],
     "/Rest/product/": 
         ["product", "post"],
     "/Rest/product-image/": 
@@ -44,32 +92,48 @@
     },
 
   "PUT": {
-    "/Rest/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[\\w-]+}": 
         ["user", "put"],
-    "/Rest/address/{userId:[0-9]+}": 
-        ["address", "put"],
-    "/Rest/product/{id:[0-9]+}": 
+    "/Rest/user-address/{userId:[\\w-]+}": 
+        ["userAddress", "put"],
+    "/Rest/store/{id:[\\w-]+}": 
+        ["store", "put"],
+    "/Rest/store-staff/{id:[\\w-]+}": 
+        ["storeStaff", "put"],
+    "/Rest/store-document/{storeId:[\\w-]+}": 
+        ["storeDocument", "put"],
+    "/Rest/store-address/{id:[\\w-]+}": 
+        ["storeAddress", "put"],
+    "/Rest/product/{id:[\\w-]+}": 
         ["product", "put"],
-    "/Rest/product-image/{id:[0-9]+}": 
+    "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "put"],
-     "/Rest/order/{id:[0-9]+}": 
+     "/Rest/order/{id:[\\w-]+}": 
         ["order", "put"],
-     "/Rest/order-item/{id:[0-9]+}": 
+     "/Rest/order-item/{id:[\\w-]+}": 
         ["orderItem", "put"]
   },
 
   "DELETE": {
-    "/Rest/user/{id:[0-9]+}": 
+    "/Rest/user/{id:[\\w-]+}": 
         ["user", "delete"],
-    "/Rest/address/{userId:[0-9]+}": 
-        ["address", "delete"],
-    "/Rest/product/{id:[0-9]+}": 
+    "/Rest/user-address/{userId:[\\w-]+}": 
+        ["userAddress", "delete"],
+    "/Rest/store/{id:[\\w-]+}": 
+        ["store", "delete"],
+    "/Rest/store-staff/{id:[\\w-]+}": 
+        ["storeStaff", "delete"],
+    "/Rest/store-document/{storeId:[\\w-]+}": 
+        ["storeDocument", "delete"],
+    "/Rest/store-address/{storeId:[\\w-]+}": 
+        ["storeAddress", "delete"],
+    "/Rest/product/{id:[\\w-]+}": 
+        ["product", "delete"],
+    "/Rest/product-image/{id:[\\w-]+}": 
         ["productImage", "delete"],
-    "/Rest/product-image/{id:[0-9]+}": 
-        ["productImage", "delete"],
-    "/Rest/order/{id:[0-9]+}": 
+    "/Rest/order/{id:[\\w-]+}": 
         ["order", "delete"],
-    "/Rest/order-item/{id:[0-9]+}": 
+    "/Rest/order-item/{id:[\\w-]+}": 
         ["orderItem", "delete"]
   }
 }

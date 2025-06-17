@@ -1,0 +1,99 @@
+{
+  "id": {
+    "data": "id",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "type": {
+    "data": "type",
+    "min": 4,
+    "max": null,
+    "callback": "validateType"
+  },
+
+  "headOwnerId": {
+    "data": "headOwnerId",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
+  "name": {
+    "data": "name",
+    "min": 1,
+    "max": null,
+    "callback": null
+  },
+
+  "description": {
+    "data": "description",
+    "min": 1,
+    "max": 500,
+    "callback": null
+  },
+
+  "slug": {
+    "data": "slug",
+    "min": 1,
+    "max": null,
+    "callback": null
+  },
+
+  "logoImageLink": {
+    "data": "logoImageLink",
+    "min": null,
+    "max": null,
+    "callback": "validateUrl"
+  },
+
+  "siteLink": {
+    "data": "siteLink",
+    "min": null,
+    "max": null,
+    "callback": "validateUrl"
+  },
+
+  "email": {
+    "data": "email",
+    "min": 3,
+    "max": null,
+    "callback": "validateEmail"
+  },
+
+  "contact": {
+    "data": "contact",
+    "min": null,
+    "max": null,
+    "callback": "validateContact"
+  },
+
+  "vatStatus": {
+    "data": "vatStatus",
+    "min": 3,
+    "max": 3,
+    "callback": "validateStatus"
+  },
+
+  "tin": {
+    "data": "tin",
+    "min": 9,
+    "max": 15,
+    "callback": "validateTin"
+  },
+
+  "govIdImageLink": {
+    "data": "tin",
+    "min": 3,
+    "max": null,
+    "callback": "validateUrl"
+  },
+
+  "businessPermitImageLink": {
+    "data": "businessPermitImageLink",
+    "min": 3,
+    "max": null,
+    "callback": "validateUrl"
+  }
+}

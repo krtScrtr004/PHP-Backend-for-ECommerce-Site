@@ -18,18 +18,22 @@ define('ROUTER_PATH', BASE_PATH . '/router/');
 define('UTIL_PATH', BASE_PATH . '/util/');
 
 define('CONTRACT_PATH', RESOURCE_PATH . '/contract/');
-define('IMPLEMENTATION_PATH', RESOURCE_PATH . '/implementation/');
+define('CLASS_PATH', RESOURCE_PATH . '/class/');
+define('SERVICE_PATH', RESOURCE_PATH . '/service/');
 
 /**
  * Include Files
  */
+
+require_once BASE_PATH . '/vendor/autoload.php';
+
 foreach (glob(CONFIG_PATH . '*.php') as $filename) {
     require_once $filename;
 }
 require_once UTIL_PATH . 'utility.php';
 
 spl_autoload_register(function ($class) {
-    $paths = [API_PATH, CONTRACT_PATH, CONFIG_PATH, IMPLEMENTATION_PATH, ROUTER_PATH, UTIL_PATH];
+    $paths = [API_PATH, CONTRACT_PATH, CONFIG_PATH, CLASS_PATH, ROUTER_PATH, SERVICE_PATH, UTIL_PATH];
     foreach ($paths as $path) {
         // Turn camel case to kebab case
         $class = strtolower(camelToKebabCase($class));
@@ -51,12 +55,16 @@ set_exception_handler(['Logger', 'logException']);
 /**
  * Instantiate Classes
  */
-$conn = DBConnection::getConnection();
-$router = Router::getRouter();
+$conn               =       DBConnection::getConnection();
+$router             =       Router::getRouter();
 
-$userAPI = UserApi::getApi();
-$addressAPI = AddressAPI::getApi();
-$productAPI = ProductAPI::getApi();
-$productImageAPI = ProductImageAPI::getApi();
-$orderAPI = OrderAPI::getApi();
-$orderItemAPI = OrderItemApi::getApi();
+$userAPI            =       UserApi::getApi();
+$userAddressAPI     =       UserAddressAPI::getApi();
+$storeAPI           =       StoreAPI::getApi();
+$storeStaffAPI      =       StoreStaffAPI::getApi();
+$storeDocumentAPI   =       StoreDocumentAPI::getApi();
+$storeAddressAPI    =       StoreAddressAPI::getApi();
+$productAPI         =       ProductAPI::getApi();
+$productImageAPI    =       ProductImageAPI::getApi();
+$orderAPI           =       OrderAPI::getApi();
+$orderItemAPI       =       OrderItemApi::getApi();

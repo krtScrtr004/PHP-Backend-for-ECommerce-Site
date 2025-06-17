@@ -1,14 +1,19 @@
 {
   "id": {
-    "name": "id",
     "data": "id",
     "min": null,
     "max": null,
     "callback": "validateId"
   },
 
+  "storeId": {
+    "data": "store_id",
+    "min": null,
+    "max": null,
+    "callback": "validateId"
+  },
+
   "name": {
-    "name": "product name",
     "data": "name",
     "min": 1,
     "max": 100,
@@ -16,7 +21,6 @@
   },
 
   "description": {
-    "name": "product description",
     "data": "description",
     "min": 1,
     "max": 500,
@@ -24,7 +28,6 @@
   },
 
   "price": {
-    "name": "product price",
     "data": "price",
     "min": null,
     "max": null,
@@ -32,7 +35,6 @@
   },
 
   "imageLink": {
-    "name": "image link",
     "data": "imageLink",
     "min": null,
     "max": null,

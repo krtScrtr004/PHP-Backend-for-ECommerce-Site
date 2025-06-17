@@ -1,6 +1,5 @@
 {
   "id": {
-    "name": "id",
     "data": "id",
     "min": null,
     "max": null,
@@ -8,7 +7,6 @@
   },
 
   "firstName": {
-    "name": "first name",
     "data": "firstName",
     "min": 2,
     "max": null,
@@ -16,7 +14,6 @@
   },
 
   "lastName": {
-    "name": "last name",
     "data": "lastName",
     "min": 2,
     "max": null,
@@ -24,15 +21,13 @@
   },
 
   "email": {
-    "name": "email",
     "data": "email",
-    "min": null,
+    "min": 3,
     "max": null,
     "callback": "validateEmail"
   },
 
   "password": {
-    "name": "password",
     "data": "password",
     "min": null,
     "max": null,
@@ -40,7 +35,6 @@
   },
 
   "profileImageLink": {
-    "name": "profile image link",
     "data": "profileImageLink",
     "min": null,
     "max": null,
@@ -48,7 +42,6 @@
   },
 
   "contact": {
-    "name": "contact",
     "data": "contact",
     "min": null,
     "max": null,

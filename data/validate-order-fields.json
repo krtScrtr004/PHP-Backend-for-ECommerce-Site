@@ -1,6 +1,5 @@
 {
   "id": {
-    "name": "id",
     "data": "id",
     "min": null,
     "max": null,
@@ -8,7 +7,6 @@
   },
 
   "userId": {
-    "name": "user id",
     "data": "userId",
     "min": null,
     "max": null,
@@ -16,23 +14,20 @@
   },
 
   "productId": {
-    "name": "user id",
-    "data": "userId",
+    "data": "productId",
     "min": null,
     "max": null,
     "callback": "validateId"
   },
 
   "orderId": {
-    "name": "user id",
-    "data": "userId",
+    "data": "orderId",
     "min": null,
     "max": null,
     "callback": "validateId"
   },
 
   "status": {
-    "name": "status",
     "data": "status",
     "min": 7,
     "max": null,
@@ -40,7 +35,6 @@
   },
 
   "quantity": {
-    "name": "quantity",
     "data": "quantity",
     "min": null,
     "max": null,

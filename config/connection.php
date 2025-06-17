@@ -34,7 +34,7 @@ class DBConnection
         'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'dbname' => 'rest',
+        'dbname' => 'techstock',
     ];
 
     private static $connection = null;
