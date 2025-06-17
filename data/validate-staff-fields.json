@@ -7,7 +7,7 @@
   },
 
   "userId": {
-    "data": "storeId",
+    "data": "userId",
     "min": null,
     "max": null,
     "callback": "validateId"
